@@ -1,9 +1,9 @@
 supervisely==6.1.97
 diskcache==5.2.1
-scipy
-numpy
-Cython
-scikit-image
+# scipy
+# numpy
+# Cython
+# scikit-image
 opencv-python-headless
 Pillow
 matplotlib
@@ -13,8 +13,8 @@ graphviz
 tqdm
 pyyaml
 easydict
-torch>=1.4.0
-torchvision>=0.5.0
+# torch>=1.4.0
+# torchvision>=0.5.0
 tensorboard
 future
 cffi
