@@ -18,6 +18,7 @@ sources_dir = str(Path(sys.argv[0]).parents[0])
 sly.logger.info(f"Source directory: {sources_dir}")
 sys.path.append(sources_dir)
 
+
 import sly_globals as g
 import mask_image
 import sly_functions as f
