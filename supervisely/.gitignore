@@ -1,0 +1,6 @@
+/models
+secret_debug.env
+../venv
+../.idea
+.dockerignore
+src/debug

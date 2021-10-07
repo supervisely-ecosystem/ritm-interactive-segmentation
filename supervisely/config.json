@@ -1,0 +1,21 @@
+{
+  "name": "RITM interactive segmentation",
+  "type": "app",
+  "categories": [
+    "Neural Network"
+  ],
+  "description": "Smart Tool integration of Reviving Iterative Training with Mask Guidance for Interactive Segmentation",
+  "docker_image": "supervisely/base-py-sdk:6.1.97",
+  "main_script": "supervisely/src/sly_main.py",
+  "task_location": "workspace_tasks",
+  "icon": "https://i.imgur.com/P6BjsxA.png",
+  "icon_background": "#FFFFFF",
+  "headless": true,
+  "integrated_into": ["image_annotation_tool"],
+  "context_menu": {
+    "target": ["images_project"]
+  },
+  "session_tags": [
+    "sly_smart_annotation"
+  ]
+}
