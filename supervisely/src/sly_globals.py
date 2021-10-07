@@ -70,6 +70,8 @@ model_path = os.path.join(model_dir, model_name)
 
 download_file_from_link(api, model_link, model_path, model_name, f"Download {model_name}", my_app.logger)
 
+DEVICE = "cuda:0"
+
 MODEL = torch.load(model_path, map_location=torch.device(DEVICE))
 MODEL = load_is_model(MODEL, DEVICE)
 
