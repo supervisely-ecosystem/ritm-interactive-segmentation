@@ -1,6 +1,9 @@
 import os
 import functools
 import supervisely_lib as sly
+import sly_globals as g
+import mask_image
+import sly_functions as f
 
 # ROOTS
 # import sys
@@ -13,11 +16,6 @@ import supervisely_lib as sly
 # sly_sources_dir = str(Path(sys.argv[0]).parents[0])
 # sly.logger.info(f"Source directory: {sly_sources_dir}")
 # sys.path.append(sly_sources_dir)
-
-
-import mask_image
-import sly_globals as g
-import sly_functions as f
 
 
 def send_error_data(func):
