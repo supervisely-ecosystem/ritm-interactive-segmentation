@@ -7,11 +7,11 @@ import sys
 from pathlib import Path
 
 repo_root_source_dir = str(Path(sys.argv[0]).parents[2])
-sly.logger.info(f"Root source directory: {repo_root_source_dir}")
+sly.logger.info(f"Repo root source directory: {repo_root_source_dir}")
 sys.path.append(repo_root_source_dir)
 
 app_root_source_dir = str(Path(sys.argv[0]).parents[1])
-sly.logger.info(f"Root source directory: {app_root_source_dir}")
+sly.logger.info(f"App root source directory: {app_root_source_dir}")
 sys.path.append(app_root_source_dir)
 
 sources_dir = str(Path(sys.argv[0]).parents[0])
