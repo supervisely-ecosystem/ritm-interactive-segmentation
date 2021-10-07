@@ -1,3 +1,5 @@
+supervisely==6.1.97
+diskcache==5.2.1
 scipy
 numpy
 Cython
