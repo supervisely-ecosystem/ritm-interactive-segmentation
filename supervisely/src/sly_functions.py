@@ -74,12 +74,10 @@ def get_image_by_hash(hash, save_path):
     if g.cache.get(hash) is None:
         g.api.image.download_paths_by_hashes([hash], [save_path])
         base_image = sly.image.read(save_path)
-        g.cache.add(hash, base_image)
+        g.cache.add(hash, base_image, expire=g.cache_item_expire_time)
         silent_remove(save_path)
     else:
         base_image = g.cache.get(hash)
-    if g.cache.count > g.cache_item_limit:
-        g.cache.clear()
     return base_image
 
 

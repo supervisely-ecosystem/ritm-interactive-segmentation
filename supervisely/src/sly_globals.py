@@ -28,9 +28,9 @@ img_dir = os.path.join(work_dir, "img")
 
 
 # Create Cache
-cache_dir = my_app.cache_dir
+cache_dir = os.path.join(work_dir, "diskcache")
 cache = Cache(directory=cache_dir)
-cache_item_limit = 30
+cache_item_expire_time = 600  # seconds
 mkdir(cache_dir)
 mkdir(img_dir)
 
@@ -86,7 +86,3 @@ available_brs_modes = ['NoBRS', 'RGB-BRS', 'DistMap-BRS', 'f-BRS-A', 'f-BRS-B', 
 brs_mode = available_brs_modes[BRS_MODE]
 predictor_params = {'brs_mode': brs_mode}
 controller = InteractiveController(MODEL, DEVICE, predictor_params)
-
-
-
-
