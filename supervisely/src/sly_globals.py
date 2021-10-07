@@ -19,7 +19,7 @@ PROJECT_ID = int(os.environ["modal.state.slyProjectId"])
 DEVICE = os.environ["modal.state.device"]
 MODEL = int(os.environ["modal.state.model"])
 BRS_MODE = int(os.environ["modal.state.brs_mode"])
-
+PREDICTIONS_THRESHOLD = float(os.environ["modal.state.prob_thresh"])
 
 work_dir = os.path.join(my_app.data_dir, "work_dir")
 mkdir(work_dir, True)
@@ -38,7 +38,7 @@ mkdir(img_dir)
 # LOAD MODEL
 import torch
 import requests
-import dl_progress
+import download_progress
 from supervisely_lib.io.fs import download
 from isegm.inference.utils import load_is_model
 
@@ -46,19 +46,13 @@ from isegm.inference.utils import load_is_model
 def download_file_from_link(api, link, model_path, file_name, progress_message, app_logger):
     response = requests.head(link, allow_redirects=True)
     sizeb = int(response.headers.get('content-length', 0))
-    progress_cb = dl_progress.get_progress_cb(api, TASK_ID, progress_message, sizeb, is_size=True)
+    progress_cb = download_progress.get_progress_cb(api, TASK_ID, progress_message, sizeb, is_size=True)
     download(link, model_path, cache=my_app.cache, progress=progress_cb)
-    dl_progress.reset_progress(api, TASK_ID)
+    download_progress.reset_progress(api, TASK_ID)
     app_logger.info(f'{file_name} has been successfully downloaded')
 
 
 # MODEL SELECTOR
-def model_selector(model, models):
-    model_link = models[model]
-    model_name = os.path.basename(os.path.normpath(model_link))
-    return model_name, model_link
-
-
 available_models = [
     "https://github.com/saic-vul/ritm_interactive_segmentation/releases/download/v1.0/sbd_h18_itermask.pth",
     "https://github.com/saic-vul/ritm_interactive_segmentation/releases/download/v1.0/coco_lvis_h18_baseline.pth",
@@ -68,7 +62,8 @@ available_models = [
 ]
 
 
-model_name, model_link = model_selector(MODEL, available_models)
+model_link = available_models[MODEL]
+model_name = os.path.basename(os.path.normpath(model_link))
 model_dir = os.path.join(work_dir, "model")
 mkdir(model_dir)
 model_path = os.path.join(model_dir, model_name)
@@ -85,4 +80,4 @@ available_brs_modes = ['NoBRS', 'RGB-BRS', 'DistMap-BRS', 'f-BRS-A', 'f-BRS-B', 
 
 brs_mode = available_brs_modes[BRS_MODE]
 predictor_params = {'brs_mode': brs_mode}
-controller = InteractiveController(MODEL, DEVICE, predictor_params)
+controller = InteractiveController(MODEL, DEVICE, predictor_params, prob_thresh=PREDICTIONS_THRESHOLD)
