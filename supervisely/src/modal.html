@@ -1,0 +1,35 @@
+<div>
+
+    <sly-field title="Device selector"
+               description="Select Device">
+        <el-select v-model="state.device">
+            <el-option key="cpu" label="CPU" value="cpu"></el-option>
+            <el-option key="cuda" label="CUDA" value="cuda"></el-option>
+        </el-select>
+    </sly-field>
+
+
+    <sly-field title="Model selector"
+               description="Select Model">
+        <el-select v-model="state.model">
+            <el-option key="0" label="HRNet18 IT-M (SDB)" value="0"></el-option>
+            <el-option key="1" label="HRNet18 (COCO+LVIS)" value="1"></el-option>
+            <el-option key="2" label="HRNet18s IT-M (COCO+LVIS)" value="2"></el-option>
+            <el-option key="3" label="HRNet18 IT-M (COCO+LVIS)" value="3"></el-option>
+            <el-option key="4" label="HRNet32 IT-M (COCO+LVIS)" value="4"></el-option>
+        </el-select>
+    </sly-field>
+
+    <sly-field title="BRS Mode"
+               description="Select BRS mode">
+        <el-select v-model="state.brs_mode">
+            <el-option key="0" label="NoBRS" value="0"></el-option>
+            <el-option key="1" label="RGB-BRS" value="1"></el-option>
+            <el-option key="2" label="DistMap-BRS" value="2"></el-option>
+            <el-option key="3" label="f-BRS-A" value="3"></el-option>
+            <el-option key="4" label="f-BRS-B" value="4"></el-option>
+            <el-option key="5" label="f-BRS-C" value="5"></el-option>
+        </el-select>
+    </sly-field>
+
+</div>
