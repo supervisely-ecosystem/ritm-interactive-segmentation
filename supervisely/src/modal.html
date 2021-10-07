@@ -1,7 +1,7 @@
 <div>
 
     <sly-field title="Device selector"
-               description="Select Device">
+               description="Runs app with selected device">
         <el-select v-model="state.device">
             <el-option key="cpu" label="CPU" value="cpu"></el-option>
             <el-option key="cuda" label="CUDA" value="cuda"></el-option>
@@ -10,7 +10,7 @@
 
 
     <sly-field title="Model selector"
-               description="Select Model">
+               description="Select provided pretrained models with different backbones for interactive segmentation.">
         <el-select v-model="state.model">
             <el-option key="0" label="HRNet18 IT-M (SDB)" value="0"></el-option>
             <el-option key="1" label="HRNet18 (COCO+LVIS)" value="1"></el-option>
@@ -21,7 +21,7 @@
     </sly-field>
 
     <sly-field title="BRS Mode"
-               description="Select BRS mode">
+               description="Backpropagating Refinement for Interactive Segmentation">
         <el-select v-model="state.brs_mode">
             <el-option key="0" label="NoBRS" value="0"></el-option>
             <el-option key="1" label="RGB-BRS" value="1"></el-option>
