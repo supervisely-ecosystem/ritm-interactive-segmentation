@@ -33,8 +33,7 @@ cache_item_expire_time = 600  # seconds
 mkdir(cache_dir)
 mkdir(img_dir)
 
-
-# LOAD MODEL
+# MODEL
 import torch
 import requests
 import download_progress
@@ -42,11 +41,11 @@ from supervisely_lib.io.fs import download
 from isegm.inference.utils import load_is_model
 
 
-def download_file_from_link(api, link, model_path, file_name, progress_message, app_logger):
+def download_file_from_link(api, link, save_path, file_name, progress_message, app_logger):
     response = requests.head(link, allow_redirects=True)
     sizeb = int(response.headers.get('content-length', 0))
     progress_cb = download_progress.get_progress_cb(api, TASK_ID, progress_message, sizeb, is_size=True)
-    download(link, model_path, cache=my_app.cache, progress=progress_cb)
+    download(link, save_path, cache=my_app.cache, progress=progress_cb)
     download_progress.reset_progress(api, TASK_ID)
     app_logger.info(f'{file_name} has been successfully downloaded')
 
@@ -60,7 +59,6 @@ available_models = [
     "https://github.com/supervisely-ecosystem/ritm-interactive-segmentation/releases/download/v0.1/coco_lvis_h32_itermask.pth"
 ]
 
-
 model_link = available_models[MODEL]
 model_name = os.path.basename(os.path.normpath(model_link))
 model_dir = os.path.join(work_dir, "model")
@@ -68,11 +66,8 @@ mkdir(model_dir)
 model_path = os.path.join(model_dir, model_name)
 
 download_file_from_link(api, model_link, model_path, model_name, f"Download {model_name}", my_app.logger)
-
-
 MODEL = torch.load(model_path, map_location=torch.device(DEVICE))
 MODEL = load_is_model(MODEL, DEVICE)
-
 
 # RITM CONTROLLER
 from interactive_demo.controller import InteractiveController

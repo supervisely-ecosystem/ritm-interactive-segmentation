@@ -2,7 +2,7 @@ import os
 import functools
 import supervisely_lib as sly
 
-# ROOTS
+# Source dirs
 import sys
 from pathlib import Path
 
@@ -20,8 +20,8 @@ sys.path.append(sources_dir)
 
 
 import sly_globals as g
-import mask_image
 import sly_functions as f
+import mask_image
 
 
 def send_error_data(func):
@@ -43,19 +43,15 @@ def send_error_data(func):
 @send_error_data
 def smart_segmentation(api: sly.Api, task_id, context, state, app_logger):
     x1, y1, x2, y2 = f.get_smart_bbox(context["crop"])
-
-    img_path = os.path.join(g.img_dir, "base_image.png")
-    base_image_np = f.get_image_by_hash(context["image_hash"], img_path)
-
-    bbox = sly.Rectangle(y1, x1, y2, x2)
-    crop_np = sly.image.crop(base_image_np, bbox)
-
     pos_points, neg_points = f.get_pos_neg_points_list_from_context(context)
     pos_points, neg_points = f.get_pos_neg_points_list_from_context_bbox_relative(x1, y1, pos_points, neg_points)
     clicks_list = f.get_click_list_from_points(pos_points, neg_points)
 
+    img_path = os.path.join(g.img_dir, "base_image.png")
+    base_image_np = f.get_image_by_hash(context["image_hash"], img_path)
+    bbox = sly.Rectangle(y1, x1, y2, x2)
+    crop_np = sly.image.crop(base_image_np, bbox)
     res_mask = mask_image.get_mask_from_clicks(crop_np, clicks_list)
-
     bitmap = f.get_bitmap_from_mask(res_mask)
     bitmap_origin, bitmap_data = f.unpack_bitmap(bitmap, y1, x1)
 
