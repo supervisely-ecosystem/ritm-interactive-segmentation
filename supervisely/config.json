@@ -11,7 +11,7 @@
   "modal_template": "supervisely/src/modal.html",
   "modal_template_state": {"device": "cpu", "model": "4", "brs_mode": "0", "prob_thresh": 0.5},
   "task_location": "application_sessions",
-  "icon": "https://i.imgur.com/P6BjsxA.png",
+  "icon": "https://i.imgur.com/OoKZjVK.png",
   "icon_background": "#FFFFFF",
   "headless": true,
   "session_tags": [
