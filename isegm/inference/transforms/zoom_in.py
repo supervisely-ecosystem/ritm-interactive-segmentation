@@ -9,7 +9,7 @@ from .base import BaseTransform
 class ZoomIn(BaseTransform):
     def __init__(self,
                  target_size=400,
-                 skip_clicks=1,
+                 skip_clicks=2,
                  expansion_ratio=1.4,
                  min_crop_size=200,
                  recompute_thresh_iou=0.5,
