@@ -27,6 +27,7 @@ def get_predictor(net, brs_mode, device,
         zoom_in = ZoomIn(**zoom_in_params)
     else:
         zoom_in = None
+    zoom_in = None
 
     if lbfgs_params is not None:
         lbfgs_params_.update(lbfgs_params)
