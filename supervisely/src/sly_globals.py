@@ -9,16 +9,6 @@ api: sly.Api = my_app.public_api
 
 TASK_ID = int(os.environ["TASK_ID"])
 TEAM_ID = int(os.environ['context.teamId'])
-WORKSPACE_ID = int(os.environ['context.workspaceId'])
-
-
-# DEVICE
-# devices: cpu, cuda, xpu, mkldnn, opengl, opencl,
-# ideep, hip, msnpu, mlc, xla, vulkan, meta, hpu
-DEVICE = os.environ["modal.state.device"]
-MODEL = int(os.environ["modal.state.model"])
-BRS_MODE = int(os.environ["modal.state.brs_mode"])
-PREDICTIONS_THRESHOLD = float(os.environ["modal.state.prob_thresh"])
 
 work_dir = os.path.join(my_app.data_dir, "work_dir")
 mkdir(work_dir, True)
@@ -51,6 +41,12 @@ def download_file_from_link(api, link, save_path, file_name, progress_message, a
 
 
 # MODEL SELECTOR
+# devices: cpu, cuda, xpu, mkldnn, opengl, opencl,
+# ideep, hip, msnpu, mlc, xla, vulkan, meta, hpu
+DEVICE = os.environ["modal.state.device"]
+MODEL = int(os.environ["modal.state.model"])
+
+
 available_models = [
     "https://github.com/supervisely-ecosystem/ritm-interactive-segmentation/releases/download/v0.1/sbd_h18_itermask.pth",
     "https://github.com/supervisely-ecosystem/ritm-interactive-segmentation/releases/download/v0.1/coco_lvis_h18_baseline.pth",
@@ -71,8 +67,24 @@ MODEL = load_is_model(MODEL, DEVICE)
 
 # RITM CONTROLLER
 from interactive_demo.controller import InteractiveController
-available_brs_modes = ['NoBRS', 'RGB-BRS', 'DistMap-BRS', 'f-BRS-A', 'f-BRS-B', 'f-BRS-C']
 
-brs_mode = available_brs_modes[BRS_MODE]
-predictor_params = {'brs_mode': brs_mode}
-controller = InteractiveController(MODEL, DEVICE, predictor_params, prob_thresh=PREDICTIONS_THRESHOLD)
+available_brs_modes = ['NoBRS', 'RGB-BRS', 'DistMap-BRS', 'f-BRS-A', 'f-BRS-B', 'f-BRS-C']
+brs_mode = int(os.environ["modal.state.brs_mode"])
+brs_mode = available_brs_modes[brs_mode]
+
+prob_thresh = float(os.environ["modal.state.prob_thresh"])
+net_clicks_limit = int(os.environ["modal.state.net_clicks_limit"])
+lbfgs_max_iters = int(os.environ["modal.state.lbfgs_max_iters"])
+
+predictor_params = {
+            'brs_mode': brs_mode,
+            'prob_thresh': prob_thresh,
+            'zoom_in_params': None,
+            'predictor_params': {
+                'net_clicks_limit': net_clicks_limit
+            },
+            'lbfgs_params': {'maxfun': lbfgs_max_iters}
+        }
+
+
+controller = InteractiveController(MODEL, DEVICE, predictor_params, prob_thresh=prob_thresh)
