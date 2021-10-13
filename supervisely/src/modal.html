@@ -21,13 +21,13 @@
     </sly-field>
 
     <sly-field title="Prediction Threshold"
-               description="Threshold for binarization of probability map. Recommended value is 0.5.">
+               description="Threshold for binarization of probability map. Recommended value is 0.5">
         <el-slider v-model="state.prob_thresh" :min="0" :max="1" :step="0.1" show-input
                    style="flex:1; max-width: 99%; margin-left: 15px;"></el-slider>
     </sly-field>
 
     <sly-field title="BRS Mode"
-               description="Backpropagating Refinement for Interactive Segmentation. Multi-stage models support only NoBRS mode.">
+               description="Backpropagating Refinement for Interactive Segmentation (Multi-stage models support only NoBRS mode)">
         <el-select v-model="state.brs_mode">
             <el-option key="0" label="NoBRS" value="0"></el-option>
             <el-option key="1" label="RGB-BRS" value="1"></el-option>
@@ -40,13 +40,13 @@
 
     <sly-field v-show="state.brs_mode !== '0'" title="Network Clicks"
                description="The number of first clicks that are included in the network's input. Subsequent clicks are processed only using BRS (NoBRS ignores this option)">
-        <el-slider v-model="state.prob_thresh" :min="1" :max="100" :step="1" show-input
+        <el-slider v-model="state.net_clicks_limit" :min="1" :max="100" :step="1" show-input
                    style="flex:1; max-width: 99%; margin-left: 15px;"></el-slider>
     </sly-field>
 
     <sly-field v-show="state.brs_mode !== '0'" title="L-BFGS max iterations"
                description="The maximum number of function evaluation for each step of optimization in BRS (increase for better accuracy and longer computational time for each click)">
-        <el-slider v-model="state.prob_thresh" :min="1" :max="100" :step="1" show-input
+        <el-slider v-model="state.lbfgs_max_iters" :min="1" :max="100" :step="1" show-input
                    style="flex:1; max-width: 99%; margin-left: 15px;"></el-slider>
     </sly-field>
 
