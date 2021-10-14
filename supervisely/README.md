@@ -1,356 +1,251 @@
-## Reviving Iterative Training with Mask Guidance for Interactive Segmentation 
-
-<p align="center">
-    <a href="https://paperswithcode.com/sota/interactive-segmentation-on-grabcut?p=reviving-iterative-training-with-mask">
-        <img src="https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/reviving-iterative-training-with-mask/interactive-segmentation-on-grabcut"/>
-    </a>
-    <a href="https://paperswithcode.com/sota/interactive-segmentation-on-berkeley?p=reviving-iterative-training-with-mask">
-        <img src="https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/reviving-iterative-training-with-mask/interactive-segmentation-on-berkeley"/>
-    </a>
-</p>
-
-<p align="center">
-  <img src="./assets/img/teaser.gif" alt="drawing", width="420"/>
-  <img src="./assets/img/miou_berkeley.png" alt="drawing", width="400"/>
-</p>
-
-<p align="center">
-    <a href="https://arxiv.org/abs/2102.06583">
-        <img src="https://img.shields.io/badge/arXiv-2102.06583-b31b1b"/>
-    </a>
-    <a href="https://colab.research.google.com/github/saic-vul/ritm_interactive_segmentation/blob/master/notebooks/colab_test_any_model.ipynb">
-        <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
-    </a>
-    <a href="https://opensource.org/licenses/MIT">
-        <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="The MIT License"/>
-    </a>
-</p>
-
-This repository provides the source code for training and testing state-of-the-art click-based interactive segmentation models with the official PyTorch implementation of the following paper:
-
-> **Reviving Iterative Training with Mask Guidance for Interactive Segmentation**<br>
-> [Konstantin Sofiiuk](https://github.com/ksofiyuk), [Ilia Petrov](https://github.com/ptrvilya), [Anton Konushin](https://scholar.google.com/citations?user=ZT_k-wMAAAAJ) <br>
-> Samsung AI Center Moscow <br>
-> https://arxiv.org/abs/2102.06583
->
-> **Abstract:** *Recent works on click-based interactive segmentation have demonstrated state-of-the-art results by 
-> using various inference-time optimization schemes. These methods are considerably more computationally expensive 
-> compared to feedforward approaches, as they require performing backward passes through a network during inference and 
-> are hard to deploy on mobile frameworks that usually support only forward passes. In this paper, we extensively 
-> evaluate various design choices for interactive segmentation and discover that new state-of-the-art results can be 
-> obtained without any additional optimization schemes. Thus, we propose a simple feedforward model for click-based 
-> interactive segmentation that employs the segmentation masks from previous steps. It allows not only to segment an 
-> entirely new object, but also to start with an external mask and correct it. When analyzing the performance of models
-> trained on different datasets, we observe that the choice of a training dataset greatly impacts the quality of 
-> interactive segmentation. We find that the models trained on a combination of COCO and LVIS with diverse and 
-> high-quality annotations show performance superior to all existing models.*
-
-
-## Setting up an environment
-
-This framework is built using Python 3.6 and relies on the PyTorch 1.4.0+. The following command installs all 
-necessary packages:
-
-```.bash
-pip3 install -r requirements.txt
-```
-
-You can also use our [Dockerfile](./Dockerfile) to build a container with the configured environment. 
-
-If you want to run training or testing, you must configure the paths to the datasets in [config.yml](config.yml).
-
-## Interactive Segmentation Demo
-
-<p align="center">
-  <img src="./assets/img/demo_gui.jpg" alt="drawing" width="99%"/>
-</p>
-
-The GUI is based on TkInter library and its Python bindings. You can try our interactive demo with any of the 
-[provided models](#pretrained-models). Our scripts automatically detect the architecture of the loaded model, just 
-specify the path to the corresponding checkpoint.
-
-Examples of the script usage:
-
-```.bash
-# This command runs interactive demo with HRNet18 ITER-M model from cfg.INTERACTIVE_MODELS_PATH on GPU with id=0
-# --checkpoint can be relative to cfg.INTERACTIVE_MODELS_PATH or absolute path to the checkpoint
-python3 demo.py --checkpoint=hrnet18_cocolvis_itermask_3p --gpu=0
-
-# This command runs interactive demo with HRNet18 ITER-M model from /home/demo/isegm/weights/
-# If you also do not have a lot of GPU memory, you can reduce --limit-longest-size (default=800)
-python3 demo.py --checkpoint=/home/demo/fBRS/weights/hrnet18_cocolvis_itermask_3p --limit-longest-size=400
-
-# You can try the demo in CPU only mode
-python3 demo.py --checkpoint=hrnet18_cocolvis_itermask_3p --cpu
-```
-
-<details>
-<summary><b>Running demo in docker</b></summary>
-<pre><code># activate xhost
-xhost +
-docker run -v "$PWD":/tmp/ \
-           -v /tmp/.X11-unix:/tmp/.X11-unix \
-           -e DISPLAY=$DISPLAY &lt;id-or-tag-docker-built-image&gt; \
-           python3 demo.py --checkpoint resnet34_dh128_sbd --cpu
-</code></pre>
-</details>
-
-**Controls**:
-
-| Key                                                           | Description                        |
-| ------------------------------------------------------------- | ---------------------------------- |
-| <kbd>Left Mouse Button</kbd>                                  | Place a positive click             |
-| <kbd>Right Mouse Button</kbd>                                 | Place a negative click             |
-| <kbd>Scroll Wheel</kbd>                                       | Zoom an image in and out           |
-| <kbd>Right Mouse Button</kbd> + <br> <kbd>Move Mouse</kbd>    | Move an image                      |
-| <kbd>Space</kbd>                                              | Finish the current object mask     |
-
-<details>
-<summary><b>Initializing the ITER-M models with an external segmentation mask</b></summary>
-<p align="center">
-  <img src="./assets/img/modifying_external_mask.jpg" alt="drawing" width="80%"/>
-</p>
+<div align="center" markdown>
   
-According to our paper, ITER-M models take an image, encoded user input, and a previous step mask as their input. Moreover, a user can initialize the model with an external mask before placing any clicks and correct this mask using the same interface.  As it turns out, our models successfully handle this situation and make it possible to change the mask.
+# Reviving Iterative Training with Mask Guidance for Interactive Segmentation (RITM)
+
+[![](https://img.shields.io/badge/supervisely-ecosystem-brightgreen)](https://ecosystem.supervise.ly/apps/supervisely-ecosystem/ritm-interactive-segmentation/supervisely)
+[![](https://img.shields.io/badge/slack-chat-green.svg?logo=slack)](https://supervise.ly/slack)
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/supervisely-ecosystem/ritm-interactive-segmentation)
+[![views](https://app.supervise.ly/public/api/v3/ecosystem.counters?repo=supervisely-ecosystem/ritm-interactive-segmentation/supervisely&counter=views&label=views)](https://supervise.ly)
+[![used by teams](https://app.supervise.ly/public/api/v3/ecosystem.counters?repo=supervisely-ecosystem/ritm-interactive-segmentation/supervisely&counter=downloads&label=used%20by%20teams)](https://supervise.ly)
+[![runs](https://app.supervise.ly/public/api/v3/ecosystem.counters?repo=supervisely-ecosystem/ritm-interactive-segmentation/supervisely&counter=runs&label=runs&123)](https://supervise.ly)
+
+---
+
+<p float="left">
+  <img src="https://github.com/supervisely-ecosystem/ritm-interactive-segmentation/releases/download/v0.1/ritm_poster.gif?raw=true" style="width:80%;"/>
+</p>    
+ 
+### Click-based interactive segmentation integrated into Supervisely Image Annotator
+    
+<p align="center">
+  <a href="#Original-work">Original work</a> •
+  <a href="#How-to-use">How to use</a> •
+  <a href="#Demo">Demo</a> 
+</p>
+    
+</div>
 
 
-To initialize any ITER-M model with an external mask use the "Load mask" button in the menu bar.
-</details>
 
-<details>
-<summary><b>Interactive segmentation options</b></summary>
-<ul>
-    <li>ZoomIn (can be turned on/off using the checkbox)</li>
-    <ul>
-        <li><i>Skip clicks</i> - the number of clicks to skip before using ZoomIn.</li>
-        <li><i>Target size</i> - ZoomIn crop is resized so its longer side matches this value (increase for large objects).</li>
-        <li><i>Expand ratio</i> - object bbox is rescaled with this ratio before crop.</li>
-        <li><i>Fixed crop</i> - ZoomIn crop is resized to (<i>Target size</i>, <i>Target size</i>).</li>
-    </ul>
-    <li>BRS parameters (BRS type can be changed using the dropdown menu)</li>
-    <ul>
-        <li><i>Network clicks</i> - the number of first clicks that are included in the network's input. Subsequent clicks are processed only using BRS  (NoBRS ignores this option).</li>
-        <li><i>L-BFGS-B max iterations</i> - the maximum number of function evaluation for each step of optimization in BRS (increase for better accuracy and longer computational time for each click).</li>  
-    </ul>
-    <li>Visualisation parameters</li>
-    <ul>
-        <li><i>Prediction threshold</i> slider adjusts the threshold for binarization of probability map for the current object.</li> 
-        <li><i>Alpha blending coefficient</i> slider adjusts the intensity of all predicted masks.</li>
-        <li><i>Visualisation click radius</i> slider adjusts the size of red and green dots depicting clicks.</li>
-    </ul>
-</ul>
-</details>
 
-## Datasets
+# Original work
 
-We train all our models on SBD and COCO+LVIS and evaluate them on GrabCut, Berkeley, DAVIS, SBD and PascalVOC. We also provide links to additional datasets: ADE20k and OpenImages, that are used in ablation study.
+Original work available by hyperlinks: [**paper (RITM)**](https://arxiv.org/pdf/2102.06583.pdf) and [**code**](https://github.com/saic-vul/ritm_interactive_segmentation).
 
-| Dataset   |                      Description             |           Download Link              |
-|-----------|----------------------------------------------|:------------------------------------:|
-|ADE20k     |  22k images with 434k instances (total)      |  [official site][ADE20k]             |
-|OpenImages |  944k images with 2.6M instances (total)     |  [official site][OpenImages]         |
-|MS COCO    |  118k images with 1.2M instances (train)     |  [official site][MSCOCO]             |
-|LVIS v1.0  |  100k images with 1.2M instances (total)     |  [official site][LVIS]               |
-|COCO+LVIS* |  99k images with 1.5M instances (train)      |  [original LVIS images][LVIS] + <br> [our combined annotations][COCOLVIS_annotation] |
-|SBD        |  8498 images with 20172 instances for (train)<br>2857 images with 6671 instances for (test) |[official site][SBD]|
-|Grab Cut   |  50 images with one object each (test)       |  [GrabCut.zip (11 MB)][GrabCut]      |
-|Berkeley   |  96 images with 100 instances (test)         |  [Berkeley.zip (7 MB)][Berkeley]     |
-|DAVIS      |  345 images with one object each (test)      |  [DAVIS.zip (43 MB)][DAVIS]          |
-|Pascal VOC |  1449 images with 3417 instances (validation)|  [official site][PascalVOC]          |
-|COCO_MVal  |  800 images with 800 instances (test)        |  [COCO_MVal.zip (127 MB)][COCO_MVal] |
 
-[ADE20k]: http://sceneparsing.csail.mit.edu/
-[OpenImages]: https://storage.googleapis.com/openimages/web/download.html
-[MSCOCO]: https://cocodataset.org/#download
-[LVIS]: https://www.lvisdataset.org/dataset
-[SBD]: http://home.bharathh.info/pubs/codes/SBD/download.html
-[GrabCut]: https://github.com/saic-vul/fbrs_interactive_segmentation/releases/download/v1.0/GrabCut.zip
-[Berkeley]: https://github.com/saic-vul/fbrs_interactive_segmentation/releases/download/v1.0/Berkeley.zip
-[DAVIS]: https://github.com/saic-vul/fbrs_interactive_segmentation/releases/download/v1.0/DAVIS.zip
-[PascalVOC]: http://host.robots.ox.ac.uk/pascal/VOC/
-[COCOLVIS_annotation]: https://github.com/saic-vul/ritm_interactive_segmentation/releases/download/v1.0/cocolvis_annotation.tar.gz
-[COCO_MVal]: https://github.com/saic-vul/fbrs_interactive_segmentation/releases/download/v1.0/COCO_MVal.zip
+## TransT architecture
 
-Don't forget to change the paths to the datasets in [config.yml](config.yml) after downloading and unpacking.
+<img src="https://imgur.com/M5djthP.png" style="width:100%;"/>
 
-(*) To prepare COCO+LVIS, you need to download original LVIS v1.0, then download and unpack our 
-pre-processed annotations that are obtained by combining COCO and LVIS dataset into the folder with LVIS v1.0.
+TransT uses the input image to extract information about the appearance of the target and the surrounding area.  
+It extracts feature maps from two patch images:
 
-## Testing
+1. manually marked region of the image
+2. the nearest area of the marked region
 
-### Pretrained models
-We provide pretrained models with different backbones for interactive segmentation.
+Next, feature maps are converted for use in the Feature Fusion Network, as shown in the dotted box in the Figure.  
+* **ECAs — two ego-context extensions**, focus on **useful semantic context adaptively through the self-attention of multiple heads** to improve feature presentation.  
+* **CFA — two cross function expansion modules**, obtain the performance maps of both their own and the other branch at the same time, and combine the two function maps through a multi-head cross-focus.  
 
-You can find model weights and evaluation results in the tables below:
+Thus, two ECAs and two CFAs form a merge layer.  
+
+After the Feature Fusion Network, the feature maps are fed into the predicted head, which calculates the coordinates of the object and classifies the pixels as background and foreground.
+
+
+
+## TransT results
+
+<p>State-of-the-art comparison on TrackingNet, LaSOT, and GOT-10k. The best two results are shown in <b>red</b> and <b>blue</b> fonts:</p>
+<img src="https://imgur.com/VhJ0lk8.png" style="width:100%;"/>
+
+<p><b>AUC</b> scores of different attributes on the <b>LaSOT</b> dataset:</p>
+<img src="https://imgur.com/0x7VUpc.png" style="width:100%;"/>
+
+
+
+# How to use
+
+## Community edition
+
+1. Upload video to [supervese.ly](https://supervise.ly/)
+2. Annotate object using `Rectangle Tool`
+3. Select object, choose `TransT object tracking (CVPR2021)` from tracking menu 
+4. Click `track` button
 
 <table>
-    <thead align="center">
-        <tr>
-            <th rowspan="2"><span style="font-weight:bold">Train</span><br><span style="font-weight:bold">Dataset</span></th>
-            <th rowspan="2">Model</th>
-            <th colspan="2">GrabCut</th>
-            <th>Berkeley</th>
-            <th colspan="2">SBD</th>    
-            <th colspan="2">DAVIS</th>
-            <th>Pascal<br>VOC</th>
-            <th>COCO<br>MVal</th>
-        </tr>
-        <tr>
-            <td>NoC<br>85%</td>
-            <td>NoC<br>90%</td>
-            <td>NoC<br>90%</td>
-            <td>NoC<br>85%</td>
-            <td>NoC<br>90%</td>
-            <td>NoC<br>85%</td>
-            <td>NoC<br>90%</td>
-            <td>NoC<br>85%</td>
-            <td>NoC<br>90%</td>
-        </tr>
-    </thead>
-    <tbody align="center">
-        <tr>
-            <td rowspan="1">SBD</td>
-            <td align="left"><a href="https://github.com/saic-vul/ritm_interactive_segmentation/releases/download/v1.0/sbd_h18_itermask.pth">HRNet18 IT-M<br>(38.8 MB)</a></td>
-            <td>1.76</td>
-            <td>2.04</td>
-            <td>3.22</td>
-            <td><b>3.39</b></td>
-            <td><b>5.43</b></td>
-            <td>4.94</td>
-            <td>6.71</td>
-            <td><ins>2.51</ins></td>
-            <td>4.39</td>
-        </tr>
-        <tr>
-            <td rowspan="4">COCO+<br>LVIS</td>
-            <td align="left"><a href="https://github.com/saic-vul/ritm_interactive_segmentation/releases/download/v1.0/coco_lvis_h18_baseline.pth">HRNet18<br>(38.8 MB)</a></td>
-            <td>1.54</td>
-            <td>1.70</td>
-            <td>2.48</td>
-            <td>4.26</td>
-            <td>6.86</td>
-            <td>4.79</td>
-            <td>6.00</td>
-            <td>2.59</td>
-            <td>3.58</td>
-        </tr>
-        <tr>
-            <td align="left"><a href="https://github.com/saic-vul/ritm_interactive_segmentation/releases/download/v1.0/coco_lvis_h18s_itermask.pth">HRNet18s IT-M<br>(16.5 MB)</a></td>
-            <td>1.54</td>
-            <td>1.68</td>
-            <td>2.60</td>
-            <td>4.04</td>
-            <td>6.48</td>
-            <td>4.70</td>
-            <td>5.98</td>
-            <td>2.57</td>
-            <td>3.33</td>
-        </tr>
-        <tr>
-            <td align="left"><a href="https://github.com/saic-vul/ritm_interactive_segmentation/releases/download/v1.0/coco_lvis_h18_itermask.pth">HRNet18 IT-M<br>(38.8 MB)</a></td>
-            <td><b>1.42</b></td>
-            <td><b>1.54</b></td>
-            <td><ins>2.26</ins></td>
-            <td>3.80</td>
-            <td>6.06</td>
-            <td><ins>4.36</ins></td>
-            <td><ins>5.74</ins></td>
-            <td><b>2.28</b></td>
-            <td><ins>2.98</ins></td>
-        </tr>
-        <tr>
-            <td align="left"><a href="https://github.com/saic-vul/ritm_interactive_segmentation/releases/download/v1.0/coco_lvis_h32_itermask.pth">HRNet32 IT-M<br>(119 MB)</a></td>
-            <td><ins>1.46</ins></td>
-            <td><ins>1.56</ins></td>
-            <td><b>2.10</b></td>
-            <td><ins>3.59</ins></td>
-            <td><ins>5.71</ins></td>
-            <td><b>4.11</b></td>
-            <td><b>5.34</b></td>
-            <td>2.57</td>
-            <td><b>2.97</b></td>
-        </tr>
-    </tbody>
+  <tr style="width: 100%">
+    <td>
+      <img src="https://imgur.com/4SKQyrD.png" />
+    </td>
+    <td>
+      <img src="https://imgur.com/KWsubjO.png" />
+    </td>
+  </tr>
+  <tr style="width: 100%">
+    <td>
+      <img src="https://imgur.com/uvRFFJU.png" />
+    </td>
+    <td>
+      <img src="https://imgur.com/fvGTEry.png" />
+    </td>
+  </tr>
 </table>
 
 
-### Evaluation
+## Agent edition
 
-We provide the script to test all the presented models in all possible configurations on GrabCut, Berkeley, DAVIS, 
-Pascal VOC, and SBD. To test a model, you should download its weights and put them in `./weights` folder (you can 
-change this path in the [config.yml](config.yml), see `INTERACTIVE_MODELS_PATH` variable). To test any of our models, 
-just specify the path to the corresponding checkpoint. Our scripts automatically detect the architecture of the loaded model.
+1. Add [TransT object tracking (CVPR2021)](https://ecosystem.supervise.ly/apps/supervisely-ecosystem/trans-t/supervisely/serve) from Ecosystem
+2. Run app on agent with `GPU`
+3. Use in `Videos Annotator` by analogy with <a href="#Community-edition">Community edition</a>  
 
-The following command runs the NoC evaluation on all test datasets (other options are displayed using '-h'):
 
-```.bash
-python3 scripts/evaluate_model.py <brs-mode> --checkpoint=<checkpoint-name>
-```
 
-Examples of the script usage:
-```.bash
-# This command evaluates HRNetV2-W18-C+OCR ITER-M model in NoBRS mode on all Datasets.
-python3 scripts/evaluate_model.py NoBRS --checkpoint=hrnet18_cocolvis_itermask_3p
+# Demo
 
-# This command evaluates HRNet-W18-C-Small-v2+OCR ITER-M model in f-BRS-B mode on all Datasets.
-python3 scripts/evaluate_model.py f-BRS-B --checkpoint=hrnet18s_cocolvis_itermask_3p
+We have prepared a videos and demonstrated how TransT works on the following domains:
 
-# This command evaluates HRNetV2-W18-C+OCR ITER-M model in NoBRS mode on GrabCut and Berkeley datasets.
-python3 scripts/evaluate_model.py NoBRS --checkpoint=hrnet18_cocolvis_itermask_3p --datasets=GrabCut,Berkeley
-```
+* <a href="#People">People</a>  
+* <a href="#Automobiles">Automobiles</a>  
+* <a href="#Animals">Animals</a> 
+* <a href="#Things">Things</a> 
+* <a href="#Conveyor">Conveyor</a> 
 
-### Jupyter notebook
 
-You can also interactively experiment with our models using [test_any_model.ipynb](./notebooks/test_any_model.ipynb) Jupyter notebook.
+## People
 
-## Training
 
-We provide the scripts for training our models on the SBD dataset. You can start training with the following commands:
-```.bash
-# ResNet-34 non-iterative baseline model
-python3 train.py models/noniterative_baselines/r34_dh128_cocolvis.py --gpus=0 --workers=4 --exp-name=first-try
+<table>
+  <tr style="width: 100%">
+    <td>
+      <a data-key="sly-embeded-video-link" href="https://youtu.be/fNqMP-C7MA0" data-video-code="fNqMP-C7MA0">     <img src="https://imgur.com/EjbHbX0.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="width:100%;"> </a>
+    </td>
+    <td>
+      <a data-key="sly-embeded-video-link" href="https://youtu.be/Nv-45hoh4GQ" data-video-code="Nv-45hoh4GQ">     <img src="https://imgur.com/iPajKlb.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a data-key="sly-embeded-video-link" href="https://youtu.be/HLlgsf1ClXI" data-video-code="HLlgsf1ClXI">     <img src="https://imgur.com/6B3l6Dp.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+    </td>
+    <td>
+      <a data-key="sly-embeded-video-link" href="https://youtu.be/ZkroK9_OH6Y" data-video-code="ZkroK9_OH6Y">     <img src="https://imgur.com/7i290SG.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a data-key="sly-embeded-video-link" href="https://youtu.be/zKUCtnQAhKU" data-video-code="zKUCtnQAhKU">     <img src="https://imgur.com/0lE1Kmx.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a>
+    </td>
+    <td>
+      <a data-key="sly-embeded-video-link" href="https://youtu.be/jQW8jipqle8" data-video-code="jQW8jipqle8">     <img src="https://imgur.com/wbX5cl2.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a>
+    </td>
+  </tr>
+</table>
 
-# HRNet-W18-C-Small-v2+OCR ITER-M model
-python3 train.py models/iter_mask/hrnet18s_cocolvis_itermask_3p.py --gpus=0 --workers=4 --exp-name=first-try
 
-# HRNetV2-W18-C+OCR ITER-M model
-python3 train.py models/iter_mask/hrnet18_cocolvis_itermask_3p.py --gpus=0,1 --workers=6 --exp-name=first-try
+## Automobiles
 
-# HRNetV2-W32-C+OCR ITER-M model
-python3 train.py models/iter_mask/hrnet32_cocolvis_itermask_3p.py --gpus=0,1,2,3 --workers=12 --exp-name=first-try
-```
 
-For each experiment, a separate folder is created in the `./experiments` with Tensorboard logs, text logs, 
-visualization and checkpoints. You can specify another path in the [config.yml](config.yml) (see `EXPS_PATH` 
-variable).
+<table>
+  <tr style="width: 100%">
+    <td>
+      <a data-key="sly-embeded-video-link" href="https://youtu.be/Om3EjoV_B9Q" data-video-code="Om3EjoV_B9Q">     <img src="https://imgur.com/vSEQTD8.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+    </td>
+    <td>
+       <a data-key="sly-embeded-video-link" href="https://youtu.be/Ebth1bWiDrU" data-video-code="Ebth1bWiDrU">     <img src="https://imgur.com/QUlhUXN.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+    </td>
+  </tr>
+  <tr style="width: 100%">
+    <td>
+      <a data-key="sly-embeded-video-link" href="https://youtu.be/rMBusxCQPAY" data-video-code="rMBusxCQPAY">     <img src="https://imgur.com/W0G6ZSE.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+    </td>
+    <td>
+       <a data-key="sly-embeded-video-link" href="https://youtu.be/lk2BSSwv_G8" data-video-code="lk2BSSwv_G8">     <img src="https://imgur.com/ZCjA02a.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+    </td>
+  </tr>
+  </tr>
+  <tr style="width: 100%">
+    <td>
+      <a data-key="sly-embeded-video-link" href="https://youtu.be/_769hB_Nm9s" data-video-code="_769hB_Nm9s">     <img src="https://imgur.com/2FlTHlp.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+    </td>
+  </tr>
+</table>
 
-Please note that we trained ResNet-34 and HRNet-18s on 1 GPU, HRNet-18 on 2 GPUs, HRNet-32 on 4 GPUs 
-(we used Nvidia Tesla P40 for training). To train on a different GPU you should adjust the batch size using the command
-line argument `--batch-size` or change the default value in a model script.
 
-We used the pre-trained HRNetV2 models from [the official repository](https://github.com/HRNet/HRNet-Image-Classification). 
-If you want to train interactive segmentation with these models, you need to download the weights and specify the paths to 
-them in [config.yml](config.yml).
+## Animals
 
-## License
 
-The code is released under the MIT License. It is a short, permissive software license. Basically, you can do whatever you want as long as you include the original copyright and license notice in any copy of the software/source. 
-## Citation
+<table>
+  <tr style="width: 100%">
+    <td>
+      <a data-key="sly-embeded-video-link" href="https://youtu.be/Zmc-G3Wiy0k" data-video-code="Zmc-G3Wiy0k"> <img src="https://imgur.com/KRCk1PZ.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+    </td>
+    <td>
+      <a data-key="sly-embeded-video-link" href="https://youtu.be/rD78jMwyCpo" data-video-code="rD78jMwyCpo"> <img src="https://imgur.com/rkoOwJs.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+    </td>
+  </tr>
+  <tr style="width: 100%">
+    <td>
+      <a data-key="sly-embeded-video-link" href="https://youtu.be/X1I3E6O6BOk" data-video-code="X1I3E6O6BOk"> <img src="https://imgur.com/QLOeU72.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+    </td>
+  </tr>
+</table>
 
-If you find this work is useful for your research, please cite our papers:
-```
-@article{reviving2021,
-  title={Reviving Iterative Training with Mask Guidance for Interactive Segmentation},
-  author={Sofiiuk, Konstantin and Petrov, Ilia and Konushin, Anton},
-  journal={arXiv preprint arXiv:2102.06583},
-  year={2021}
-}
 
-@inproceedings{fbrs2020,
-   title={f-brs: Rethinking backpropagating refinement for interactive segmentation},
-   author={Sofiiuk, Konstantin and Petrov, Ilia and Barinova, Olga and Konushin, Anton},
-   booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
-   pages={8623--8632},
-   year={2020}
-}
-```
+
+## Things
+
+
+<table>
+  <tr style="width: 100%">
+    <td>
+      <a data-key="sly-embeded-video-link" href="https://youtu.be/3Dks8Vp9kSA" data-video-code="3Dks8Vp9kSA"> <img src="https://imgur.com/6rksiaj.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+    </td>
+    <td>
+      <a data-key="sly-embeded-video-link" href="https://youtu.be/qFN5fNyq7EQ" data-video-code="qFN5fNyq7EQ"> <img src="https://imgur.com/AmFEs4f.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+    </td>
+  </tr>
+  <tr style="width: 100%">
+    <td>
+      <a data-key="sly-embeded-video-link" href="https://youtu.be/ns5_tNuSmkw" data-video-code="ns5_tNuSmkw"> <img src="https://imgur.com/EU6dAek.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+    </td>
+    <td>
+      <a data-key="sly-embeded-video-link" href="https://youtu.be/rRsex6BqRGs" data-video-code="rRsex6BqRGs"> <img src="https://imgur.com/GeDONRT.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+    </td>
+  </tr>
+  <tr style="width: 100%">
+    <td>
+      <a data-key="sly-embeded-video-link" href="https://youtu.be/qhrsWzxA7Js" data-video-code="qhrsWzxA7Js"> <img src="https://imgur.com/aRnNDdZ.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+    </td>
+    <td>
+      <a data-key="sly-embeded-video-link" href="https://youtu.be/u_b_AP99jLI" data-video-code="u_b_AP99jLI"> <img src="https://imgur.com/CSnYQPI.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+    </td>
+  </tr>
+  <tr style="width: 100%">
+    <td>
+      <a data-key="sly-embeded-video-link" href="https://youtu.be/ocDRgXHcDuw" data-video-code="ocDRgXHcDuw"> <img src="https://imgur.com/D1PDsK8.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+    </td>
+  </tr>
+</table>
+
+
+## Conveyor
+
+
+<table>
+  <tr style="width: 100%">
+    <td>
+      <a data-key="sly-embeded-video-link" href="https://youtu.be/MQ6ZZ8_F870" data-video-code="MQ6ZZ8_F870"> <img src="https://imgur.com/2FdDTZ2.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+    </td>
+    <td>
+      <a data-key="sly-embeded-video-link" href="https://youtu.be/FW-AL5Pc1Vc" data-video-code="FW-AL5Pc1Vc"> <img src="https://imgur.com/WgsINiu.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+    </td>
+  </tr>
+  <tr style="width: 100%">
+    <td>
+      <a data-key="sly-embeded-video-link" href="https://youtu.be/sJGjmvCkJBU" data-video-code="sJGjmvCkJBU"> <img src="https://imgur.com/voOkvmv.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+    </td>
+    <td>
+      <a data-key="sly-embeded-video-link" href="https://youtu.be/YJ8Xone3y7U" data-video-code="YJ8Xone3y7U"> <img src="https://imgur.com/gWxkRmw.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+    </td>
+  </tr>
+</table>
