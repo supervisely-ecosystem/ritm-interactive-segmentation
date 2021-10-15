@@ -40,7 +40,8 @@
 
     <sly-field v-show="state.brs_mode !== '0'" title="Network Clicks"
                description="The number of first clicks that are included in the network's input. Subsequent clicks are processed only using BRS (NoBRS ignores this option)">
-        <el-input-number v-show="!state.net_clicks_unlimited" v-model="state.net_clicks_limit" :min="1"></el-input-number>
+        <el-input-number v-show="!state.net_clicks_unlimited" v-model="state.net_clicks_limit"
+                         :min="1"></el-input-number>
         <el-checkbox class="ml10" v-model="state.net_clicks_unlimited">Unlimited</el-checkbox>
     </sly-field>
 
