@@ -1,7 +1,7 @@
 import os
+from diskcache import Cache
 import supervisely_lib as sly
 from supervisely_lib.io.fs import mkdir
-from diskcache import Cache
 
 
 my_app = sly.AppService()
@@ -12,9 +12,7 @@ TEAM_ID = int(os.environ['context.teamId'])
 
 work_dir = os.path.join(my_app.data_dir, "work_dir")
 mkdir(work_dir, True)
-
 img_dir = os.path.join(work_dir, "img")
-
 
 # Create Cache
 cache_dir = os.path.join(work_dir, "diskcache")
@@ -23,68 +21,23 @@ cache_item_expire_time = 600  # seconds
 mkdir(cache_dir)
 mkdir(img_dir)
 
-# MODEL
-import torch
-import requests
-import download_progress
-from supervisely_lib.io.fs import download
-from isegm.inference.utils import load_is_model
-
-
-def download_file_from_link(api, link, save_path, file_name, progress_message, app_logger):
-    response = requests.head(link, allow_redirects=True)
-    sizeb = int(response.headers.get('content-length', 0))
-    progress_cb = download_progress.get_progress_cb(api, TASK_ID, progress_message, sizeb, is_size=True)
-    download(link, save_path, cache=my_app.cache, progress=progress_cb)
-    download_progress.reset_progress(api, TASK_ID)
-    app_logger.info(f'{file_name} has been successfully downloaded')
-
-
-# MODEL SELECTOR
-# devices: cpu, cuda, xpu, mkldnn, opengl, opencl,
-# ideep, hip, msnpu, mlc, xla, vulkan, meta, hpu
 DEVICE = os.environ["modal.state.device"]
 MODEL = int(os.environ["modal.state.model"])
+CONTROLLER = None
 
-
-available_models = [
-    "https://github.com/supervisely-ecosystem/ritm-interactive-segmentation/releases/download/v0.1/sbd_h18_itermask.pth",
-    "https://github.com/supervisely-ecosystem/ritm-interactive-segmentation/releases/download/v0.1/coco_lvis_h18_baseline.pth",
-    "https://github.com/supervisely-ecosystem/ritm-interactive-segmentation/releases/download/v0.1/coco_lvis_h18s_itermask.pth",
-    "https://github.com/supervisely-ecosystem/ritm-interactive-segmentation/releases/download/v0.1/coco_lvis_h18_itermask.pth",
-    "https://github.com/supervisely-ecosystem/ritm-interactive-segmentation/releases/download/v0.1/coco_lvis_h32_itermask.pth"
-]
-
-model_link = available_models[MODEL]
-model_name = os.path.basename(os.path.normpath(model_link))
-model_dir = os.path.join(work_dir, "model")
-mkdir(model_dir)
-model_path = os.path.join(model_dir, model_name)
-
-download_file_from_link(api, model_link, model_path, model_name, f"Download {model_name}", my_app.logger)
-MODEL = torch.load(model_path, map_location=torch.device(DEVICE))
-MODEL = load_is_model(MODEL, DEVICE)
-
-# RITM CONTROLLER
-from interactive_demo.controller import InteractiveController
+BRS_MODE = int(os.environ["modal.state.brs_mode"])
+PROB_THRESH = float(os.environ["modal.state.prob_thresh"])
+NET_CLICKS_LIMIT = int(os.environ["modal.state.net_clicks_limit"])
+LOG_NET_CLICKS = NET_CLICKS_LIMIT
+LBFGS_MAX_ITERS = int(os.environ["modal.state.lbfgs_max_iters"])
+UNLIMITED = os.getenv("modal.state.net_clicks_unlimited").lower() in ('true', '1', 't')
+if UNLIMITED:
+    NET_CLICKS_LIMIT = 2**10000
+    LOG_NET_CLICKS = "INF"
 
 available_brs_modes = ['NoBRS', 'RGB-BRS', 'DistMap-BRS', 'f-BRS-A', 'f-BRS-B', 'f-BRS-C']
-brs_mode = int(os.environ["modal.state.brs_mode"])
-brs_mode = available_brs_modes[brs_mode]
+BRS_MODE = available_brs_modes[BRS_MODE]
 
-prob_thresh = float(os.environ["modal.state.prob_thresh"])
-net_clicks_limit = int(os.environ["modal.state.net_clicks_limit"])
-lbfgs_max_iters = int(os.environ["modal.state.lbfgs_max_iters"])
-
-predictor_params = {
-            'brs_mode': brs_mode,
-            'prob_thresh': prob_thresh,
-            'zoom_in_params': None,
-            'predictor_params': {
-                'net_clicks_limit': net_clicks_limit
-            },
-            'lbfgs_params': {'maxfun': lbfgs_max_iters}
-        }
-
-
-controller = InteractiveController(MODEL, DEVICE, predictor_params, prob_thresh=prob_thresh)
+available_models = ["sbd_h18_itermask.pth", "coco_lvis_h18_baseline.pth", "coco_lvis_h18s_itermask.pth",
+                    "coco_lvis_h18_itermask.pth", "coco_lvis_h32_itermask.pth"]
+MODEL_NAME = available_models[MODEL]
