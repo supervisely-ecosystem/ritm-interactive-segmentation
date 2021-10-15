@@ -1,7 +1,6 @@
 <div align="center" markdown>
 
-<img src="https://i.imgur.com/UdBujFN.png" width="250"/> 
-
+<img src="https://i.imgur.com/UdBujFN.png" width="250"/>
 <br/>
 <img width="100" src="https://i.imgur.com/Mm2Auxx.png">
 
