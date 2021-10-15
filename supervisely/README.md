@@ -1,6 +1,19 @@
 <div align="center" markdown>
+
   
-# Reviving Iterative Training with Mask Guidance for Interactive Segmentation (RITM)
+ <h1 style="float: left; border-bottom: 0"> <img align="center" src="https://i.imgur.com/Mm2Auxx.png" width="75" height="75" style="float:left;"> RITM Interactive Segmentation </h1>
+
+  
+**state-of-the art click-based interactive segmentation integrated into Supervisely Image Annotator**
+  
+___
+  
+<p align="center">
+  <a href="#Original-work">Original work</a> •
+  <a href="#How-to-use">How to use</a> •
+  <a href="#Demo">Demo</a> 
+</p>
+
 
 [![](https://img.shields.io/badge/supervisely-ecosystem-brightgreen)](https://ecosystem.supervise.ly/apps/supervisely-ecosystem/ritm-interactive-segmentation/supervisely)
 [![](https://img.shields.io/badge/slack-chat-green.svg?logo=slack)](https://supervise.ly/slack)
@@ -9,19 +22,13 @@
 [![used by teams](https://app.supervise.ly/public/api/v3/ecosystem.counters?repo=supervisely-ecosystem/ritm-interactive-segmentation/supervisely&counter=downloads&label=used%20by%20teams)](https://supervise.ly)
 [![runs](https://app.supervise.ly/public/api/v3/ecosystem.counters?repo=supervisely-ecosystem/ritm-interactive-segmentation/supervisely&counter=runs&label=runs&123)](https://supervise.ly)
 
----
 
 <p float="left">
   <img src="https://github.com/supervisely-ecosystem/ritm-interactive-segmentation/releases/download/v0.1/ritm_poster.gif?raw=true" style="width:80%;"/>
 </p>    
  
-### Click-based interactive segmentation integrated into Supervisely Image Annotator
     
-<p align="center">
-  <a href="#Original-work">Original work</a> •
-  <a href="#How-to-use">How to use</a> •
-  <a href="#Demo">Demo</a> 
-</p>
+
     
 </div>
 
