@@ -11,7 +11,7 @@
   "modal_template": "supervisely/src/modal.html",
   "modal_template_state": {"device": "cuda", "model": "4", "brs_mode": "0", "net_clicks_limit": 8, "net_clicks_unlimited": true, "lbfgs_max_iters": 20, "prob_thresh": 0.5},
   "task_location": "application_sessions",
-  "icon": "https://i.imgur.com/OoKZjVK.png",
+  "icon": "https://i.imgur.com/iBsrMEu.png",
   "icon_background": "#FFFFFF",
   "headless": true,
   "session_tags": [
