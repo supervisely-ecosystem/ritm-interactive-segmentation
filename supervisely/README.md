@@ -1,13 +1,14 @@
 <div align="center" markdown>
 
 <img src="https://i.imgur.com/UdBujFN.png" width="250"/> 
-<br>
-<img src="https://i.imgur.com/Mm2Auxx.png" width="100"/> 
 
-<h1> RITM Interactive Segmentation</h1>
+<br/>
+<img width="100" src="https://i.imgur.com/Mm2Auxx.png">
 
-**state-of-the art click-based interactive segmentation integrated into Supervisely Image Annotator**
- 
+# RITM Interactive Segmentation
+
+State-of-the art click-based interactive segmentation integrated into Supervisely image annotation tool
+
 <p align="center">
   <a href="#Overview">Overview</a> •
   <a href="#How-to-run">How to run</a> •
