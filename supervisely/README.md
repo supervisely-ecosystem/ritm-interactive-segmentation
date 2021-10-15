@@ -1,19 +1,15 @@
 <div align="center" markdown>
-
   
- <h1 style="float: left; border-bottom: 0"> <img align="center" src="https://i.imgur.com/Mm2Auxx.png" width="75" height="75" style="float:left;"> RITM Interactive Segmentation </h1>
+<h1 style="float: left; border-bottom: 0"> <img align="center" src="https://i.imgur.com/Mm2Auxx.png" width="80" style="float:left;"> RITM Interactive Segmentation </h1>
 
-  
 **state-of-the art click-based interactive segmentation integrated into Supervisely Image Annotator**
-  
-___
+
   
 <p align="center">
   <a href="#Original-work">Original work</a> •
   <a href="#How-to-use">How to use</a> •
   <a href="#Demo">Demo</a> 
 </p>
-
 
 [![](https://img.shields.io/badge/supervisely-ecosystem-brightgreen)](https://ecosystem.supervise.ly/apps/supervisely-ecosystem/ritm-interactive-segmentation/supervisely)
 [![](https://img.shields.io/badge/slack-chat-green.svg?logo=slack)](https://supervise.ly/slack)
@@ -22,23 +18,15 @@ ___
 [![used by teams](https://app.supervise.ly/public/api/v3/ecosystem.counters?repo=supervisely-ecosystem/ritm-interactive-segmentation/supervisely&counter=downloads&label=used%20by%20teams)](https://supervise.ly)
 [![runs](https://app.supervise.ly/public/api/v3/ecosystem.counters?repo=supervisely-ecosystem/ritm-interactive-segmentation/supervisely&counter=runs&label=runs&123)](https://supervise.ly)
 
-
 <p float="left">
   <img src="https://github.com/supervisely-ecosystem/ritm-interactive-segmentation/releases/download/v0.1/ritm_poster.gif?raw=true" style="width:80%;"/>
 </p>    
  
-    
-
-    
 </div>
-
-
-
 
 # Original work
 
 Original work available by hyperlinks: [**paper (RITM)**](https://arxiv.org/pdf/2102.06583.pdf) and [**code**](https://github.com/saic-vul/ritm_interactive_segmentation).
-
 
 ## TransT architecture
 
@@ -58,8 +46,6 @@ Thus, two ECAs and two CFAs form a merge layer.
 
 After the Feature Fusion Network, the feature maps are fed into the predicted head, which calculates the coordinates of the object and classifies the pixels as background and foreground.
 
-
-
 ## TransT results
 
 <p>State-of-the-art comparison on TrackingNet, LaSOT, and GOT-10k. The best two results are shown in <b>red</b> and <b>blue</b> fonts:</p>
@@ -67,8 +53,6 @@ After the Feature Fusion Network, the feature maps are fed into the predicted he
 
 <p><b>AUC</b> scores of different attributes on the <b>LaSOT</b> dataset:</p>
 <img src="https://imgur.com/0x7VUpc.png" style="width:100%;"/>
-
-
 
 # How to use
 
