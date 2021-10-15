@@ -240,3 +240,8 @@ We have prepared a videos and demonstrated how TransT works on the following dom
     </td>
   </tr>
 </table>
+
+
+# Acknowledgment
+
+This app is based on the the great work `Reviving Iterative Training with Mask Guidance for Interactive Segmentation` ([paper](https://arxiv.org/abs/2102.06583), [github](https://github.com/saic-vul/ritm_interactive_segmentation))
