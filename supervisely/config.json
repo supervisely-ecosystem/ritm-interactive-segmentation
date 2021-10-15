@@ -9,7 +9,7 @@
   "docker_image": "supervisely/ritm:1.0.1",
   "main_script": "supervisely/src/sly_main.py",
   "modal_template": "supervisely/src/modal.html",
-  "modal_template_state": {"device": "cuda", "model": "4", "brs_mode": "5", "net_clicks_limit": "8", "net_clicks_unlimited": true, "lbfgs_max_iters": "20", "prob_thresh": 0.5},
+  "modal_template_state": {"device": "cuda", "model": "4", "brs_mode": "5", "net_clicks_limit": 8, "net_clicks_unlimited": true, "lbfgs_max_iters": 20, "prob_thresh": 0.5},
   "task_location": "application_sessions",
   "icon": "https://i.imgur.com/OoKZjVK.png",
   "icon_background": "#FFFFFF",
