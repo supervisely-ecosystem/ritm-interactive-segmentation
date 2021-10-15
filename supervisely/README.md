@@ -1,14 +1,19 @@
 <div align="center" markdown>
-  
-<h1 style="float: left; border-bottom: 0"> <img align="center" src="https://i.imgur.com/Mm2Auxx.png" width="80" style="float:left;"> RITM Interactive Segmentation </h1>
+
+<img src="https://i.imgur.com/UdBujFN.png" width="250"/> 
+<br>
+<img src="https://i.imgur.com/Mm2Auxx.png" width="100"/> 
+
+<h1> RITM Interactive Segmentation</h1>
 
 **state-of-the art click-based interactive segmentation integrated into Supervisely Image Annotator**
-
-  
+ 
 <p align="center">
-  <a href="#Original-work">Original work</a> •
+  <a href="#Overview">Overview</a> •
+  <a href="#How-to-run">How to run</a> •
   <a href="#How-to-use">How to use</a> •
-  <a href="#Demo">Demo</a> 
+  <a href="#Examples">Examples</a> •
+  <a href="#Acknowledgment">Acknowledgment</a>
 </p>
 
 [![](https://img.shields.io/badge/supervisely-ecosystem-brightgreen)](https://ecosystem.supervise.ly/apps/supervisely-ecosystem/ritm-interactive-segmentation/supervisely)
@@ -23,36 +28,6 @@
 </p>    
  
 </div>
-
-# Original work
-
-Original work available by hyperlinks: [**paper (RITM)**](https://arxiv.org/pdf/2102.06583.pdf) and [**code**](https://github.com/saic-vul/ritm_interactive_segmentation).
-
-## TransT architecture
-
-<img src="https://imgur.com/M5djthP.png" style="width:100%;"/>
-
-TransT uses the input image to extract information about the appearance of the target and the surrounding area.  
-It extracts feature maps from two patch images:
-
-1. manually marked region of the image
-2. the nearest area of the marked region
-
-Next, feature maps are converted for use in the Feature Fusion Network, as shown in the dotted box in the Figure.  
-* **ECAs — two ego-context extensions**, focus on **useful semantic context adaptively through the self-attention of multiple heads** to improve feature presentation.  
-* **CFA — two cross function expansion modules**, obtain the performance maps of both their own and the other branch at the same time, and combine the two function maps through a multi-head cross-focus.  
-
-Thus, two ECAs and two CFAs form a merge layer.  
-
-After the Feature Fusion Network, the feature maps are fed into the predicted head, which calculates the coordinates of the object and classifies the pixels as background and foreground.
-
-## TransT results
-
-<p>State-of-the-art comparison on TrackingNet, LaSOT, and GOT-10k. The best two results are shown in <b>red</b> and <b>blue</b> fonts:</p>
-<img src="https://imgur.com/VhJ0lk8.png" style="width:100%;"/>
-
-<p><b>AUC</b> scores of different attributes on the <b>LaSOT</b> dataset:</p>
-<img src="https://imgur.com/0x7VUpc.png" style="width:100%;"/>
 
 # How to use
 
@@ -240,7 +215,6 @@ We have prepared a videos and demonstrated how TransT works on the following dom
     </td>
   </tr>
 </table>
-
 
 # Acknowledgment
 
