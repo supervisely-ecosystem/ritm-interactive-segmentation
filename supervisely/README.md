@@ -29,9 +29,14 @@
 
 ## Overview
 
-RITM Interactive segmentation algorithms allow users to explicitly control the predictions using interactive input at several iterations, in contrast to common semantic and instance segmentation algorithms that can only input an image and output a segmentation mask in one pass. Such interaction makes it possible to select an object of interest and correct prediction errors. 
+Application key points:  
+- Manually selected ROI
+- Capability to segment objects of previously unseen classes.
+- Accurate predictions in most cases
+- Correct prediction errors on the fly
+- Select from [5 pretrained models](../README.md#evaluation) provided by RITM
 
-Another important feature of this group of algorithms is the capability to segment objects of previously unseen classes. 
+RITM Interactive segmentation algorithms allow users to explicitly control the predictions using interactive input at several iterations, in contrast to common semantic and instance segmentation algorithms that can only input an image and output a segmentation mask in one pass. Such interaction makes it possible to select an object of interest and correct prediction errors.
 
 <img src="https://i.imgur.com/8RaxwK2.png" style="width:100%;"/>
 
