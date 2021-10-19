@@ -109,7 +109,7 @@ We have prepared a videos and demonstrated how RITM works for the different doma
   <table>
     <tr style="width: 100%">
       <td>
-        <a data-key="sly-embeded-video-link" href="https://youtu.be/I-CqsZemwWc" data-video-code="I-CqsZemwWc">     <img src="https://i.imgur.com/Nb9o1v2.png" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+        <a data-key="sly-embeded-video-link" href="https://youtu.be/WfrST7p3FM8" data-video-code="WfrST7p3FM8">     <img src="https://i.imgur.com/Nb9o1v2.png" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
       </td>
       <td>
         <a data-key="sly-embeded-video-link" href="https://youtu.be/QBS6DDjFGfE" data-video-code="QBS6DDjFGfE"> <img src="https://i.imgur.com/MGXZyBp.png" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
@@ -134,7 +134,7 @@ We have prepared a videos and demonstrated how RITM works for the different doma
       <a data-key="sly-embeded-video-link" href="https://youtu.be/TClsj28jmmU" data-video-code="TClsj28jmmU">     <img src="https://i.imgur.com/QVxEF5y.png" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
       </td>
       <td>
-        <a data-key="sly-embeded-video-link" href="https://youtu.be/rMBusxCQPAY" data-video-code="rMBusxCQPAY">     <img src="https://i.imgur.com/gEAnQI0.png" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+        <a data-key="sly-embeded-video-link" href="https://youtu.be/I-CqsZemwWc" data-video-code="I-CqsZemwWc">   <img src="https://i.imgur.com/gEAnQI0.png" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
       </td> 
     </tr>
   </table>
