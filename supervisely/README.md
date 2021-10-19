@@ -90,153 +90,62 @@ After the Feature Fusion Network, the feature maps are fed into the predicted he
 3. Use in `Videos Annotator` by analogy with <a href="#Community-edition">Community edition</a>  
 
 
-
 # Demo
 
-We have prepared a videos and demonstrated how TransT works on the following domains:
-
-* <a href="#People">People</a>  
-* <a href="#Automobiles">Automobiles</a>  
-* <a href="#Animals">Animals</a> 
-* <a href="#Things">Things</a> 
-* <a href="#Conveyor">Conveyor</a> 
-
-
-## People
+We have prepared a videos and demonstrated how RITM works for the different domains:
 
 
 <table>
   <tr style="width: 100%">
     <td>
-      <a data-key="sly-embeded-video-link" href="https://youtu.be/fNqMP-C7MA0" data-video-code="fNqMP-C7MA0">     <img src="https://imgur.com/EjbHbX0.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="width:100%;"> </a>
+       <a data-key="sly-embeded-video-link" href="https://youtu.be/05qQPnPmNoY" data-video-code="05qQPnPmNoY">     <img src="https://i.imgur.com/ApNseQ8.png" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
     </td>
     <td>
-      <a data-key="sly-embeded-video-link" href="https://youtu.be/Nv-45hoh4GQ" data-video-code="Nv-45hoh4GQ">     <img src="https://imgur.com/iPajKlb.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+      <a data-key="sly-embeded-video-link" href="https://youtu.be/FVu1nTlNIj4" data-video-code="FVu1nTlNIj4"> <img src="https://i.imgur.com/FUeoLq9.png" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
     </td>
-  </tr>
-  <tr>
-    <td>
-      <a data-key="sly-embeded-video-link" href="https://youtu.be/HLlgsf1ClXI" data-video-code="HLlgsf1ClXI">     <img src="https://imgur.com/6B3l6Dp.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
-    </td>
-    <td>
-      <a data-key="sly-embeded-video-link" href="https://youtu.be/ZkroK9_OH6Y" data-video-code="ZkroK9_OH6Y">     <img src="https://imgur.com/7i290SG.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <a data-key="sly-embeded-video-link" href="https://youtu.be/zKUCtnQAhKU" data-video-code="zKUCtnQAhKU">     <img src="https://imgur.com/0lE1Kmx.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a>
-    </td>
-    <td>
-      <a data-key="sly-embeded-video-link" href="https://youtu.be/jQW8jipqle8" data-video-code="jQW8jipqle8">     <img src="https://imgur.com/wbX5cl2.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a>
-    </td>
-  </tr>
-</table>
-
-
-## Automobiles
-
-
-<table>
-  <tr style="width: 100%">
-    <td>
-      <a data-key="sly-embeded-video-link" href="https://youtu.be/Om3EjoV_B9Q" data-video-code="Om3EjoV_B9Q">     <img src="https://imgur.com/vSEQTD8.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
-    </td>
-    <td>
-       <a data-key="sly-embeded-video-link" href="https://youtu.be/Ebth1bWiDrU" data-video-code="Ebth1bWiDrU">     <img src="https://imgur.com/QUlhUXN.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
-    </td>
-  </tr>
-  <tr style="width: 100%">
-    <td>
-      <a data-key="sly-embeded-video-link" href="https://youtu.be/rMBusxCQPAY" data-video-code="rMBusxCQPAY">     <img src="https://imgur.com/W0G6ZSE.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
-    </td>
-    <td>
-       <a data-key="sly-embeded-video-link" href="https://youtu.be/lk2BSSwv_G8" data-video-code="lk2BSSwv_G8">     <img src="https://imgur.com/ZCjA02a.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
-    </td>
-  </tr>
-  </tr>
-  <tr style="width: 100%">
-    <td>
-      <a data-key="sly-embeded-video-link" href="https://youtu.be/_769hB_Nm9s" data-video-code="_769hB_Nm9s">     <img src="https://imgur.com/2FlTHlp.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
-    </td>
-  </tr>
-</table>
-
-
-## Animals
-
-
-<table>
-  <tr style="width: 100%">
-    <td>
-      <a data-key="sly-embeded-video-link" href="https://youtu.be/Zmc-G3Wiy0k" data-video-code="Zmc-G3Wiy0k"> <img src="https://imgur.com/KRCk1PZ.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
-    </td>
-    <td>
-      <a data-key="sly-embeded-video-link" href="https://youtu.be/rD78jMwyCpo" data-video-code="rD78jMwyCpo"> <img src="https://imgur.com/rkoOwJs.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
-    </td>
-  </tr>
-  <tr style="width: 100%">
-    <td>
-      <a data-key="sly-embeded-video-link" href="https://youtu.be/X1I3E6O6BOk" data-video-code="X1I3E6O6BOk"> <img src="https://imgur.com/QLOeU72.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
-    </td>
-  </tr>
-</table>
-
-
-
-## Things
-
-
-<table>
-  <tr style="width: 100%">
-    <td>
-      <a data-key="sly-embeded-video-link" href="https://youtu.be/3Dks8Vp9kSA" data-video-code="3Dks8Vp9kSA"> <img src="https://imgur.com/6rksiaj.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
-    </td>
-    <td>
-      <a data-key="sly-embeded-video-link" href="https://youtu.be/qFN5fNyq7EQ" data-video-code="qFN5fNyq7EQ"> <img src="https://imgur.com/AmFEs4f.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
-    </td>
-  </tr>
-  <tr style="width: 100%">
-    <td>
-      <a data-key="sly-embeded-video-link" href="https://youtu.be/ns5_tNuSmkw" data-video-code="ns5_tNuSmkw"> <img src="https://imgur.com/EU6dAek.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
-    </td>
-    <td>
-      <a data-key="sly-embeded-video-link" href="https://youtu.be/rRsex6BqRGs" data-video-code="rRsex6BqRGs"> <img src="https://imgur.com/GeDONRT.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
-    </td>
-  </tr>
-  <tr style="width: 100%">
-    <td>
-      <a data-key="sly-embeded-video-link" href="https://youtu.be/qhrsWzxA7Js" data-video-code="qhrsWzxA7Js"> <img src="https://imgur.com/aRnNDdZ.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
-    </td>
-    <td>
-      <a data-key="sly-embeded-video-link" href="https://youtu.be/u_b_AP99jLI" data-video-code="u_b_AP99jLI"> <img src="https://imgur.com/CSnYQPI.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
-    </td>
-  </tr>
-  <tr style="width: 100%">
-    <td>
-      <a data-key="sly-embeded-video-link" href="https://youtu.be/ocDRgXHcDuw" data-video-code="ocDRgXHcDuw"> <img src="https://imgur.com/D1PDsK8.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
-    </td>
-  </tr>
-</table>
-
-
-## Conveyor
-
-
-<table>
-  <tr style="width: 100%">
-    <td>
-      <a data-key="sly-embeded-video-link" href="https://youtu.be/MQ6ZZ8_F870" data-video-code="MQ6ZZ8_F870"> <img src="https://imgur.com/2FdDTZ2.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
-    </td>
-    <td>
-      <a data-key="sly-embeded-video-link" href="https://youtu.be/FW-AL5Pc1Vc" data-video-code="FW-AL5Pc1Vc"> <img src="https://imgur.com/WgsINiu.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
-    </td>
-  </tr>
-  <tr style="width: 100%">
-    <td>
-      <a data-key="sly-embeded-video-link" href="https://youtu.be/sJGjmvCkJBU" data-video-code="sJGjmvCkJBU"> <img src="https://imgur.com/voOkvmv.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
-    </td>
-    <td>
-      <a data-key="sly-embeded-video-link" href="https://youtu.be/YJ8Xone3y7U" data-video-code="YJ8Xone3y7U"> <img src="https://imgur.com/gWxkRmw.jpg" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
-    </td>
-  </tr>
-</table>
+      </tr>
+  </table>
+  
+  <table>
+    <tr style="width: 100%">
+      <td>
+        <a data-key="sly-embeded-video-link" href="https://youtu.be/I-CqsZemwWc" data-video-code="I-CqsZemwWc">     <img src="https://i.imgur.com/Nb9o1v2.png" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+      </td>
+      <td>
+        <a data-key="sly-embeded-video-link" href="https://youtu.be/QBS6DDjFGfE" data-video-code="QBS6DDjFGfE"> <img src="https://i.imgur.com/MGXZyBp.png" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+      </td> 
+    </tr>
+  </table>
+  
+  <table>
+    <tr style="width: 100%">  
+      <td>
+        <a data-key="sly-embeded-video-link" href="https://youtu.be/9gPSpdrARK8" data-video-code="9gPSpdrARK8">     <img src="https://i.imgur.com/o6ltQqA.png" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+      </td>
+      <td>
+        <a data-key="sly-embeded-video-link" href="https://youtu.be/IWPQdG0T9RM" data-video-code="IWPQdG0T9RM"> <img src="https://i.imgur.com/vK4GgA1.png" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+      </td>
+    </tr>
+  </table>
+  
+  <table>
+    <tr style="width: 100%">
+      <td>
+      <a data-key="sly-embeded-video-link" href="https://youtu.be/TClsj28jmmU" data-video-code="TClsj28jmmU">     <img src="https://i.imgur.com/QVxEF5y.png" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+      </td>
+      <td>
+        <a data-key="sly-embeded-video-link" href="https://youtu.be/rMBusxCQPAY" data-video-code="rMBusxCQPAY">     <img src="https://i.imgur.com/gEAnQI0.png" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+      </td> 
+    </tr>
+  </table>
+  
+  <table>
+    <tr style="width: 100%">
+      <td>
+      <a data-key="sly-embeded-video-link" href="https://youtu.be/QdtuoJ2cHHc" data-video-code="QdtuoJ2cHHc"> <img src="https://i.imgur.com/Xy0RJk0.png" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+      </td>
+      <td>
+      <a data-key="sly-embeded-video-link" href="https://youtu.be/wlGKMEgDMqU" data-video-code="wlGKMEgDMqU"> <img src="https://i.imgur.com/SmZWFcK.png" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;"> </a> 
+      </td>   
+    </tr>
+  </table>
