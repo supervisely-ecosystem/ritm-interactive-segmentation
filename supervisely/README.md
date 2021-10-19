@@ -48,38 +48,12 @@ and negative (red) clicks, respectively.
 
 ## Community edition
 
-1. Upload video to [supervese.ly](https://supervise.ly/)
-2. Annotate object using `Rectangle Tool`
-3. Select object, choose `TransT object tracking (CVPR2021)` from tracking menu 
-4. Click `track` button
-
-<table>
-  <tr style="width: 100%">
-    <td>
-      <img src="https://imgur.com/4SKQyrD.png" />
-    </td>
-    <td>
-      <img src="https://imgur.com/KWsubjO.png" />
-    </td>
-  </tr>
-  <tr style="width: 100%">
-    <td>
-      <img src="https://imgur.com/uvRFFJU.png" />
-    </td>
-    <td>
-      <img src="https://imgur.com/fvGTEry.png" />
-    </td>
-  </tr>
-</table>
+TODO
 
 
-## Agent edition
+## Enterprise edition
 
-1. Add [TransT object tracking (CVPR2021)](https://ecosystem.supervise.ly/apps/supervisely-ecosystem/trans-t/supervisely/serve) from Ecosystem
-2. Run app on agent with `GPU`
-3. Use in `Videos Annotator` by analogy with <a href="#Community-edition">Community edition</a>  
-
-
+TODO
 
 ## Controls:
 
@@ -93,6 +67,9 @@ and negative (red) clicks, respectively.
 | <kbd>Shift + H</kbd>                                          | Higlight instances with random colors     |
 | <kbd>Ctrl + H</kbd>                                           | Hide all labels                           |
 
+
+
+## Post-correction manual
 
 # Demo
 
