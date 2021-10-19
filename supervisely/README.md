@@ -6,7 +6,8 @@
 
   
 <p align="center">
-  <a href="#Original-work">Original work</a> •
+  <a href="#Overview">Overview</a> •
+  <a href="#How-to-run">How to run</a> •
   <a href="#How-to-use">How to use</a> •
   <a href="#Demo">Demo</a> 
 </p>
@@ -44,6 +45,22 @@ Besides segmenting new objects, proposed method allows to correct external masks
 instance or semantic segmentation models. A user can fix false negative and false positive regions with positive (green)
 and negative (red) clicks, respectively.
 
+# How to run
+
+1. Add [RITM interactive segmentation smart tool](https://ecosystem.supervise.ly/apps/ritm-interactive-segmentation) to your team from Ecosystem.
+
+<img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/ritm-interactive-segmentation" src="https://i.imgur.com/q5Loq5M.png" width="350px" style='padding-bottom: 20px'/>  
+
+2. Run app from **Plugins & Apps** page:
+
+<img src="https://i.imgur.com/nTZTuVh.png" width="100%"/>
+
+3. Select options in modal window and press the `Run` button.
+ 
+<div align="center" markdown>
+<img src="https://i.imgur.com/ZF6OZIg.png" width="500"/>
+</div>
+
 # How to use
 
 ## Community edition
@@ -69,7 +86,11 @@ TODO
 
 
 
-## Post-correction manual
+## Manual object correction
+
+<a data-key="sly-embeded-video-link" href="https://youtu.be/6pMUHn0jNGE" data-video-code="6pMUHn0jNGE">
+    <img src="https://i.imgur.com/skXXok8.png" alt="SLY_EMBEDED_VIDEO_LINK"  width="700px">
+</a>
 
 # Demo
 
