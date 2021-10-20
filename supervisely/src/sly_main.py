@@ -20,6 +20,7 @@ sys.path.append(sources_dir)
 
 
 import sly_globals as g
+import load_model
 import sly_functions as f
 import mask_image
 
@@ -61,9 +62,16 @@ def smart_segmentation(api: sly.Api, task_id, context, state, app_logger):
 
 def main():
     sly.logger.info("Script arguments", extra={
-        "context.teamId": g.TEAM_ID
+        "context.teamId": g.TEAM_ID,
+        "device": g.DEVICE,
+        "model": g.MODEL_NAME,
+        'brs_mode': g.BRS_MODE,
+        'prob_thresh': g.PROB_THRESH,
+        'net_clicks_limit': g.LOG_NET_CLICKS,
+        'lbfgs_max_iters': g.LBFGS_MAX_ITERS
     })
 
+    load_model.deploy()
     g.my_app.run()
 
 
