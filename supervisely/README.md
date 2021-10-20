@@ -34,10 +34,10 @@
 
 Application key points:  
 - Manually selected ROI
-- Model is class agnostic you can segment any object from any industry
 - Accurate predictions in most cases
 - Capability to correct prediction errors on the fly
 - Select from [5 pretrained models](../README.md#evaluation)
+- Models are class agnostic you can segment any object from any industry
 - Ability to share application session with team members as an Admin (Enterprise edition only)
 
 RITM Interactive segmentation algorithms allow users to explicitly control the predictions using interactive input at several iterations, in contrast to common semantic and instance segmentation algorithms that can only input an image and output a segmentation mask in one pass. Such interaction makes it possible to select an object of interest and correct prediction errors.
