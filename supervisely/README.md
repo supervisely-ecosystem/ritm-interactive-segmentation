@@ -9,8 +9,8 @@
   <a href="#Overview">Overview</a> •
   <a href="#How-to-run">How to run</a> •
   <a href="#How-to-use">How to use</a> •
-  <a href="#Demo">Demo</a> 
-  <a href="#Manual-object-correction">Manual object correction</a> 
+  <a href="#Demo">Demo</a> •
+  <a href="#Manual-object-correction">Manual object correction</a> •
   <a href="#Acknowledgment">Acknowledgment</a> 
 </p>
 
