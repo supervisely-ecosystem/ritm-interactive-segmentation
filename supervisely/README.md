@@ -10,6 +10,8 @@
   <a href="#How-to-run">How to run</a> •
   <a href="#How-to-use">How to use</a> •
   <a href="#Demo">Demo</a> 
+  <a href="#Manual-object-correction">Manual object correction</a> 
+  <a href="#Acknowledgment">Acknowledgment</a> 
 </p>
 
 [![](https://img.shields.io/badge/supervisely-ecosystem-brightgreen)](https://ecosystem.supervise.ly/apps/supervisely-ecosystem/ritm-interactive-segmentation/supervisely)
@@ -32,10 +34,11 @@
 
 Application key points:  
 - Manually selected ROI
-- Capability to segment objects of previously unseen classes.
+- Model is class agnostic you can segment any object from any industry
 - Accurate predictions in most cases
-- Correct prediction errors on the fly
-- Select from [5 pretrained models](../README.md#evaluation) provided by RITM
+- Capability to correct prediction errors on the fly
+- Select from [5 pretrained models](../README.md#evaluation)
+- Ability to share application session with team members as an Admin (Enterprise edition only)
 
 RITM Interactive segmentation algorithms allow users to explicitly control the predictions using interactive input at several iterations, in contrast to common semantic and instance segmentation algorithms that can only input an image and output a segmentation mask in one pass. Such interaction makes it possible to select an object of interest and correct prediction errors.
 
@@ -63,14 +66,11 @@ and negative (red) clicks, respectively.
 
 # How to use
 
-## Community edition
+Watch video guide for more details:
 
-TODO
-
-
-## Enterprise edition
-
-TODO
+<a data-key="sly-embeded-video-link" href="https://youtu.be/z31-K7NAAbU" data-video-code="z31-K7NAAbU">
+    <img src="https://i.imgur.com/TMYoDpu.png" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:500px;">
+</a>
 
 ## Controls:
 
@@ -84,13 +84,6 @@ TODO
 | <kbd>Shift + H</kbd>                                          | Higlight instances with random colors     |
 | <kbd>Ctrl + H</kbd>                                           | Hide all labels                           |
 
-
-
-## Manual object correction
-
-<a data-key="sly-embeded-video-link" href="https://youtu.be/6pMUHn0jNGE" data-video-code="6pMUHn0jNGE">
-    <img src="https://i.imgur.com/skXXok8.png" alt="SLY_EMBEDED_VIDEO_LINK"  width="700px">
-</a>
 
 # Demo
 
@@ -139,3 +132,14 @@ We have prepared a videos and demonstrated how RITM works for the different doma
       </td>   
     </tr>
   </table>
+  
+  
+# Manual object correction
+
+<a data-key="sly-embeded-video-link" href="https://youtu.be/6pMUHn0jNGE" data-video-code="6pMUHn0jNGE">
+    <img src="https://i.imgur.com/skXXok8.png" alt="SLY_EMBEDED_VIDEO_LINK"  width="700px">
+</a>
+
+# Acknowledgment
+
+This app is based on the great work `Reviving Iterative Training with Mask Guidance for Interactive Segmentation` ([paper](https://arxiv.org/abs/2102.06583),  [github](https://github.com/saic-vul/ritm_interactive_segmentation)). ![GitHub Org's stars](https://img.shields.io/github/stars/saic-vul/ritm_interactive_segmentation?style=social)
