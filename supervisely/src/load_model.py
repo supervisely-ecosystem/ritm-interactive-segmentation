@@ -3,6 +3,7 @@ import torch
 import requests
 import sly_globals as g
 import download_progress
+import supervisely_lib as sly
 from supervisely_lib.io.fs import mkdir
 from supervisely_lib.io.fs import download
 from isegm.inference.utils import load_is_model
@@ -53,3 +54,4 @@ def deploy():
             }
 
     g.CONTROLLER = InteractiveController(model, g.DEVICE, predictor_params, prob_thresh=g.PROB_THRESH)
+    sly.logger.info("🟩 Model has been successfully deployed")
