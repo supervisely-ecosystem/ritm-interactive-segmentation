@@ -66,11 +66,7 @@ and negative (red) clicks, respectively.
 
 # How to use
 
-Watch video guide for more details:
-
-<a data-key="sly-embeded-video-link" href="https://youtu.be/z31-K7NAAbU" data-video-code="z31-K7NAAbU">
-    <img src="https://i.imgur.com/TMYoDpu.png" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:500px;">
-</a>
+`Place for video guide`
 
 ## Controls:
 
