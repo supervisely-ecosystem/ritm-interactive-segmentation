@@ -62,6 +62,12 @@ and negative (red) clicks, respectively.
 <img src="https://i.imgur.com/4fmlsBJ.png" width="500"/>
 </div>
 
+4. You'll see `Model has been successfully deployed` message indicating that the application has been successfully started and you can work with it from now on.
+ 
+<div align="center" markdown>
+<img src="https://i.imgur.com/GaBUKf9.png" width="90%"/>
+</div>
+
 # How to use
 
 `Place for video guide`
