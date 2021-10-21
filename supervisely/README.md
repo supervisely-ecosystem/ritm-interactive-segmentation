@@ -74,7 +74,7 @@ and negative (red) clicks, respectively.
 4. You'll see `Model has been successfully deployed` message indicating that the application has been successfully started and you can work with it from now on.
  
 <div align="center" markdown>
-<img src="https://i.imgur.com/0JoOQC7.png" width="90%"/>
+<img src="https://imgur.com/xIs9YPe.png" width="90%"/>
 </div>
 
 # How to use
