@@ -1,8 +1,8 @@
 <div align="center" markdown>
   
-<h1 style="float: left; border-bottom: 0"> <img align="center" src="https://i.imgur.com/Mm2Auxx.png" width="80" style="float:left;"> RITM Interactive Segmentation </h1>
+<h1 align="center" style="border-bottom: 0"> <img align="center" src="https://i.imgur.com/Mm2Auxx.png" width="80"> RITM Interactive Segmentation </h1>
 
-**state-of-the art click-based interactive segmentation integrated into Supervisely Image Annotator**
+  <p align="center"><b>state-of-the art click-based interactive segmentation integrated into Supervisely Image Annotator</b></p>
 
   
 <p align="center">
