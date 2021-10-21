@@ -139,7 +139,7 @@ We have prepared a videos and demonstrated how RITM works for the different doma
   
 # Manual object correction
 
-<a data-key="sly-embeded-video-link" href="https://youtu.be/6pMUHn0jNGE" data-video-code="6pMUHn0jNGE"> <img src="https://i.imgur.com/skXXok8.png" alt="SLY_EMBEDED_VIDEO_LINK"  width="500"> </a> 
+<a data-key="sly-embeded-video-link" href="https://youtu.be/6pMUHn0jNGE" data-video-code="6pMUHn0jNGE"> <img src="https://i.imgur.com/skXXok8.png" alt="SLY_EMBEDED_VIDEO_LINK"  width="500"> </a>  
 
 # Acknowledgment
 
