@@ -51,6 +51,12 @@ and negative (red) clicks, respectively.
 
 # How to run
 
+### ⚠️ note  
+ * The application may already be launched by the instance administrator (**Enterprise**) or the Supervisely command (**Community**), but it may not work correctly due to high load.
+ * (Enterprise only) You can share started application to whole instance using **share** button from **apps** menu.
+
+---
+
 1. Add [RITM interactive segmentation smart tool](https://ecosystem.supervise.ly/apps/ritm-interactive-segmentation) to your team from Ecosystem.
 
 <img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/ritm-interactive-segmentation" src="https://i.imgur.com/eWmFwQ9.png" width="600px" style='padding-bottom: 20px'/>  
