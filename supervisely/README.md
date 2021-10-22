@@ -28,18 +28,15 @@
  
 </div>
 
-<p align="center"> Original work available by hyperlinks: <a href=https://arxiv.org/pdf/2102.06583.pdf><b>paper</b></a> and <a href="https://github.com/saic-vul/ritm_interactive_segmentation"><b>code</b></a></p>
-
 
 ## Overview
 
 Application key points:  
 - Manually selected ROI
 - Accurate predictions in most cases
-- Capability to correct prediction errors on the fly
+- Correct prediction interactively with `red` and `green` clicks
 - Select from [5 pretrained models](../README.md#evaluation)
-- Models are class agnostic you can segment any object from any industry
-- Ability to share application session with team members as an Admin (Enterprise edition only)
+- Models are class agnostic, you can segment any object from any domain
 
 RITM Interactive segmentation algorithms allow users to explicitly control the predictions using interactive input at several iterations, in contrast to common semantic and instance segmentation algorithms that can only input an image and output a segmentation mask in one pass. Such interaction makes it possible to select an object of interest and correct prediction errors.
 
@@ -51,9 +48,9 @@ and negative (red) clicks, respectively.
 
 # How to run
 
-### ⚠️ note  
- * The application may already be launched by the instance administrator (**Enterprise**) or the Supervisely command (**Community**), but it may not work correctly due to high load.
- * (Enterprise only) You can share started application to whole instance using **share** button from **apps** menu.
+### ⚠️ Notice  
+ * The application may already be launched by the instance administrator (**Enterprise**) or the Supervisely team (**Community**). If the app is not available in dropdown menu in Labeling tool, please contact us. If the Smart Tool responds slowly, please run additional application sessions in your team.
+ * **Enterprise only**: You can share started application with all users on your instance using **share** button in front of running session. We recommend to run multiple sessions if large number of users are using Smart Tool simultaneously.
 
 ---
 
