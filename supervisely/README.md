@@ -56,7 +56,7 @@ and negative (red) clicks, respectively.
 
 1. Add [RITM interactive segmentation smart tool](https://ecosystem.supervise.ly/apps/ritm-interactive-segmentation) to your team from Ecosystem.
 
-<img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/ritm-interactive-segmentation" src="https://i.imgur.com/eWmFwQ9.png" width="600px" style='padding-bottom: 20px'/>  
+<img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/ritm-interactive-segmentation/supervisely" src="https://i.imgur.com/eWmFwQ9.png" width="600px" style='padding-bottom: 20px'/>  
 
 2. Run app from **Plugins & Apps** page:
 
