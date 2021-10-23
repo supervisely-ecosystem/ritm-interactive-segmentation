@@ -79,7 +79,7 @@ and negative (red) clicks, respectively.
 <a data-key="sly-embeded-video-link" href="https://youtu.be/q1IVBrZDSGk" data-video-code="q1IVBrZDSGk"> <img src="https://imgur.com/MWHDZQy.png" alt="SLY_EMBEDED_VIDEO_LINK"  width="100%"> </a>  
 
 
-## Controls:
+## Controls
 
 | Key                                                           | Description                               |
 | ------------------------------------------------------------- | ------------------------------------------|
@@ -90,6 +90,13 @@ and negative (red) clicks, respectively.
 | <kbd>Space</kbd>                                              | Finish the current object mask            |
 | <kbd>Shift + H</kbd>                                          | Higlight instances with random colors     |
 | <kbd>Ctrl + H</kbd>                                           | Hide all labels                           |
+
+
+<p align="left"> <img align="center" src="https://i.imgur.com/jxySekj.png" width="50"> <b>—</b> Auto add positivie point to rectangle button (<b>ON</b> by default for SmartTool apps) </p>
+
+<div align="center" markdown>
+<img src="https://i.imgur.com/dlaLrsi.png" width="90%"/>
+</div>
 
 
 # Demo
