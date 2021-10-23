@@ -98,7 +98,7 @@ and negative (red) clicks, respectively.
 <img src="https://i.imgur.com/dlaLrsi.png" width="90%"/>
 </div>
 
-<p align="left"> <img align="center" src="https://i.imgur.com/kIadRWK.png" width="200"> <b>—</b> SmartTool selector button, switch between SmartTool apps and models</p>
+<p align="left"> <img align="center" src="https://i.imgur.com/kiwbBkj.png" width="200"> <b>—</b> SmartTool selector button, switch between SmartTool apps and models</p>
 
 <div align="center" markdown>
 <img src="https://i.imgur.com/FATcNZU.png" width="90%"/>
