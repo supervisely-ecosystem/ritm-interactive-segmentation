@@ -76,7 +76,7 @@ and negative (red) clicks, respectively.
 
 # How to use
 
-<a data-key="sly-embeded-video-link" href="https://youtu.be/atYG2NQ_WCQ" data-video-code="atYG2NQ_WCQ"> <img src="https://i.imgur.com/zDKk6pC.png" alt="SLY_EMBEDED_VIDEO_LINK"  width="70%"> </a>  
+<a data-key="sly-embeded-video-link" href="https://youtu.be/q1IVBrZDSGk" data-video-code="q1IVBrZDSGk"> <img src="https://imgur.com/MWHDZQy.png" alt="SLY_EMBEDED_VIDEO_LINK"  width="70%"> </a>  
 
 
 ## Controls
