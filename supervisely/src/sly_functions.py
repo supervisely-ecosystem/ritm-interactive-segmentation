@@ -7,7 +7,7 @@ from supervisely_lib.io.fs import silent_remove
 
 
 def download_image_from_context(context):
-    if context["image_hash"] in list(context.keys()):
+    if "image_hash" in list(context.keys()):
         img_path = os.path.join(g.img_dir, "base_image.png")
         base_image_np = get_image_by_hash(context["image_hash"], img_path)
     else:
