@@ -1,8 +1,18 @@
+import os
 import numpy as np
 import sly_globals as g
 import supervisely_lib as sly
 from isegm.inference.clicker import Click
 from supervisely_lib.io.fs import silent_remove
+
+
+def download_image_from_context(context):
+    if "image_hash" in list(context.keys()):
+        img_path = os.path.join(g.img_dir, "base_image.png")
+        base_image_np = get_image_by_hash(context["image_hash"], img_path)
+    else:
+        base_image_np = g.api.video.frame.download_np(context["video"]["video_id"], context["video"]["frame_index"])
+    return base_image_np
 
 
 def get_smart_bbox(crop):
