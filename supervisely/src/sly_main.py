@@ -1,4 +1,3 @@
-import os
 import math
 import functools
 import supervisely_lib as sly
@@ -46,19 +45,15 @@ def send_error_data(func):
 def smart_segmentation(api: sly.Api, task_id, context, state, app_logger):
     x1, y1, x2, y2 = f.get_smart_bbox(context["crop"])
     pos_points, neg_points = f.get_pos_neg_points_list_from_context(context)
-
-    img_path = os.path.join(g.img_dir, "base_image.png")
-    base_image_np = f.get_image_by_hash(context["image_hash"], img_path)
-
     bbox = sly.Rectangle(y1, x1, y2, x2)
 
+    base_image_np = f.download_image_from_context(context)
     crop_np = sly.image.crop(base_image_np, bbox)
     height, width = crop_np.shape[:2]
     cropped_shape = (height, width)
     resized_shape = None
 
     max_crop_dim = 1000
-
     if height > max_crop_dim or width > max_crop_dim:
         base_height = 720
         base_width = 800
