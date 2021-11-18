@@ -2,6 +2,8 @@ import os
 import functools
 import supervisely_lib as sly
 
+import math
+
 # Source dirs
 import sys
 from pathlib import Path
@@ -45,15 +47,39 @@ def send_error_data(func):
 def smart_segmentation(api: sly.Api, task_id, context, state, app_logger):
     x1, y1, x2, y2 = f.get_smart_bbox(context["crop"])
     pos_points, neg_points = f.get_pos_neg_points_list_from_context(context)
-    pos_points, neg_points = f.get_pos_neg_points_list_from_context_bbox_relative(x1, y1, pos_points, neg_points)
-    clicks_list = f.get_click_list_from_points(pos_points, neg_points)
 
     img_path = os.path.join(g.img_dir, "base_image.png")
     base_image_np = f.get_image_by_hash(context["image_hash"], img_path)
+
     bbox = sly.Rectangle(y1, x1, y2, x2)
+
     crop_np = sly.image.crop(base_image_np, bbox)
+    height, width = crop_np.shape[:2]
+    cropped_shape = (height, width)
+    resized_shape = None
+
+    max_crop_dim = 1000
+
+    if height > max_crop_dim or width > max_crop_dim:
+        base_height = 720
+        base_width = 800
+
+        ap_ratio = width / height
+        if height > width:
+            new_height = base_height
+            new_width = math.ceil(new_height * ap_ratio)
+        else:
+            new_width = base_width
+            new_height = math.ceil(new_width / ap_ratio)
+
+        resized_shape = (new_height, new_width)
+        crop_np = sly.image.resize(crop_np, resized_shape)
+
+    pos_points, neg_points = f.get_pos_neg_points_list_from_context_bbox_relative(x1, y1, pos_points, neg_points, cropped_shape, resized_shape)
+    clicks_list = f.get_click_list_from_points(pos_points, neg_points)
+
     res_mask = mask_image.get_mask_from_clicks(crop_np, clicks_list)
-    bitmap = f.get_bitmap_from_mask(res_mask)
+    bitmap = f.get_bitmap_from_mask(res_mask, cropped_shape)
     bitmap_origin, bitmap_data = f.unpack_bitmap(bitmap, y1, x1)
 
     request_id = context["request_id"]

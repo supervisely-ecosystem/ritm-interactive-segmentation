@@ -11,18 +11,25 @@ def get_smart_bbox(crop):
     return x1, y1, x2, y2
 
 
-def get_pos_neg_points_list_from_context_bbox_relative(x1, y1, pos_points, neg_points):
+def get_pos_neg_points_list_from_context_bbox_relative(x1, y1, pos_points, neg_points, cropped_shape, resized_shape):
     bbox_pos_points = []
+
+    width_scale = 1
+    height_scale = 1
+    if resized_shape is not None:
+        width_scale = resized_shape[0] / cropped_shape[0]
+        height_scale = resized_shape[1] / cropped_shape[1]
+
     for coords in pos_points:
-        x = coords[0] - x1
-        y = coords[1] - y1
+        x = (coords[0] - x1) * width_scale
+        y = (coords[1] - y1) * height_scale
         pos_point = [x, y]
         bbox_pos_points.append(pos_point)
 
     bbox_neg_points = []
     for coords in neg_points:
-        x = coords[0] - x1
-        y = coords[1] - y1
+        x = (coords[0] - x1) * width_scale
+        y = (coords[1] - y1) * height_scale
         neg_point = [x, y]
         bbox_neg_points.append(neg_point)
 
@@ -81,7 +88,11 @@ def get_image_by_hash(hash, save_path):
     return base_image
 
 
-def get_bitmap_from_mask(mask):
+def get_bitmap_from_mask(mask, cropped_shape):
     bool_mask = np.array(mask, dtype=bool)
     bitmap = sly.Bitmap(bool_mask)
+    mask_shape = mask.shape[:2]
+    if cropped_shape != mask_shape:
+        bitmap = bitmap.resize(mask_shape, cropped_shape)
+
     return bitmap
