@@ -43,6 +43,9 @@ def send_error_data(func):
 @sly.timeit
 @send_error_data
 def smart_segmentation(api: sly.Api, task_id, context, state, app_logger):
+
+    xxx = list(context.keys())
+
     x1, y1, x2, y2 = f.get_smart_bbox(context["crop"])
     pos_points, neg_points = f.get_pos_neg_points_list_from_context(context)
     bbox = sly.Rectangle(y1, x1, y2, x2)
