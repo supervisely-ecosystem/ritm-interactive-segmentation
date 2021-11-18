@@ -1,8 +1,7 @@
 import os
+import math
 import functools
 import supervisely_lib as sly
-
-import math
 
 # Source dirs
 import sys

@@ -12,14 +12,13 @@ def get_smart_bbox(crop):
 
 
 def get_pos_neg_points_list_from_context_bbox_relative(x1, y1, pos_points, neg_points, cropped_shape, resized_shape):
-    bbox_pos_points = []
-
     width_scale = 1
     height_scale = 1
     if resized_shape is not None:
         width_scale = resized_shape[0] / cropped_shape[0]
         height_scale = resized_shape[1] / cropped_shape[1]
 
+    bbox_pos_points = []
     for coords in pos_points:
         x = (coords[0] - x1) * width_scale
         y = (coords[1] - y1) * height_scale
