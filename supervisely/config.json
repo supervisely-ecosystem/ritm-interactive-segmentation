@@ -2,7 +2,8 @@
   "name": "RITM interactive segmentation SmartTool",
   "type": "app",
   "categories": [
-    "Neural Network"
+    "Neural Network",
+    "SmartTool"
   ],
   "description": "State of the art object segmentation model in Labeleing Interface",
   "need_gpu": true,
