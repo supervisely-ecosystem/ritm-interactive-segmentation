@@ -1,6 +1,7 @@
 {
   "name": "RITM interactive segmentation SmartTool",
   "type": "app",
+  "restart_policy": "on_error",
   "categories": [
     "Neural Network",
     "SmartTool"
