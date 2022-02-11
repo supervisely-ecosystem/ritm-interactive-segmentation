@@ -1,5 +1,4 @@
 import os
-import json
 import supervisely as sly
 
 
@@ -26,7 +25,7 @@ def main():
             'request_id': 'c801fd40-b52d-478a-b64b-0667175056b4'}
     }
 
-    response = api.task.send_request(task_id, "smart_segmentation", data={}, context=context_batch, timeout=60)
+    response = api.task.send_request(task_id, "smart_segmentation_batched", data={}, context=context_batch, timeout=60)
     # print("APP returns data:")
     # print(json.loads(response))
 
