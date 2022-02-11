@@ -1,12 +1,14 @@
-import math
-import mask_image
-import load_model
-import sly_functions as f
+import os
+import json
 import supervisely as sly
 
 
 def main():
-    context = {
+    api = sly.Api.from_env()
+
+    task_id = int(os.environ["TASK_ID"])
+
+    context_batch = {
         0: {'crop': [{'x': 106, 'y': 83}, {'x': 552, 'y': 400}],
             'positive': [{'x': 223, 'y': 102}, {'x': 235, 'y': 264}, {'x': 204, 'y': 169}, {'x': 289, 'y': 200}],
             'negative': [], 'image_hash': 'YZKQrZH5C0rBvGGA3p7hjWahz3/pV09u5m30Bz8GeYs=',
@@ -24,50 +26,10 @@ def main():
             'request_id': 'c801fd40-b52d-478a-b64b-0667175056b4'}
     }
 
-    response_batch = {}
-    for idx, request in context.items():
-        x1, y1, x2, y2 = f.get_smart_bbox(request["crop"])
-        pos_points, neg_points = f.get_pos_neg_points_list_from_context(request)
-        bbox = sly.Rectangle(y1, x1, y2, x2)
-
-        base_image_np = f.download_image_from_context(request)
-        crop_np = sly.image.crop(base_image_np, bbox)
-        height, width = crop_np.shape[:2]
-        cropped_shape = (height, width)
-        resized_shape = None
-
-        max_crop_dim = 1000
-        if height > max_crop_dim or width > max_crop_dim:
-            base_height = 720
-            base_width = 800
-
-            ap_ratio = width / height
-            if height > width:
-                new_height = base_height
-                new_width = math.ceil(new_height * ap_ratio)
-            else:
-                new_width = base_width
-                new_height = math.ceil(new_width / ap_ratio)
-
-            resized_shape = (new_height, new_width)
-            crop_np = sly.image.resize(crop_np, resized_shape)
-
-        pos_points, neg_points = f.get_pos_neg_points_list_from_context_bbox_relative(x1, y1, pos_points, neg_points,
-                                                                                      cropped_shape, resized_shape)
-        clicks_list = f.get_click_list_from_points(pos_points, neg_points)
-
-        res_mask = mask_image.get_mask_from_clicks(crop_np, clicks_list, idx)
-        if res_mask is not None:
-            bitmap = f.get_bitmap_from_mask(res_mask, cropped_shape)
-            bitmap_origin, bitmap_data = f.unpack_bitmap(bitmap, y1, x1)
-            response_batch[idx] = {"bitmap": bitmap_data, "origin": bitmap_origin}
-        else:
-            response_batch[idx] = {"bitmap": None, "origin": None}
-
-    print(response_batch)
-    return response_batch
+    response = api.task.send_request(task_id, "smart_segmentation", data={}, context=context_batch, timeout=60)
+    # print("APP returns data:")
+    # print(json.loads(response))
 
 
 if __name__ == "__main__":
-    load_model.deploy()
     main()

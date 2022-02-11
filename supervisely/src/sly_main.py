@@ -42,42 +42,53 @@ def send_error_data(func):
 @g.my_app.callback("smart_segmentation")
 @sly.timeit
 @send_error_data
-def smart_segmentation(api: sly.Api, task_id, context, state, app_logger):
-    x1, y1, x2, y2 = f.get_smart_bbox(context["crop"])
-    pos_points, neg_points = f.get_pos_neg_points_list_from_context(context)
-    bbox = sly.Rectangle(y1, x1, y2, x2)
+def smart_segmentation_batch(api: sly.Api, task_id, context, state, app_logger):
+    request_id = None
+    response_batch = {}
+    for idx, request in context.items():
+        if idx == "request_id":
+            request_id = context["request_id"]
+            continue
 
-    base_image_np = f.download_image_from_context(context)
-    crop_np = sly.image.crop(base_image_np, bbox)
-    height, width = crop_np.shape[:2]
-    cropped_shape = (height, width)
-    resized_shape = None
+        x1, y1, x2, y2 = f.get_smart_bbox(request["crop"])
+        pos_points, neg_points = f.get_pos_neg_points_list_from_context(request)
+        bbox = sly.Rectangle(y1, x1, y2, x2)
 
-    max_crop_dim = 1000
-    if height > max_crop_dim or width > max_crop_dim:
-        base_height = 720
-        base_width = 800
+        base_image_np = f.download_image_from_context(request)
+        crop_np = sly.image.crop(base_image_np, bbox)
+        height, width = crop_np.shape[:2]
+        cropped_shape = (height, width)
+        resized_shape = None
 
-        ap_ratio = width / height
-        if height > width:
-            new_height = base_height
-            new_width = math.ceil(new_height * ap_ratio)
+        max_crop_dim = 1000
+        if height > max_crop_dim or width > max_crop_dim:
+            base_height = 720
+            base_width = 800
+
+            ap_ratio = width / height
+            if height > width:
+                new_height = base_height
+                new_width = math.ceil(new_height * ap_ratio)
+            else:
+                new_width = base_width
+                new_height = math.ceil(new_width / ap_ratio)
+
+            resized_shape = (new_height, new_width)
+            crop_np = sly.image.resize(crop_np, resized_shape)
+
+        pos_points, neg_points = f.get_pos_neg_points_list_from_context_bbox_relative(x1, y1, pos_points, neg_points,
+                                                                                      cropped_shape, resized_shape)
+        clicks_list = f.get_click_list_from_points(pos_points, neg_points)
+        res_mask = mask_image.get_mask_from_clicks(crop_np, clicks_list, idx)
+        if res_mask is not None:
+            bitmap = f.get_bitmap_from_mask(res_mask, cropped_shape)
+            bitmap_origin, bitmap_data = f.unpack_bitmap(bitmap, y1, x1)
+            response_batch[idx] = {"bitmap": bitmap_data, "origin": bitmap_origin}
         else:
-            new_width = base_width
-            new_height = math.ceil(new_width / ap_ratio)
+            response_batch[idx] = {"bitmap": None, "origin": None}
 
-        resized_shape = (new_height, new_width)
-        crop_np = sly.image.resize(crop_np, resized_shape)
-
-    pos_points, neg_points = f.get_pos_neg_points_list_from_context_bbox_relative(x1, y1, pos_points, neg_points, cropped_shape, resized_shape)
-    clicks_list = f.get_click_list_from_points(pos_points, neg_points)
-
-    res_mask = mask_image.get_mask_from_clicks(crop_np, clicks_list)
-    bitmap = f.get_bitmap_from_mask(res_mask, cropped_shape)
-    bitmap_origin, bitmap_data = f.unpack_bitmap(bitmap, y1, x1)
-
-    request_id = context["request_id"]
-    g.my_app.send_response(request_id, data={"origin": bitmap_origin, "bitmap": bitmap_data, "success": True, "error": None})
+    print("success")
+    g.my_app.send_response(request_id, data=response_batch)
 
 
 def main():
