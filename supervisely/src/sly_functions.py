@@ -1,9 +1,9 @@
 import os
 import numpy as np
 import sly_globals as g
-import supervisely_lib as sly
+import supervisely as sly
 from isegm.inference.clicker import Click
-from supervisely_lib.io.fs import silent_remove
+from supervisely.io.fs import silent_remove
 
 
 def download_image_from_context(context):

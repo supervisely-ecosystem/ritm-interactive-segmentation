@@ -1,7 +1,7 @@
 import os
 from diskcache import Cache
-import supervisely_lib as sly
-from supervisely_lib.io.fs import mkdir
+import supervisely as sly
+from supervisely.io.fs import mkdir
 
 
 my_app = sly.AppService()
