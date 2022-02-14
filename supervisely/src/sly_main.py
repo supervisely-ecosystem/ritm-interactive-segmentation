@@ -40,15 +40,16 @@ def send_error_data(func):
 @sly.timeit
 @send_error_data
 def smart_segmentation_batched(api: sly.Api, task_id, context, state, app_logger):
-    request_id = None
     response_batch = {}
-    for idx, request in context.items():
-        if idx == "request_id":
-            request_id = context["request_id"]
-            continue
-
-        bitmap_origin, bitmap_data = f.process_bitmap_from_clicks(request)
-        response_batch[idx] = {"bitmap": bitmap_data, "origin": bitmap_origin}
+    data_to_process = context["data_to_process"]
+    for idx, data in data_to_process.items():
+        try:
+            bitmap_origin, bitmap_data = f.process_bitmap_from_clicks(data)
+            response_batch[idx] = {"bitmap": bitmap_data, "origin": bitmap_origin}
+        except Exception:
+            g.my_app.logger.warn("Couldn't process image")
+            response_batch[idx] = None
+    request_id = context["request_id"]
     g.my_app.send_response(request_id, data=response_batch)
 
 

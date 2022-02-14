@@ -109,18 +109,10 @@ def get_bitmap_from_mask(mask, cropped_shape):
     return bitmap
 
 
-def process_bitmap_from_clicks(request):
-    x1, y1, x2, y2 = get_smart_bbox(request["crop"])
-    pos_points, neg_points = get_pos_neg_points_list_from_context(request)
-    bbox = sly.Rectangle(y1, x1, y2, x2)
-
-    base_image_np = download_image_from_context(request)
-    crop_np = sly.image.crop(base_image_np, bbox)
-    height, width = crop_np.shape[:2]
-    cropped_shape = (height, width)
-    resized_shape = None
-
+def optimize_crop(crop_np):
     max_crop_dim = 1000
+    resized_shape = None
+    height, width = crop_np.shape[:2]
     if height > max_crop_dim or width > max_crop_dim:
         base_height = 720
         base_width = 800
@@ -136,6 +128,19 @@ def process_bitmap_from_clicks(request):
         resized_shape = (new_height, new_width)
         crop_np = sly.image.resize(crop_np, resized_shape)
 
+    cropped_shape = (height, width)
+    return crop_np, cropped_shape, resized_shape
+
+
+def process_bitmap_from_clicks(data):
+    x1, y1, x2, y2 = get_smart_bbox(data["crop"])
+    pos_points, neg_points = get_pos_neg_points_list_from_context(data)
+    bbox = sly.Rectangle(y1, x1, y2, x2)
+
+    base_image_np = download_image_from_context(data)
+    crop_np = sly.image.crop(base_image_np, bbox)
+
+    crop_np, cropped_shape, resized_shape = optimize_crop(crop_np)
     pos_points, neg_points = get_pos_neg_points_list_from_context_bbox_relative(x1, y1, pos_points, neg_points,
                                                                                   cropped_shape, resized_shape)
     clicks_list = get_click_list_from_points(pos_points, neg_points)
