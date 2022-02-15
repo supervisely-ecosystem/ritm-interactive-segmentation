@@ -110,7 +110,7 @@ def get_bitmap_from_mask(mask, cropped_shape):
 
 
 def optimize_crop(crop_np):
-    max_crop_dim = 1000
+    max_crop_dim = 1000 # max crop dimension for app optimization
     resized_shape = None
     height, width = crop_np.shape[:2]
     if height > max_crop_dim or width > max_crop_dim:
