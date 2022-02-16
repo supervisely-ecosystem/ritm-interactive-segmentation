@@ -7,19 +7,10 @@
         </el-radio-group>
     </div>
 
-    <sly-field v-show="state.modelMode === 'custom'" title="Path to weights file" description="Copy path in Team Files">
+    <sly-field v-show="state.modelMode === 'custom'" title="Model" description="Path to custom weights in Team FIles">
         <el-input v-model="state.weightsPath"
                   placeholder="Path to .pth file in Team Files"></el-input>
     </sly-field>
-
-    <sly-field title="Device"
-               description="Deploy app on selected device">
-        <el-select v-model="state.device">
-            <el-option key="cpu" label="CPU" value="cpu"></el-option>
-            <el-option key="cuda" label="GPU" value="cuda"></el-option>
-        </el-select>
-    </sly-field>
-
 
     <sly-field title="Model"
                description="Select provided pretrained models with different backbones for interactive segmentation.">
@@ -31,6 +22,15 @@
             <el-option key="4" label="HRNet32 IT-M (COCO+LVIS)" value="4"></el-option>
         </el-select>
     </sly-field>
+
+    <sly-field title="Device"
+               description="Deploy app on selected device">
+        <el-select v-model="state.device">
+            <el-option key="cpu" label="CPU" value="cpu"></el-option>
+            <el-option key="cuda" label="GPU" value="cuda"></el-option>
+        </el-select>
+    </sly-field>
+
 
     <sly-field title="Probability Threshold"
                description="Threshold for binarization of probability map. Recommended value is 0.5">
