@@ -18,10 +18,10 @@ def download_weights_from_link(api, link, save_path, file_name, progress_message
     app_logger.info(f'{file_name} has been successfully downloaded')
 
 
-def download_weights_from_team_files(model_info, save_path):
+def download_weights_from_team_files(model_info, save_path, app_logger):
     progress = sly.Progress("Downloading weights", model_info.sizeb, is_size=True, need_info_log=True)
     g.api.file.download(g.TEAM_ID, g.CUSTOM_WEIGHTS_PATH, save_path, progress_cb=progress.iters_done_report)
-
+    app_logger.info(f'{model_info.name} has been successfully downloaded from Team Files')
 
 def deploy():
     # devices: cpu, cuda, xpu, mkldnn, opengl, opencl, ideep, hip, msnpu, mlc, xla, vulkan, meta, hpu
@@ -41,8 +41,7 @@ def deploy():
             model_dir = os.path.join(g.work_dir, "model")
             mkdir(model_dir)
             model_path = os.path.join(model_dir, model_name)
-            download_weights_from_link(g.api, model_link, model_path, model_name, f"Download {model_name}",
-                                       g.my_app.logger)
+            download_weights_from_link(g.api, model_link, model_path, model_name, f"Download {model_name}", g.my_app.logger)
         else:
             g.my_app.logger.info(f"{model_name} has been loaded from docker image")
 
@@ -52,7 +51,7 @@ def deploy():
         model_info = g.api.file.get_info_by_path(g.TEAM_ID, g.CUSTOM_WEIGHTS_PATH)
         if model_info is None:
             raise FileNotFoundError(f"Weights file not found: {g.CUSTOM_WEIGHTS_PATH}")
-        download_weights_from_team_files(model_info, model_path)
+        download_weights_from_team_files(model_info, model_path, g.my_app.logger)
 
     model = torch.load(model_path, map_location=torch.device(g.DEVICE))
     model = load_is_model(model, g.DEVICE)
