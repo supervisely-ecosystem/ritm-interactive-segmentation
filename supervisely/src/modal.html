@@ -7,12 +7,15 @@
         </el-radio-group>
     </div>
 
-    <sly-field v-show="state.modelMode === 'custom'" title="Model" description="Path to custom weights in Team FIles">
+    <sly-field v-show="state.modelMode === 'custom'"
+               title="Model"
+               description="Path to custom weights in Team FIles">
         <el-input v-model="state.weightsPath"
                   placeholder="Path to .pth file in Team Files"></el-input>
     </sly-field>
 
-    <sly-field title="Model"
+    <sly-field v-show="state.modelMode === 'pretrained'"
+               title="Model"
                description="Select provided pretrained models with different backbones for interactive segmentation.">
         <el-select v-model="state.model">
             <el-option key="0" label="HRNet18 IT-M (SDB)" value="0"></el-option>
