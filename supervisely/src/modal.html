@@ -1,5 +1,17 @@
 <div>
 
+    <div>
+        <el-radio-group v-model="state.modelMode">
+            <el-radio-button label="pretrained">Pretrained</el-radio-button>
+            <el-radio-button label="custom">Custom</el-radio-button>
+        </el-radio-group>
+    </div>
+
+    <sly-field v-show="state.modelMode === 'custom'" title="Path to weights file" description="Copy path in Team Files">
+        <el-input v-model="state.weightsPath"
+                  placeholder="Path to .pth file in Team Files"></el-input>
+    </sly-field>
+
     <sly-field title="Device"
                description="Deploy app on selected device">
         <el-select v-model="state.device">

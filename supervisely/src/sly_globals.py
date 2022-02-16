@@ -1,7 +1,7 @@
 import os
 from diskcache import Cache
 import supervisely as sly
-from supervisely.io.fs import mkdir
+from supervisely.io.fs import mkdir, get_file_name_with_ext, get_file_ext
 
 
 my_app = sly.AppService()
@@ -21,10 +21,25 @@ cache_item_expire_time = 600  # seconds
 mkdir(cache_dir)
 mkdir(img_dir)
 
-DEVICE = os.environ["modal.state.device"]
-MODEL = int(os.environ["modal.state.model"])
-CONTROLLER = None
 
+### MODE
+MODE = os.environ["modal.state.modelMode"]
+if MODE == "pretrained":
+    available_models = ["sbd_h18_itermask.pth", "coco_lvis_h18_baseline.pth", "coco_lvis_h18s_itermask.pth",
+                        "coco_lvis_h18_itermask.pth", "coco_lvis_h32_itermask.pth"]
+
+    MODEL = int(os.environ["modal.state.model"])
+    MODEL_NAME = available_models[MODEL]
+else:
+    CUSTOM_WEIGHTS_PATH = os.environ['modal.state.weightsPath']
+    if not CUSTOM_WEIGHTS_PATH.endswith(".pth"):
+        raise ValueError(f"Unsupported weights extension {get_file_ext(CUSTOM_WEIGHTS_PATH)}. "
+                         f"Supported extension: '.pth'")
+    MODEL_NAME = get_file_name_with_ext(CUSTOM_WEIGHTS_PATH)
+
+### PARAMS
+CONTROLLER = None
+DEVICE = os.environ["modal.state.device"]
 BRS_MODE = int(os.environ["modal.state.brs_mode"])
 PROB_THRESH = float(os.environ["modal.state.prob_thresh"])
 NET_CLICKS_LIMIT = int(os.environ["modal.state.net_clicks_limit"])
@@ -37,7 +52,3 @@ if UNLIMITED:
 
 available_brs_modes = ['NoBRS', 'RGB-BRS', 'DistMap-BRS', 'f-BRS-A', 'f-BRS-B', 'f-BRS-C']
 BRS_MODE = available_brs_modes[BRS_MODE]
-
-available_models = ["sbd_h18_itermask.pth", "coco_lvis_h18_baseline.pth", "coco_lvis_h18s_itermask.pth",
-                    "coco_lvis_h18_itermask.pth", "coco_lvis_h32_itermask.pth"]
-MODEL_NAME = available_models[MODEL]
