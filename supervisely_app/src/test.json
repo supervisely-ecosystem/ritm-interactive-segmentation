@@ -1,0 +1,22 @@
+{
+  "context": {
+    "crop": [
+      {
+        "x": 1091,
+        "y": 773
+      },
+      {
+        "x": 1373,
+        "y": 1010
+      }
+    ],
+    "positive": [
+      {
+        "x": 1232,
+        "y": 892
+      }
+    ],
+    "negative": [],
+    "image_hash": "JGU5D3ucKugXvGE2wy+5CdFL9YTV8KfOp+a8wphhfwY="
+  }
+}

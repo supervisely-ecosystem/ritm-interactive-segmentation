@@ -9,8 +9,8 @@
   "description": "State of the art object segmentation model in Labeleing Interface",
   "need_gpu": true,
   "docker_image": "supervisely/ritm:1.0.1",
-  "main_script": "supervisely/src/sly_main.py",
-  "modal_template": "supervisely/src/modal.html",
+  "main_script": "supervisely_app/src/sly_main.py",
+  "modal_template": "supervisely_app/src/modal.html",
   "modal_template_state": {
     "device": "cuda", 
     "model": "4", 
