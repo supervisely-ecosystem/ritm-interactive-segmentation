@@ -1,6 +1,6 @@
 import os
 from diskcache import Cache
-import supervisely as sly
+import supervisely_lib as sly
 from supervisely_lib.io.fs import mkdir, get_file_name_with_ext, get_file_ext
 
 

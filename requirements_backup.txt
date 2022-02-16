@@ -1,4 +1,4 @@
-supervisely==6.6.0
+supervisely==6.1.97
 diskcache==5.4.0
 scipy
 numpy

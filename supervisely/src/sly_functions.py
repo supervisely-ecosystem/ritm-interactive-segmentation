@@ -3,9 +3,9 @@ import math
 import numpy as np
 import mask_image
 import sly_globals as g
-import supervisely as sly
+import supervisely_lib as sly
 from isegm.inference.clicker import Click
-from supervisely.io.fs import silent_remove
+from supervisely_lib.io.fs import silent_remove
 
 
 def download_image_from_context(context):

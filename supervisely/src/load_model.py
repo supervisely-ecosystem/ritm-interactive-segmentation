@@ -4,7 +4,7 @@ import requests
 import sly_globals as g
 import download_progress
 import supervisely_lib as sly
-from supervisely.io.fs import mkdir, download, get_file_name_with_ext
+from supervisely_lib.io.fs import mkdir, download, get_file_name_with_ext
 from isegm.inference.utils import load_is_model
 from interactive_demo.controller import InteractiveController
 
