@@ -1,5 +1,5 @@
 import os
-import supervisely as sly
+import supervisely_lib as sly
 
 
 def main():
