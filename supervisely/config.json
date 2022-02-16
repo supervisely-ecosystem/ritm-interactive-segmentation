@@ -12,7 +12,7 @@
   "main_script": "supervisely/src/sly_main.py",
   "modal_template": "supervisely/src/modal.html",
   "modal_template_state": {
-    "mode": "pretrained",
+    "modelMode": "pretrained",
     "weightsPath": null,
     "device": "cuda", 
     "model": "4", 
