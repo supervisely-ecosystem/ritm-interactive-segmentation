@@ -34,6 +34,7 @@
 
 Application key points:  
 - Manually selected ROI
+- Deploy on GPU(faster) or CPU(slower)
 - Accurate predictions in most cases
 - Capability to correct prediction errors on the fly
 - Select from [5 pretrained models](../README.md#evaluation)
