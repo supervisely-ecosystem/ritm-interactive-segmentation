@@ -1,5 +1,7 @@
 import os
+import math
 import numpy as np
+import mask_image
 import sly_globals as g
 import supervisely_lib as sly
 from isegm.inference.clicker import Click
@@ -105,3 +107,49 @@ def get_bitmap_from_mask(mask, cropped_shape):
         bitmap = bitmap.resize(mask_shape, cropped_shape)
 
     return bitmap
+
+
+def optimize_crop(crop_np):
+    max_crop_dim = 1000 # limits max crop dimension for app optimization
+    resized_shape = None
+    height, width = crop_np.shape[:2]
+    if height > max_crop_dim or width > max_crop_dim:
+        base_height = 720
+        base_width = 800
+
+        ap_ratio = width / height
+        if height > width:
+            new_height = base_height
+            new_width = math.ceil(new_height * ap_ratio)
+        else:
+            new_width = base_width
+            new_height = math.ceil(new_width / ap_ratio)
+
+        resized_shape = (new_height, new_width)
+        crop_np = sly.image.resize(crop_np, resized_shape)
+
+    cropped_shape = (height, width)
+    return crop_np, cropped_shape, resized_shape
+
+
+def process_bitmap_from_clicks(data):
+    x1, y1, x2, y2 = get_smart_bbox(data["crop"])
+    pos_points, neg_points = get_pos_neg_points_list_from_context(data)
+    bbox = sly.Rectangle(y1, x1, y2, x2)
+
+    base_image_np = download_image_from_context(data)
+    crop_np = sly.image.crop(base_image_np, bbox)
+
+    crop_np, cropped_shape, resized_shape = optimize_crop(crop_np)
+    pos_points, neg_points = get_pos_neg_points_list_from_context_bbox_relative(x1, y1, pos_points, neg_points,
+                                                                                  cropped_shape, resized_shape)
+    clicks_list = get_click_list_from_points(pos_points, neg_points)
+
+    res_mask = mask_image.get_mask_from_clicks(crop_np, clicks_list)
+    if res_mask is not None:
+        bitmap = get_bitmap_from_mask(res_mask, cropped_shape)
+        bitmap_origin, bitmap_data = unpack_bitmap(bitmap, y1, x1)
+    else:
+        bitmap_origin, bitmap_data = None, None
+
+    return bitmap_origin, bitmap_data
