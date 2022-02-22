@@ -56,8 +56,8 @@ def smart_segmentation_batched(api: sly.Api, task_id, context, state, app_logger
         try:
             bitmap_origin, bitmap_data = f.process_bitmap_from_clicks(data)
             response_batch[idx] = {"bitmap": bitmap_data, "origin": bitmap_origin}
-        except Exception:
-            g.my_app.logger.warn("Couldn't process image")
+        except Exception as ex:
+            g.my_app.logger.warn(f"Couldn't process image:\n{ex}")
             response_batch[idx] = None
     request_id = context["request_id"]
     g.my_app.send_response(request_id, data=response_batch)
