@@ -9,11 +9,11 @@ from supervisely_lib.io.fs import silent_remove
 
 
 def download_image_from_context(context):
-    if "image_hash" in context:
+    if "image_id" in context:
+        base_image_np = g.api.image.download_np(context["image_id"])
+    elif "image_hash" in context:
         img_path = os.path.join(g.img_dir, "base_image.png")
         base_image_np = get_image_by_hash(context["image_hash"], img_path)
-    elif "image_id" in context:
-        base_image_np = g.api.image.download_np(context["image_id"])
     else:
         base_image_np = g.api.video.frame.download_np(context["video"]["video_id"], context["video"]["frame_index"])
     return base_image_np
