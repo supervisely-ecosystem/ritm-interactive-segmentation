@@ -36,6 +36,14 @@ def send_error_data(func):
     return wrapper
 
 
+@g.my_app.callback("is_online")
+@sly.timeit
+@send_error_data
+def is_online(api: sly.Api, task_id, context, state, app_logger):
+    request_id = context["request_id"]
+    g.my_app.send_response(request_id, data={"is_online": True})
+
+
 @g.my_app.callback("smart_segmentation")
 @sly.timeit
 @send_error_data
