@@ -85,7 +85,7 @@ and negative (red) clicks, respectively.
 | Key                                                           | Description                               |
 | ------------------------------------------------------------- | ------------------------------------------|
 | <kbd>Left Mouse Button</kbd>                                  | Place a positive click                    |
-| <kbd>Right Mouse Button</kbd>                                 | Place a negative click                    |
+| <kbd>Shift + Left Mouse Button</kbd>                          | Place a negative click                    |
 | <kbd>Scroll Wheel</kbd>                                       | Zoom an image in and out                  |
 | <kbd>Right Mouse Button</kbd> + <br> <kbd>Move Mouse</kbd>    | Move an image                             |
 | <kbd>Space</kbd>                                              | Finish the current object mask            |
