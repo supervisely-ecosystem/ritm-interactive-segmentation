@@ -66,4 +66,5 @@ def deploy():
     }
 
     g.CONTROLLER = InteractiveController(model, g.DEVICE, predictor_params, prob_thresh=g.PROB_THRESH)
-    sly.logger.info("🟩 Model has been successfully deployed")
+    sly.logger.info(f"🟩 Model has been successfully deployed on device: {g.DEVICE}")
+
