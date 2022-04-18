@@ -1,5 +1,6 @@
-import supervisely_lib as sly
 from functools import partial
+
+import supervisely as sly
 
 
 def reset_progress(api, task_id):

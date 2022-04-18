@@ -1,9 +1,10 @@
 import functools
-import supervisely_lib as sly
 
 # Source dirs
 import sys
 from pathlib import Path
+
+import supervisely as sly
 
 repo_root_source_dir = str(Path(sys.argv[0]).parents[2])
 sly.logger.info(f"Repo root source directory: {repo_root_source_dir}")
@@ -17,9 +18,9 @@ sources_dir = str(Path(sys.argv[0]).parents[0])
 sly.logger.info(f"Source directory: {sources_dir}")
 sys.path.append(sources_dir)
 
-import sly_globals as g
 import load_model
 import sly_functions as f
+import sly_globals as g
 
 
 def send_error_data(func):
@@ -50,10 +51,17 @@ def is_online(api: sly.Api, task_id, context, state, app_logger):
 def smart_segmentation(api: sly.Api, task_id, context, state, app_logger):
     bitmap_origin, bitmap_data = f.process_bitmap_from_clicks(context)
     request_id = context["request_id"]
-    g.my_app.send_response(request_id,
-                           data={"origin": bitmap_origin, "bitmap": bitmap_data, "success": True, "error": None})
-    
-    
+    g.my_app.send_response(
+        request_id,
+        data={
+            "origin": bitmap_origin,
+            "bitmap": bitmap_data,
+            "success": True,
+            "error": None,
+        },
+    )
+
+
 @g.my_app.callback("smart_segmentation_batched")
 @sly.timeit
 @send_error_data
@@ -72,15 +80,18 @@ def smart_segmentation_batched(api: sly.Api, task_id, context, state, app_logger
 
 
 def main():
-    sly.logger.info("Script arguments", extra={
-        "context.teamId": g.TEAM_ID,
-        "device": g.DEVICE,
-        "model": g.MODEL_NAME,
-        'brs_mode': g.BRS_MODE,
-        'prob_thresh': g.PROB_THRESH,
-        'net_clicks_limit': g.LOG_NET_CLICKS,
-        'lbfgs_max_iters': g.LBFGS_MAX_ITERS
-    })
+    sly.logger.info(
+        "Script arguments",
+        extra={
+            "context.teamId": g.TEAM_ID,
+            "device": g.DEVICE,
+            "model": g.MODEL_NAME,
+            "brs_mode": g.BRS_MODE,
+            "prob_thresh": g.PROB_THRESH,
+            "net_clicks_limit": g.LOG_NET_CLICKS,
+            "lbfgs_max_iters": g.LBFGS_MAX_ITERS,
+        },
+    )
 
     load_model.deploy()
     g.my_app.run()
