@@ -14,12 +14,12 @@
   "modal_template_state": {
     "modelMode": "pretrained",
     "weightsPath": null,
-    "device": "cuda", 
-    "model": "4", 
-    "brs_mode": "0", 
-    "net_clicks_limit": 8, 
-    "net_clicks_unlimited": true, 
-    "lbfgs_max_iters": 20, 
+    "device": "cuda",
+    "model": "4",
+    "brs_mode": "0",
+    "net_clicks_limit": 8,
+    "net_clicks_unlimited": true,
+    "lbfgs_max_iters": 20,
     "prob_thresh": 0.5
   },
   "task_location": "application_sessions",
@@ -29,5 +29,6 @@
   "instance_version": "6.4.29",
   "session_tags": [
     "sly_smart_annotation"
-  ]
+  ],
+  "poster": "https://i.imgur.com/Mm2Auxx.png"
 }
