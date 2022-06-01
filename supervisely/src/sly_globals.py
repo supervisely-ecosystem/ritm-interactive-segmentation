@@ -1,14 +1,15 @@
 import os
+
+import supervisely as sly
 from diskcache import Cache
-import supervisely_lib as sly
-from supervisely_lib.io.fs import mkdir, get_file_name_with_ext, get_file_ext
+from supervisely.app.v1.app_service import AppService
+from supervisely.io.fs import get_file_ext, get_file_name_with_ext, mkdir
 
-
-my_app = sly.AppService()
+my_app = AppService()
 api: sly.Api = my_app.public_api
 
 TASK_ID = int(os.environ["TASK_ID"])
-TEAM_ID = int(os.environ['context.teamId'])
+TEAM_ID = int(os.environ["context.teamId"])
 
 work_dir = os.path.join(my_app.data_dir, "work_dir")
 mkdir(work_dir, True)
@@ -25,16 +26,23 @@ mkdir(img_dir)
 ### MODE
 MODE = os.environ["modal.state.modelMode"]
 if MODE == "pretrained":
-    available_models = ["sbd_h18_itermask.pth", "coco_lvis_h18_baseline.pth", "coco_lvis_h18s_itermask.pth",
-                        "coco_lvis_h18_itermask.pth", "coco_lvis_h32_itermask.pth"]
+    available_models = [
+        "sbd_h18_itermask.pth",
+        "coco_lvis_h18_baseline.pth",
+        "coco_lvis_h18s_itermask.pth",
+        "coco_lvis_h18_itermask.pth",
+        "coco_lvis_h32_itermask.pth",
+    ]
 
     MODEL = int(os.environ["modal.state.model"])
     MODEL_NAME = available_models[MODEL]
 else:
-    CUSTOM_WEIGHTS_PATH = os.environ['modal.state.weightsPath']
+    CUSTOM_WEIGHTS_PATH = os.environ["modal.state.weightsPath"]
     if not CUSTOM_WEIGHTS_PATH.endswith(".pth"):
-        raise ValueError(f"Unsupported weights extension {get_file_ext(CUSTOM_WEIGHTS_PATH)}. "
-                         f"Supported extension: '.pth'")
+        raise ValueError(
+            f"Unsupported weights extension {get_file_ext(CUSTOM_WEIGHTS_PATH)}. "
+            f"Supported extension: '.pth'"
+        )
     MODEL_NAME = get_file_name_with_ext(CUSTOM_WEIGHTS_PATH)
 
 ### PARAMS
@@ -45,10 +53,17 @@ PROB_THRESH = float(os.environ["modal.state.prob_thresh"])
 NET_CLICKS_LIMIT = int(os.environ["modal.state.net_clicks_limit"])
 LOG_NET_CLICKS = NET_CLICKS_LIMIT
 LBFGS_MAX_ITERS = int(os.environ["modal.state.lbfgs_max_iters"])
-UNLIMITED = os.getenv("modal.state.net_clicks_unlimited").lower() in ('true', '1', 't')
+UNLIMITED = os.getenv("modal.state.net_clicks_unlimited").lower() in ("true", "1", "t")
 if UNLIMITED:
-    NET_CLICKS_LIMIT = 2**10000
+    NET_CLICKS_LIMIT = 2 ** 10000
     LOG_NET_CLICKS = "INF"
 
-available_brs_modes = ['NoBRS', 'RGB-BRS', 'DistMap-BRS', 'f-BRS-A', 'f-BRS-B', 'f-BRS-C']
+available_brs_modes = [
+    "NoBRS",
+    "RGB-BRS",
+    "DistMap-BRS",
+    "f-BRS-A",
+    "f-BRS-B",
+    "f-BRS-C",
+]
 BRS_MODE = available_brs_modes[BRS_MODE]
