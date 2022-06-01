@@ -21,6 +21,8 @@ import sly_globals as g
 import load_model
 import sly_functions as f
 
+# import tracemalloc
+
 
 def send_error_data(func):
     @functools.wraps(func)
@@ -29,8 +31,12 @@ def send_error_data(func):
         try:
             value = func(*args, **kwargs)
         except Exception as e:
+            sly.logger.error(f"Error while processing data: {e}")
             request_id = kwargs["context"]["request_id"]
-            g.my_app.send_response(request_id, data={"error": repr(e)})
+            try:
+                g.my_app.send_response(request_id, data={"error": repr(e)})
+            except Exception as ex:
+                sly.logger.exception(f"Cannot send error response: {ex}")
         return value
 
     return wrapper

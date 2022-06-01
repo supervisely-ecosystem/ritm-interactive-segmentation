@@ -9,4 +9,7 @@ def get_mask_from_clicks(image_np, clicks_list):
         res_mask = g.CONTROLLER.result_mask
     except Exception(f"Couldn't process image"):
         res_mask = None
+
+    g.CONTROLLER.finish_object()
+
     return res_mask

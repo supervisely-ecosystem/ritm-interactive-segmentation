@@ -1,11 +1,41 @@
+import json
 import os
 import supervisely_lib as sly
+from tqdm import tqdm
+
+
+def high_load_test(task_id, api: sly.Api):
+    datasets_list = [47184, 47186]
+
+    images_infos = []
+    for current_ds_id in datasets_list:
+        images_infos.extend(api.image.get_list(dataset_id=current_ds_id))
+
+    pbar = tqdm(desc='test is running...', total=len(images_infos))
+
+    for iter_num in range(2000):
+        pbar.desc = f'{iter_num} — test running...'
+        for images_infos_batch in sly.batched(images_infos, batch_size=50):
+            context = {"data_to_process": {}}
+
+            for index, image_info in enumerate(images_infos_batch):
+                context['data_to_process'][index] = {
+                    'crop': [{'x': 1, 'y': 1}, {'x': image_info.width - 1, 'y': image_info.height - 1}],
+                    'positive': [{'x': int(image_info.width / 2), 'y': int(image_info.height / 2)}],
+                    'negative': [],
+                    'image_hash': f'{image_info.hash}'
+                }
+
+            api.task.send_request(task_id, "smart_segmentation_batched", data={}, context=context, timeout=60)
+            pbar.update(len(images_infos_batch))
 
 
 def main():
     api = sly.Api.from_env()
 
     task_id = int(os.environ["TASK_ID"])
+
+    # high_load_test(task_id, api)
 
     context = {"data_to_process": {
         0: {'crop': [{'x': 106, 'y': 83}, {'x': 552, 'y': 400}],
@@ -28,8 +58,8 @@ def main():
     }
 
     response = api.task.send_request(task_id, "smart_segmentation_batched", data={}, context=context, timeout=60)
-    # print("APP returns data:")
-    # print(json.loads(response))
+    print("APP returns data:")
+    print(response)
 
 
 if __name__ == "__main__":

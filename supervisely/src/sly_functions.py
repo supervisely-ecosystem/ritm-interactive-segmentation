@@ -1,3 +1,4 @@
+import functools
 import os
 import math
 import numpy as np
@@ -10,7 +11,7 @@ from supervisely_lib.io.fs import silent_remove
 
 def download_image_from_context(context):
     if "image_id" in context:
-        base_image_np = g.api.image.download_np(context["image_id"])
+        base_image_np = get_image_by_id(int(context["image_id"]))
     elif "image_hash" in context:
         img_path = os.path.join(g.img_dir, "base_image.png")
         base_image_np = get_image_by_hash(context["image_hash"], img_path)
@@ -90,15 +91,19 @@ def unpack_bitmap(bitmap, bbox_origin_y, bbox_origin_x):
     return bitmap_origin, bitmap_data
 
 
+@functools.lru_cache(maxsize=100)
 def get_image_by_hash(hash, save_path):
-    if g.cache.get(hash) is None:
-        g.api.image.download_paths_by_hashes([hash], [save_path])
-        base_image = sly.image.read(save_path)
-        g.cache.add(hash, base_image, expire=g.cache_item_expire_time)
-        silent_remove(save_path)
-    else:
-        base_image = g.cache.get(hash)
+
+    g.api.image.download_paths_by_hashes([hash], [save_path])
+    base_image = sly.image.read(save_path)
+    silent_remove(save_path)
+
     return base_image
+
+
+@functools.lru_cache(maxsize=100)
+def get_image_by_id(image_id):
+    return g.api.image.download_np(image_id)
 
 
 def get_bitmap_from_mask(mask, cropped_shape):

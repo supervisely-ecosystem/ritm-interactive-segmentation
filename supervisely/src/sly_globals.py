@@ -16,8 +16,8 @@ img_dir = os.path.join(work_dir, "img")
 
 # Create Cache
 cache_dir = os.path.join(work_dir, "diskcache")
-cache = Cache(directory=cache_dir)
-cache_item_expire_time = 600  # seconds
+# cache = Cache(directory=cache_dir)
+# cache_item_expire_time = 600  # seconds
 mkdir(cache_dir)
 mkdir(img_dir)
 
