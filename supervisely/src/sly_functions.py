@@ -9,15 +9,53 @@ from isegm.inference.clicker import Click
 from supervisely_lib.io.fs import silent_remove
 
 
+def download_volume_slice_as_np(
+    volume_id: int,
+    slice_index: int,
+    normal: dict,
+    window_center: float,
+    window_width: int,
+) -> np.ndarray:
+    data = {
+        "volumeId": volume_id,
+        "sliceIndex": slice_index,
+        "normal": {"x": normal["x"], "y": normal["y"], "z": normal["z"]},
+        "windowCenter": window_center,
+        "windowWidth": window_width,
+    }
+
+    image_bytes = g.api.post(
+        method="volumes.slices.images.download", data=data, stream=True
+    ).content
+
+    return sly.image.read_bytes(image_bytes)
+
+
 def download_image_from_context(context):
     if "image_id" in context:
-        base_image_np = get_image_by_id(int(context["image_id"]))
+        return g.api.image.download_np(context["image_id"])
     elif "image_hash" in context:
         img_path = os.path.join(g.img_dir, "base_image.png")
-        base_image_np = get_image_by_hash(context["image_hash"], img_path)
+        return get_image_by_hash(context["image_hash"], img_path)
+    elif "volume" in context:
+        volume_id = context["volume"]["volume_id"]
+        slice_index = context["volume"]["slice_index"]
+        normal = context["volume"]["normal"]
+        window_center = context["volume"]["window_center"]
+        window_width = context["volume"]["window_width"]
+        return download_volume_slice_as_np(
+            volume_id=volume_id,
+            slice_index=slice_index,
+            normal=normal,
+            window_center=window_center,
+            window_width=window_width,
+        )
+    elif "video" in context:
+        return g.api.video.frame.download_np(
+            context["video"]["video_id"], context["video"]["frame_index"]
+        )
     else:
-        base_image_np = g.api.video.frame.download_np(context["video"]["video_id"], context["video"]["frame_index"])
-    return base_image_np
+        raise Exception("Project type is not supported")
 
 
 def get_smart_bbox(crop):
