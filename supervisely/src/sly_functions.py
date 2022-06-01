@@ -1,61 +1,23 @@
-import math
+import functools
 import os
-from typing import Dict
-
+import math
 import numpy as np
-import supervisely as sly
-from isegm.inference.clicker import Click
-from supervisely.io.fs import silent_remove
-
 import mask_image
 import sly_globals as g
-
-
-def download_volume_slice_as_np(
-    volume_id: int,
-    slice_index: int,
-    normal: Dict[str, int],
-    window_center: float,
-    window_width: int,
-) -> np.ndarray:
-    data = {
-        "volumeId": volume_id,
-        "sliceIndex": slice_index,
-        "normal": {"x": normal["x"], "y": normal["y"], "z": normal["z"]},
-        "windowCenter": window_center,
-        "windowWidth": window_width,
-    }
-
-    image_bytes = g.api.post(
-        method="volumes.slices.images.download", data=data, stream=True
-    ).content
-
-    return sly.image.read_bytes(image_bytes)
+import supervisely_lib as sly
+from isegm.inference.clicker import Click
+from supervisely_lib.io.fs import silent_remove
 
 
 def download_image_from_context(context):
     if "image_id" in context:
-        return g.api.image.download_np(context["image_id"])
+        base_image_np = get_image_by_id(int(context["image_id"]))
     elif "image_hash" in context:
         img_path = os.path.join(g.img_dir, "base_image.png")
-        return get_image_by_hash(context["image_hash"], img_path)
-    elif "volume" in context:
-        volume_id = context["volume"]["volume_id"]
-        slice_index = context["volume"]["slice_index"]
-        normal = context["volume"]["normal"]
-        window_center = context["volume"]["window_center"]
-        window_width = context["volume"]["window_width"]
-        return download_volume_slice_as_np(
-            volume_id=volume_id,
-            slice_index=slice_index,
-            normal=normal,
-            window_center=window_center,
-            window_width=window_width,
-        )
+        base_image_np = get_image_by_hash(context["image_hash"], img_path)
     else:
-        return g.api.video.frame.download_np(
-            context["video"]["video_id"], context["video"]["frame_index"]
-        )
+        base_image_np = g.api.video.frame.download_np(context["video"]["video_id"], context["video"]["frame_index"])
+    return base_image_np
 
 
 def get_smart_bbox(crop):
@@ -64,9 +26,7 @@ def get_smart_bbox(crop):
     return x1, y1, x2, y2
 
 
-def get_pos_neg_points_list_from_context_bbox_relative(
-    x1, y1, pos_points, neg_points, cropped_shape, resized_shape
-):
+def get_pos_neg_points_list_from_context_bbox_relative(x1, y1, pos_points, neg_points, cropped_shape, resized_shape):
     width_scale = 1
     height_scale = 1
     if resized_shape is not None:
@@ -125,24 +85,25 @@ def get_pos_neg_points_list_from_context(context):
 def unpack_bitmap(bitmap, bbox_origin_y, bbox_origin_x):
     bitmap_json = bitmap.to_json()["bitmap"]
     bitmap_origin = bitmap_json["origin"]
-    bitmap_origin = {
-        "y": bbox_origin_y + bitmap_origin[1],
-        "x": bbox_origin_x + bitmap_origin[0],
-    }
+    bitmap_origin = {"y": bbox_origin_y + bitmap_origin[1], "x": bbox_origin_x + bitmap_origin[0]}
 
     bitmap_data = bitmap_json["data"]
     return bitmap_origin, bitmap_data
 
 
+@functools.lru_cache(maxsize=100)
 def get_image_by_hash(hash, save_path):
-    if g.cache.get(hash) is None:
-        g.api.image.download_paths_by_hashes([hash], [save_path])
-        base_image = sly.image.read(save_path)
-        g.cache.add(hash, base_image, expire=g.cache_item_expire_time)
-        silent_remove(save_path)
-    else:
-        base_image = g.cache.get(hash)
+
+    g.api.image.download_paths_by_hashes([hash], [save_path])
+    base_image = sly.image.read(save_path)
+    silent_remove(save_path)
+
     return base_image
+
+
+@functools.lru_cache(maxsize=100)
+def get_image_by_id(image_id):
+    return g.api.image.download_np(image_id)
 
 
 def get_bitmap_from_mask(mask, cropped_shape):
@@ -156,7 +117,7 @@ def get_bitmap_from_mask(mask, cropped_shape):
 
 
 def optimize_crop(crop_np):
-    max_crop_dim = 1000  # limits max crop dimension for app optimization
+    max_crop_dim = 1000 # limits max crop dimension for app optimization
     resized_shape = None
     height, width = crop_np.shape[:2]
     if height > max_crop_dim or width > max_crop_dim:
@@ -187,9 +148,8 @@ def process_bitmap_from_clicks(data):
     crop_np = sly.image.crop(base_image_np, bbox)
 
     crop_np, cropped_shape, resized_shape = optimize_crop(crop_np)
-    pos_points, neg_points = get_pos_neg_points_list_from_context_bbox_relative(
-        x1, y1, pos_points, neg_points, cropped_shape, resized_shape
-    )
+    pos_points, neg_points = get_pos_neg_points_list_from_context_bbox_relative(x1, y1, pos_points, neg_points,
+                                                                                  cropped_shape, resized_shape)
     clicks_list = get_click_list_from_points(pos_points, neg_points)
 
     res_mask = mask_image.get_mask_from_clicks(crop_np, clicks_list)
