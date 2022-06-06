@@ -3,8 +3,12 @@
   "type": "app",
   "restart_policy": "on_error",
   "categories": [
-    "Neural Network",
-    "SmartTool"
+    "neural network",
+    "images",
+    "videos",
+    "dicom",
+    "interactive segmentation",
+    "serve"
   ],
   "description": "State of the art object segmentation model in Labeleing Interface",
   "need_gpu": true,
