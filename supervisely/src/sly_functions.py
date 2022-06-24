@@ -152,6 +152,7 @@ def get_bitmap_from_mask(mask, cropped_shape):
         bitmap = bitmap.resize(mask_shape, cropped_shape)
 
     return bitmap
+ 
 
 
 def optimize_crop(crop_np):
@@ -191,7 +192,7 @@ def process_bitmap_from_clicks(data):
     clicks_list = get_click_list_from_points(pos_points, neg_points)
 
     res_mask = mask_image.get_mask_from_clicks(crop_np, clicks_list)
-    if res_mask is not None:
+    if res_mask is not None and np.any(np.array(res_mask, dtype=bool)):
         bitmap = get_bitmap_from_mask(res_mask, cropped_shape)
         bitmap_origin, bitmap_data = unpack_bitmap(bitmap, y1, x1)
     else:
