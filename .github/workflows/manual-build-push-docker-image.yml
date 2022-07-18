@@ -29,5 +29,5 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          file: docker/Dockerfile
+          file: supervisely/docker/Dockerfile
           tags: supervisely/ritm:${{ github.event.inputs.tag_version }}
