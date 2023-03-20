@@ -1,4 +1,5 @@
 import functools
+from time import sleep
 
 # Source dirs
 import sys
@@ -55,6 +56,7 @@ def is_online(api: sly.Api, task_id, context, state, app_logger):
 @sly.timeit
 @send_error_data
 def smart_segmentation(api: sly.Api, task_id, context, state, app_logger):
+    sleep(5)
     bitmap_origin, bitmap_data = f.process_bitmap_from_clicks(context)
     request_id = context["request_id"]
     g.my_app.send_response(
