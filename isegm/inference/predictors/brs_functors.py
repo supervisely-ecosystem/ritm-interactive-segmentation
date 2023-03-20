@@ -6,14 +6,17 @@ from .brs_losses import BRSMaskLoss
 
 
 class BaseOptimizer:
-    def __init__(self, optimizer_params,
-                 prob_thresh=0.49,
-                 reg_weight=1e-3,
-                 min_iou_diff=0.01,
-                 brs_loss=BRSMaskLoss(),
-                 with_flip=False,
-                 flip_average=False,
-                 **kwargs):
+    def __init__(
+        self,
+        optimizer_params,
+        prob_thresh=0.49,
+        reg_weight=1e-3,
+        min_iou_diff=0.01,
+        brs_loss=BRSMaskLoss(),
+        with_flip=False,
+        flip_average=False,
+        **kwargs
+    ):
         self.brs_loss = brs_loss
         self.optimizer_params = optimizer_params
         self.prob_thresh = prob_thresh
@@ -51,7 +54,7 @@ class BaseOptimizer:
             if self.with_flip and self.flip_average:
                 result, result_flipped = torch.chunk(result, 2, dim=0)
                 result = 0.5 * (result + torch.flip(result_flipped, dims=[3]))
-                pos_mask, neg_mask = pos_mask[:result.shape[0]], neg_mask[:result.shape[0]]
+                pos_mask, neg_mask = pos_mask[: result.shape[0]], neg_mask[: result.shape[0]]
 
             loss, f_max_pos, f_max_neg = self.brs_loss(result, pos_mask, neg_mask)
             loss = loss + reg_loss
@@ -72,7 +75,7 @@ class BaseOptimizer:
         self._last_mask = current_mask
 
         loss.backward()
-        f_grad = opt_params.grad.cpu().numpy().ravel().astype(np.float)
+        f_grad = opt_params.grad.cpu().numpy().ravel().astype(float)
 
         return [f_val, f_grad]
 
@@ -99,11 +102,13 @@ class ScaleBiasOptimizer(BaseOptimizer):
 
     def unpack_opt_params(self, opt_params):
         scale, bias = torch.chunk(opt_params, 2, dim=0)
-        reg_loss = self.reg_weight * (torch.sum(scale**2) + self.reg_bias_weight * torch.sum(bias**2))
+        reg_loss = self.reg_weight * (
+            torch.sum(scale**2) + self.reg_bias_weight * torch.sum(bias**2)
+        )
 
-        if self.scale_act == 'tanh':
+        if self.scale_act == "tanh":
             scale = torch.tanh(scale)
-        elif self.scale_act == 'sin':
+        elif self.scale_act == "sin":
             scale = torch.sin(scale)
 
         return (1 + scale, bias), reg_loss

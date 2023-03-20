@@ -4,9 +4,9 @@ import math
 import numpy as np
 import mask_image
 import sly_globals as g
-import supervisely_lib as sly
+import supervisely as sly
 from isegm.inference.clicker import Click
-from supervisely_lib.io.fs import silent_remove
+from supervisely.io.fs import silent_remove
 
 
 def download_volume_slice_as_np(
@@ -64,7 +64,9 @@ def get_smart_bbox(crop):
     return x1, y1, x2, y2
 
 
-def get_pos_neg_points_list_from_context_bbox_relative(x1, y1, pos_points, neg_points, cropped_shape, resized_shape):
+def get_pos_neg_points_list_from_context_bbox_relative(
+    x1, y1, pos_points, neg_points, cropped_shape, resized_shape
+):
     width_scale = 1
     height_scale = 1
     if resized_shape is not None:
@@ -152,11 +154,10 @@ def get_bitmap_from_mask(mask, cropped_shape):
         bitmap = bitmap.resize(mask_shape, cropped_shape)
 
     return bitmap
- 
 
 
 def optimize_crop(crop_np):
-    max_crop_dim = 1000 # limits max crop dimension for app optimization
+    max_crop_dim = 1000  # limits max crop dimension for app optimization
     resized_shape = None
     height, width = crop_np.shape[:2]
     if height > max_crop_dim or width > max_crop_dim:
@@ -187,8 +188,9 @@ def process_bitmap_from_clicks(data):
     crop_np = sly.image.crop(base_image_np, bbox)
 
     crop_np, cropped_shape, resized_shape = optimize_crop(crop_np)
-    pos_points, neg_points = get_pos_neg_points_list_from_context_bbox_relative(x1, y1, pos_points, neg_points,
-                                                                                  cropped_shape, resized_shape)
+    pos_points, neg_points = get_pos_neg_points_list_from_context_bbox_relative(
+        x1, y1, pos_points, neg_points, cropped_shape, resized_shape
+    )
     clicks_list = get_click_list_from_points(pos_points, neg_points)
 
     res_mask = mask_image.get_mask_from_clicks(crop_np, clicks_list)
