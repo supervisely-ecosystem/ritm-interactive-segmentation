@@ -1,4 +1,5 @@
 import sly_globals as g
+import supervisely as sly
 
 # from isegm.inference.clicker import Click
 
@@ -12,7 +13,8 @@ def get_mask_from_clicks(image_np, clicks_list):
     try:
         res_mask = g.CONTROLLER.result_mask
         g.CONTROLLER.set_mask(res_mask)
-    except ValueError(f"Couldn't process image"):
+    except ValueError as e:
+        sly.logger.error(f"Couldn't process image. Error:{e}")
         res_mask = None
 
     g.CONTROLLER.finish_object()

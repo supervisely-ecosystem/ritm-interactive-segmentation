@@ -6,9 +6,9 @@ import isegm.model.initializer as initializer
 
 def select_activation_function(activation):
     if isinstance(activation, str):
-        if activation.lower() == 'relu':
+        if activation.lower() == "relu":
             return nn.ReLU
-        elif activation.lower() == 'softplus':
+        elif activation.lower() == "softplus":
             return nn.Softplus
         else:
             raise ValueError(f"Unknown activation type {activation}")
@@ -24,12 +24,14 @@ class BilinearConvTranspose2d(nn.ConvTranspose2d):
         self.scale = scale
 
         super().__init__(
-            in_channels, out_channels,
+            in_channels,
+            out_channels,
             kernel_size=kernel_size,
             stride=scale,
             padding=1,
             groups=groups,
-            bias=False)
+            bias=False,
+        )
 
         self.apply(initializer.Bilinear(scale=scale, in_channels=in_channels, groups=groups))
 
@@ -43,6 +45,7 @@ class DistMaps(nn.Module):
         self.use_disks = use_disks
         if self.cpu_mode:
             from isegm.utils.cython import get_dist_maps
+
             self._get_dist_maps = get_dist_maps
 
     def get_coord_features(self, points, batchsize, rows, cols):
@@ -50,8 +53,9 @@ class DistMaps(nn.Module):
             coords = []
             for i in range(batchsize):
                 norm_delimeter = 1.0 if self.use_disks else self.spatial_scale * self.norm_radius
-                coords.append(self._get_dist_maps(points[i].cpu().float().numpy(), rows, cols,
-                                                  norm_delimeter))
+                coords.append(
+                    self._get_dist_maps(points[i].cpu().float().numpy(), rows, cols, norm_delimeter)
+                )
             coords = torch.from_numpy(np.stack(coords, axis=0)).to(points.device).float()
         else:
             num_points = points.shape[1] // 2
@@ -59,11 +63,19 @@ class DistMaps(nn.Module):
             points, points_order = torch.split(points, [2, 1], dim=1)
 
             invalid_points = torch.max(points, dim=1, keepdim=False)[0] < 0
-            row_array = torch.arange(start=0, end=rows, step=1, dtype=torch.float32, device=points.device)
-            col_array = torch.arange(start=0, end=cols, step=1, dtype=torch.float32, device=points.device)
+            row_array = torch.arange(
+                start=0, end=rows, step=1, dtype=torch.float32, device=points.device
+            )
+            col_array = torch.arange(
+                start=0, end=cols, step=1, dtype=torch.float32, device=points.device
+            )
 
-            coord_rows, coord_cols = torch.meshgrid(row_array, col_array)
-            coords = torch.stack((coord_rows, coord_cols), dim=0).unsqueeze(0).repeat(points.size(0), 1, 1, 1)
+            coord_rows, coord_cols = torch.meshgrid(row_array, col_array, indexing="ij")
+            coords = (
+                torch.stack((coord_rows, coord_cols), dim=0)
+                .unsqueeze(0)
+                .repeat(points.size(0), 1, 1, 1)
+            )
 
             add_xy = (points * self.spatial_scale).view(points.size(0), points.size(1), 1, 1)
             coords.add_(-add_xy)
@@ -95,9 +107,7 @@ class ScaleLayer(nn.Module):
     def __init__(self, init_value=1.0, lr_mult=1):
         super().__init__()
         self.lr_mult = lr_mult
-        self.scale = nn.Parameter(
-            torch.full((1,), init_value / lr_mult, dtype=torch.float32)
-        )
+        self.scale = nn.Parameter(torch.full((1,), init_value / lr_mult, dtype=torch.float32))
 
     def forward(self, x):
         scale = torch.abs(self.scale * self.lr_mult)
