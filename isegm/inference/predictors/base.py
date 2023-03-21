@@ -13,7 +13,7 @@ class BasePredictor(object):
         with_flip=False,
         zoom_in=None,
         max_size=None,
-        **kwargs
+        **kwargs,
     ):
         self.with_flip = with_flip
         self.net_clicks_limit = net_clicks_limit

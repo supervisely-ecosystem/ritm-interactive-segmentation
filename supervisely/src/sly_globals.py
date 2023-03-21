@@ -1,4 +1,5 @@
 import os
+import queue
 
 import supervisely as sly
 from diskcache import Cache
@@ -74,3 +75,5 @@ available_brs_modes = [
     "f-BRS-C",
 ]
 BRS_MODE = available_brs_modes[BRS_MODE]
+
+q = queue.Queue()

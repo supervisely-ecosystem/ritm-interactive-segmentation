@@ -6,6 +6,8 @@ import sys
 from pathlib import Path
 
 import supervisely as sly
+import threading
+
 
 repo_root_source_dir = str(Path(sys.argv[0]).parents[2])
 sly.logger.info(f"Repo root source directory: {repo_root_source_dir}")
@@ -22,8 +24,22 @@ sys.path.append(sources_dir)
 import load_model
 import sly_functions as f
 import sly_globals as g
+import time
 
-# import tracemalloc
+
+def process_queue():
+    task_n = 0
+    while True:
+        start_time = time.time()
+        item = g.q.get()
+        callback, args = item
+        callback(*args)
+        g.q.task_done()
+
+        task_n += 1
+        elapsed_time = time.time() - start_time
+        message = f"Click: {task_n}. Time: {elapsed_time}"
+        sly.logger.debug(message)
 
 
 def send_error_data(func):
@@ -55,8 +71,12 @@ def is_online(api: sly.Api, task_id, context, state, app_logger):
 @g.my_app.callback("smart_segmentation")
 @sly.timeit
 @send_error_data
+def add_item(api: sly.Api, task_id, context, state, app_logger):
+    item = (smart_segmentation, (api, task_id, context, state, app_logger))
+    g.q.put(item)
+
+
 def smart_segmentation(api: sly.Api, task_id, context, state, app_logger):
-    sleep(5)
     bitmap_origin, bitmap_data = f.process_bitmap_from_clicks(context)
     request_id = context["request_id"]
     g.my_app.send_response(
@@ -102,6 +122,10 @@ def main():
     )
 
     load_model.deploy()
+
+    t = threading.Thread(target=process_queue)
+    t.daemon = True
+    t.start()
     g.my_app.run()
 
 
