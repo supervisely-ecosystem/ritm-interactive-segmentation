@@ -179,7 +179,7 @@ def optimize_crop(crop_np):
     return crop_np, cropped_shape, resized_shape
 
 
-def process_bitmap_from_clicks(data):
+def process_bitmap_from_clicks(data, controller):
     x1, y1, x2, y2 = get_smart_bbox(data["crop"])
     pos_points, neg_points = get_pos_neg_points_list_from_context(data)
     bbox = sly.Rectangle(y1, x1, y2, x2)
@@ -193,7 +193,7 @@ def process_bitmap_from_clicks(data):
     )
     clicks_list = get_click_list_from_points(pos_points, neg_points)
 
-    res_mask = mask_image.get_mask_from_clicks(crop_np, clicks_list)
+    res_mask = mask_image.get_mask_from_clicks(controller, crop_np, clicks_list)
     if res_mask is not None and np.any(np.array(res_mask, dtype=bool)):
         bitmap = get_bitmap_from_mask(res_mask, cropped_shape)
         bitmap_origin, bitmap_data = unpack_bitmap(bitmap, y1, x1)

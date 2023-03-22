@@ -54,6 +54,8 @@ else:
 from interactive_demo.controller import InteractiveController
 
 CONTROLLER: InteractiveController = None
+NET = None
+PREDICTOR_PARAMS = None
 DEVICE = os.environ["modal.state.device"]
 BRS_MODE = int(os.environ["modal.state.brs_mode"])
 PROB_THRESH = float(os.environ["modal.state.prob_thresh"])

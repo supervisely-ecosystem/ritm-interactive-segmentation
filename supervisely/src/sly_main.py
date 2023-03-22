@@ -23,6 +23,7 @@ sys.path.append(sources_dir)
 import load_model
 import sly_functions as f
 import sly_globals as g
+from interactive_demo.controller import InteractiveController
 
 
 def send_error_data(func):
@@ -55,7 +56,14 @@ def is_online(api: sly.Api, task_id, context, state, app_logger):
 @sly.timeit
 @send_error_data
 def smart_segmentation(api: sly.Api, task_id, context, state, app_logger):
-    bitmap_origin, bitmap_data = f.process_bitmap_from_clicks(context)
+    controller = InteractiveController(
+        net=g.NET,
+        device=g.DEVICE,
+        predictor_params=g.PREDICTOR_PARAMS,
+        prob_thresh=g.PROB_THRESH,
+    )
+
+    bitmap_origin, bitmap_data = f.process_bitmap_from_clicks(context, controller)
     request_id = context["request_id"]
     g.my_app.send_response(
         request_id,
