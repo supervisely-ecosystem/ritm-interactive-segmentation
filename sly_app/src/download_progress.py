@@ -15,7 +15,7 @@ def _set_progress(api, task_id, message, current_label, total_label, current, to
         {"field": "data.currentProgress", "payload": current},
         {"field": "data.totalProgress", "payload": total},
     ]
-    # api.task.set_fields(task_id, fields)
+    api.task.set_fields(task_id, fields)
 
 
 def update_progress(count, api: sly.Api, task_id, progress: sly.Progress):

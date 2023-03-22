@@ -60,6 +60,8 @@ class BasePredictor(object):
                 self.net = self.click_models[model_indx]
 
         input_image = self.original_image
+        if input_image is None:
+            print(input_image)
         if prev_mask is None:
             prev_mask = self.prev_prediction
         if hasattr(self.net, "with_prev_mask") and self.net.with_prev_mask:

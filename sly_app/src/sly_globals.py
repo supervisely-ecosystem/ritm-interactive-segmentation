@@ -9,16 +9,16 @@ from interactive_demo.controller import InteractiveController
 if sly.is_development():
     load_dotenv("sly_app/local.env")
     load_dotenv(os.path.expanduser("~/supervisely.env"))
+    # load_dotenv(os.path.expanduser("~/supervisely_tony.env"))
 
 TASK_ID = sly.env.task_id()
 TEAM_ID = sly.env.team_id()
 DATA_DIR = sly.app.get_data_dir()
 
-# app = sly.Application()
 api: sly.Api = sly.Api()
 
 work_dir = os.path.join(DATA_DIR, "work_dir")
-mkdir(work_dir, True)
+mkdir(work_dir, False)
 img_dir = os.path.join(work_dir, "img")
 
 # Create Cache

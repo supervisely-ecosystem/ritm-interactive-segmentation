@@ -54,14 +54,14 @@ def deploy():
             model_dir = os.path.join(g.work_dir, "model")
             mkdir(model_dir)
             model_path = os.path.join(model_dir, model_name)
-            download_weights_from_link(
-                g.api,
-                model_link,
-                model_path,
-                model_name,
-                f"Download {model_name}",
-                sly.logger,
-            )
+            # download_weights_from_link(
+            #     g.api,
+            #     model_link,
+            #     model_path,
+            #     model_name,
+            #     f"Download {model_name}",
+            #     sly.logger,
+            # )
         else:
             sly.logger.info(f"{model_name} has been loaded from docker image")
 
