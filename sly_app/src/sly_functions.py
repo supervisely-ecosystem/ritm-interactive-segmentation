@@ -2,8 +2,8 @@ import functools
 import os
 import math
 import numpy as np
-import mask_image
-import sly_globals as g
+import sly_app.src.mask_image as mask_image
+import sly_app.src.sly_globals as g
 import supervisely as sly
 from isegm.inference.clicker import Click
 from supervisely.io.fs import silent_remove

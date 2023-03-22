@@ -11,6 +11,27 @@
             "env": {
                 "PYTHONPATH": "${workspaceFolder}:${PYTHONPATH}"
             }
+        },
+        {
+            "name": "app with UI",
+            "type": "python",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+                "sly_app.src.sly_main:app",
+                "--host",
+                "0.0.0.0",
+                "--port",
+                "8000",
+                "--ws",
+                "websockets"
+            ],
+            "jinja": true,
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}:${PYTHONPATH}",
+                "LOG_LEVEL": "DEBUG",
+            }
         }
     ]
 }

@@ -4,22 +4,21 @@ import requests
 import supervisely as sly
 import torch
 from interactive_demo.controller import InteractiveController
+
 from isegm.inference.utils import load_is_model
 from supervisely.io.fs import download, get_file_name_with_ext, mkdir
 
-import download_progress
-import sly_globals as g
+import sly_app.src.download_progress as download_progress
+import sly_app.src.sly_globals as g
 
 
-def download_weights_from_link(
-    api, link, save_path, file_name, progress_message, app_logger
-):
+def download_weights_from_link(api, link, save_path, file_name, progress_message, app_logger):
     response = requests.head(link, allow_redirects=True)
     sizeb = int(response.headers.get("content-length", 0))
     progress_cb = download_progress.get_progress_cb(
         api, g.TASK_ID, progress_message, sizeb, is_size=True
     )
-    download(link, save_path, cache=g.my_app.cache, progress=progress_cb)
+    download(link, save_path, progress=progress_cb)
     download_progress.reset_progress(api, g.TASK_ID)
     app_logger.info(f"{file_name} has been successfully downloaded")
 
@@ -34,9 +33,7 @@ def download_weights_from_team_files(model_info, save_path, app_logger):
         save_path,
         progress_cb=progress.iters_done_report,
     )
-    app_logger.info(
-        f"{model_info.name} has been successfully downloaded from Team Files"
-    )
+    app_logger.info(f"{model_info.name} has been successfully downloaded from Team Files")
 
 
 def deploy():
@@ -63,10 +60,10 @@ def deploy():
                 model_path,
                 model_name,
                 f"Download {model_name}",
-                g.my_app.logger,
+                sly.logger,
             )
         else:
-            g.my_app.logger.info(f"{model_name} has been loaded from docker image")
+            sly.logger.info(f"{model_name} has been loaded from docker image")
 
     else:
         model_name = get_file_name_with_ext(g.CUSTOM_WEIGHTS_PATH)

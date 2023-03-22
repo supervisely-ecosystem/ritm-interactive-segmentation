@@ -1,12 +1,10 @@
 import functools
-from time import sleep
 
 # Source dirs
 import sys
 from pathlib import Path
 
 import supervisely as sly
-
 
 repo_root_source_dir = str(Path(sys.argv[0]).parents[2])
 sly.logger.info(f"Repo root source directory: {repo_root_source_dir}")
@@ -20,9 +18,9 @@ sources_dir = str(Path(sys.argv[0]).parents[0])
 sly.logger.info(f"Source directory: {sources_dir}")
 sys.path.append(sources_dir)
 
-import load_model
-import sly_functions as f
-import sly_globals as g
+import sly_app.src.load_model as load_model
+import sly_app.src.sly_functions as f
+import sly_app.src.sly_globals as g
 
 
 def send_error_data(func):
@@ -43,18 +41,18 @@ def send_error_data(func):
     return wrapper
 
 
-@g.my_app.callback("is_online")
-@sly.timeit
+# @g.my_app.callback("is_online")
 @send_error_data
 def is_online(api: sly.Api, task_id, context, state, app_logger):
     request_id = context["request_id"]
     g.my_app.send_response(request_id, data={"is_online": True})
 
 
-@g.my_app.callback("smart_segmentation")
-@sly.timeit
+# @g.my_app.callback("smart_segmentation")
 @send_error_data
 def smart_segmentation(api: sly.Api, task_id, context, state, app_logger):
+    print("Clicks coords in context")
+    print(f"Context: {context}")
     bitmap_origin, bitmap_data = f.process_bitmap_from_clicks(context)
     request_id = context["request_id"]
     g.my_app.send_response(
@@ -68,8 +66,7 @@ def smart_segmentation(api: sly.Api, task_id, context, state, app_logger):
     )
 
 
-@g.my_app.callback("smart_segmentation_batched")
-@sly.timeit
+# @g.my_app.callback("smart_segmentation_batched")
 @send_error_data
 def smart_segmentation_batched(api: sly.Api, task_id, context, state, app_logger):
     response_batch = {}
@@ -85,7 +82,7 @@ def smart_segmentation_batched(api: sly.Api, task_id, context, state, app_logger
     g.my_app.send_response(request_id, data=response_batch)
 
 
-def main():
+def run_model():
     sly.logger.info(
         "Script arguments",
         extra={
@@ -100,8 +97,7 @@ def main():
     )
 
     load_model.deploy()
-    g.my_app.run()
 
 
-if __name__ == "__main__":
-    sly.main_wrapper("main", main)
+app = sly.Application()
+run_model()

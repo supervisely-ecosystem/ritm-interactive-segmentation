@@ -2,21 +2,22 @@ import os
 
 import supervisely as sly
 from diskcache import Cache
-from supervisely.app.v1.app_service import AppService
 from supervisely.io.fs import get_file_ext, get_file_name_with_ext, mkdir
 from dotenv import load_dotenv
+from interactive_demo.controller import InteractiveController
 
 if sly.is_development():
-    load_dotenv("supervisely/local.env")
+    load_dotenv("sly_app/local.env")
     load_dotenv(os.path.expanduser("~/supervisely.env"))
 
 TASK_ID = sly.env.task_id()
 TEAM_ID = sly.env.team_id()
+DATA_DIR = sly.app.get_data_dir()
 
-my_app = AppService()
-api: sly.Api = my_app.public_api
+# app = sly.Application()
+api: sly.Api = sly.Api()
 
-work_dir = os.path.join(my_app.data_dir, "work_dir")
+work_dir = os.path.join(DATA_DIR, "work_dir")
 mkdir(work_dir, True)
 img_dir = os.path.join(work_dir, "img")
 
@@ -51,9 +52,8 @@ else:
     MODEL_NAME = get_file_name_with_ext(CUSTOM_WEIGHTS_PATH)
 
 ### PARAMS
-from interactive_demo.controller import InteractiveController
-
 CONTROLLER: InteractiveController = None
+
 DEVICE = os.environ["modal.state.device"]
 BRS_MODE = int(os.environ["modal.state.brs_mode"])
 PROB_THRESH = float(os.environ["modal.state.prob_thresh"])

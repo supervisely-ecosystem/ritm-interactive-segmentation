@@ -8,3 +8,4 @@ pretrained_models
 *.yml
 venv
 .venv
+sly_app/src/debug
