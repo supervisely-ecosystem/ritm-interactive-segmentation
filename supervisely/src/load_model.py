@@ -71,8 +71,10 @@ def deploy():
             raise FileNotFoundError(f"Weights file not found: {g.CUSTOM_WEIGHTS_PATH}")
         download_weights_from_team_files(model_info, model_path, g.my_app.logger)
 
-    model = torch.load(model_path, map_location=torch.device(g.DEVICE))
-    g.NET = load_is_model(model, g.DEVICE)
+    device_str = g.DEVICE
+    device_int = int(g.DEVICE[-1])
+    model = torch.load(model_path, map_location=torch.device(device_int))
+    g.NET = load_is_model(model, device_str)
     g.PREDICTOR_PARAMS = {
         "brs_mode": g.BRS_MODE,
         "prob_thresh": g.PROB_THRESH,
