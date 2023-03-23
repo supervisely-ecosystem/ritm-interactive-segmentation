@@ -12,7 +12,7 @@
   ],
   "description": "State of the art object segmentation model in Labeleing Interface",
   "need_gpu": true,
-  "docker_image": "supervisely/ritm:1.1.2",
+  "docker_image": "supervisely/ritm:1.2.0",
   "main_script": "supervisely/src/sly_main.py",
   "modal_template": "supervisely/src/modal.html",
   "modal_template_state": {
@@ -31,9 +31,7 @@
   "icon_background": "#FFFFFF",
   "headless": true,
   "instance_version": "6.5.1",
-  "session_tags": [
-    "sly_smart_annotation"
-  ],
+  "session_tags": ["sly_smart_annotation"],
   "poster": "https://i.imgur.com/8RaxwK2.png",
   "community_agent": false
 }
