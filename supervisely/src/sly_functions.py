@@ -1,12 +1,14 @@
 import functools
-import os
 import math
+import os
+
 import numpy as np
+import supervisely as sly
+from isegm.inference.clicker import Click
+from supervisely.io.fs import silent_remove
+
 import mask_image
 import sly_globals as g
-import supervisely_lib as sly
-from isegm.inference.clicker import Click
-from supervisely_lib.io.fs import silent_remove
 
 
 def download_volume_slice_as_np(
@@ -64,7 +66,9 @@ def get_smart_bbox(crop):
     return x1, y1, x2, y2
 
 
-def get_pos_neg_points_list_from_context_bbox_relative(x1, y1, pos_points, neg_points, cropped_shape, resized_shape):
+def get_pos_neg_points_list_from_context_bbox_relative(
+    x1, y1, pos_points, neg_points, cropped_shape, resized_shape
+):
     width_scale = 1
     height_scale = 1
     if resized_shape is not None:
@@ -131,7 +135,6 @@ def unpack_bitmap(bitmap, bbox_origin_y, bbox_origin_x):
 
 @functools.lru_cache(maxsize=100)
 def get_image_by_hash(hash, save_path):
-
     g.api.image.download_paths_by_hashes([hash], [save_path])
     base_image = sly.image.read(save_path)
     silent_remove(save_path)
@@ -152,11 +155,10 @@ def get_bitmap_from_mask(mask, cropped_shape):
         bitmap = bitmap.resize(mask_shape, cropped_shape)
 
     return bitmap
- 
 
 
 def optimize_crop(crop_np):
-    max_crop_dim = 1000 # limits max crop dimension for app optimization
+    max_crop_dim = 1000  # limits max crop dimension for app optimization
     resized_shape = None
     height, width = crop_np.shape[:2]
     if height > max_crop_dim or width > max_crop_dim:
@@ -178,7 +180,7 @@ def optimize_crop(crop_np):
     return crop_np, cropped_shape, resized_shape
 
 
-def process_bitmap_from_clicks(data):
+def process_bitmap_from_clicks(data, controller):
     x1, y1, x2, y2 = get_smart_bbox(data["crop"])
     pos_points, neg_points = get_pos_neg_points_list_from_context(data)
     bbox = sly.Rectangle(y1, x1, y2, x2)
@@ -187,11 +189,12 @@ def process_bitmap_from_clicks(data):
     crop_np = sly.image.crop(base_image_np, bbox)
 
     crop_np, cropped_shape, resized_shape = optimize_crop(crop_np)
-    pos_points, neg_points = get_pos_neg_points_list_from_context_bbox_relative(x1, y1, pos_points, neg_points,
-                                                                                  cropped_shape, resized_shape)
+    pos_points, neg_points = get_pos_neg_points_list_from_context_bbox_relative(
+        x1, y1, pos_points, neg_points, cropped_shape, resized_shape
+    )
     clicks_list = get_click_list_from_points(pos_points, neg_points)
 
-    res_mask = mask_image.get_mask_from_clicks(crop_np, clicks_list)
+    res_mask = mask_image.get_mask_from_clicks(controller, crop_np, clicks_list)
     if res_mask is not None and np.any(np.array(res_mask, dtype=bool)):
         bitmap = get_bitmap_from_mask(res_mask, cropped_shape)
         bitmap_origin, bitmap_data = unpack_bitmap(bitmap, y1, x1)

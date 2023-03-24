@@ -2,14 +2,19 @@ import os
 
 import supervisely as sly
 from diskcache import Cache
+from dotenv import load_dotenv
 from supervisely.app.v1.app_service import AppService
 from supervisely.io.fs import get_file_ext, get_file_name_with_ext, mkdir
 
+if sly.is_development():
+    load_dotenv("supervisely/local.env")
+    load_dotenv(os.path.expanduser("~/supervisely.env"))
+
+TASK_ID = sly.env.task_id()
+TEAM_ID = sly.env.team_id()
+
 my_app = AppService()
 api: sly.Api = my_app.public_api
-
-TASK_ID = int(os.environ["TASK_ID"])
-TEAM_ID = int(os.environ["context.teamId"])
 
 work_dir = os.path.join(my_app.data_dir, "work_dir")
 mkdir(work_dir, True)
@@ -47,6 +52,8 @@ else:
 
 ### PARAMS
 CONTROLLER = None
+NET = None
+PREDICTOR_PARAMS = None
 DEVICE = os.environ["modal.state.device"]
 BRS_MODE = int(os.environ["modal.state.brs_mode"])
 PROB_THRESH = float(os.environ["modal.state.prob_thresh"])
@@ -55,8 +62,9 @@ LOG_NET_CLICKS = NET_CLICKS_LIMIT
 LBFGS_MAX_ITERS = int(os.environ["modal.state.lbfgs_max_iters"])
 UNLIMITED = os.getenv("modal.state.net_clicks_unlimited").lower() in ("true", "1", "t")
 if UNLIMITED:
-    NET_CLICKS_LIMIT = 2 ** 10000
+    NET_CLICKS_LIMIT = 2**10000
     LOG_NET_CLICKS = "INF"
+
 
 available_brs_modes = [
     "NoBRS",

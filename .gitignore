@@ -7,3 +7,7 @@ pretrained_models
 *.ipynb_checkpoints*
 *.yml
 venv
+.venv
+smart_segmentation.profile
+supervisely/src/masks
+supervisely/send_re.sh

@@ -1,6 +1,4 @@
 import functools
-
-# Source dirs
 import sys
 from pathlib import Path
 
@@ -18,11 +16,11 @@ sources_dir = str(Path(sys.argv[0]).parents[0])
 sly.logger.info(f"Source directory: {sources_dir}")
 sys.path.append(sources_dir)
 
+from interactive_demo.controller import InteractiveController
+
 import load_model
 import sly_functions as f
 import sly_globals as g
-
-# import tracemalloc
 
 
 def send_error_data(func):
@@ -55,7 +53,14 @@ def is_online(api: sly.Api, task_id, context, state, app_logger):
 @sly.timeit
 @send_error_data
 def smart_segmentation(api: sly.Api, task_id, context, state, app_logger):
-    bitmap_origin, bitmap_data = f.process_bitmap_from_clicks(context)
+    controller = InteractiveController(
+        net=g.NET,
+        device=g.DEVICE,
+        predictor_params=g.PREDICTOR_PARAMS,
+        prob_thresh=g.PROB_THRESH,
+    )
+
+    bitmap_origin, bitmap_data = f.process_bitmap_from_clicks(context, controller)
     request_id = context["request_id"]
     g.my_app.send_response(
         request_id,
@@ -76,7 +81,13 @@ def smart_segmentation_batched(api: sly.Api, task_id, context, state, app_logger
     data_to_process = context["data_to_process"]
     for idx, data in data_to_process.items():
         try:
-            bitmap_origin, bitmap_data = f.process_bitmap_from_clicks(data)
+            controller = InteractiveController(
+                net=g.NET,
+                device=g.DEVICE,
+                predictor_params=g.PREDICTOR_PARAMS,
+                prob_thresh=g.PROB_THRESH,
+            )
+            bitmap_origin, bitmap_data = f.process_bitmap_from_clicks(data, controller)
             response_batch[idx] = {"bitmap": bitmap_data, "origin": bitmap_origin}
         except Exception as ex:
             g.my_app.logger.warn(f"Couldn't process image:\n{ex}")

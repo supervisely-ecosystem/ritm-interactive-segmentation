@@ -3,7 +3,6 @@ import os
 import requests
 import supervisely as sly
 import torch
-from interactive_demo.controller import InteractiveController
 from isegm.inference.utils import load_is_model
 from supervisely.io.fs import download, get_file_name_with_ext, mkdir
 
@@ -11,9 +10,7 @@ import download_progress
 import sly_globals as g
 
 
-def download_weights_from_link(
-    api, link, save_path, file_name, progress_message, app_logger
-):
+def download_weights_from_link(api, link, save_path, file_name, progress_message, app_logger):
     response = requests.head(link, allow_redirects=True)
     sizeb = int(response.headers.get("content-length", 0))
     progress_cb = download_progress.get_progress_cb(
@@ -34,9 +31,7 @@ def download_weights_from_team_files(model_info, save_path, app_logger):
         save_path,
         progress_cb=progress.iters_done_report,
     )
-    app_logger.info(
-        f"{model_info.name} has been successfully downloaded from Team Files"
-    )
+    app_logger.info(f"{model_info.name} has been successfully downloaded from Team Files")
 
 
 def deploy():
@@ -76,9 +71,10 @@ def deploy():
             raise FileNotFoundError(f"Weights file not found: {g.CUSTOM_WEIGHTS_PATH}")
         download_weights_from_team_files(model_info, model_path, g.my_app.logger)
 
+    torch.backends.cudnn.enabled = False
     model = torch.load(model_path, map_location=torch.device(g.DEVICE))
-    model = load_is_model(model, g.DEVICE)
-    predictor_params = {
+    g.NET = load_is_model(model, g.DEVICE)
+    g.PREDICTOR_PARAMS = {
         "brs_mode": g.BRS_MODE,
         "prob_thresh": g.PROB_THRESH,
         "zoom_in_params": None,
@@ -86,7 +82,4 @@ def deploy():
         "lbfgs_params": {"maxfun": g.LBFGS_MAX_ITERS},
     }
 
-    g.CONTROLLER = InteractiveController(
-        model, g.DEVICE, predictor_params, prob_thresh=g.PROB_THRESH
-    )
     sly.logger.info(f"🟩 Model has been successfully deployed on device: {g.DEVICE}")

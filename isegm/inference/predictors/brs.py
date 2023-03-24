@@ -43,24 +43,24 @@ class BRSBasePredictor(BasePredictor):
         return pos_clicks_map, neg_clicks_map
 
     def get_states(self):
-        return {'transform_states': self._get_transform_states(), 'opt_data': self.opt_data}
+        return {"transform_states": self._get_transform_states(), "opt_data": self.opt_data}
 
     def set_states(self, states):
-        self._set_transform_states(states['transform_states'])
-        self.opt_data = states['opt_data']
+        self._set_transform_states(states["transform_states"])
+        self.opt_data = states["opt_data"]
 
 
 class FeatureBRSPredictor(BRSBasePredictor):
-    def __init__(self, model, device, opt_functor, insertion_mode='after_deeplab', **kwargs):
+    def __init__(self, model, device, opt_functor, insertion_mode="after_deeplab", **kwargs):
         super().__init__(model, device, opt_functor=opt_functor, **kwargs)
         self.insertion_mode = insertion_mode
         self._c1_features = None
 
-        if self.insertion_mode == 'after_deeplab':
+        if self.insertion_mode == "after_deeplab":
             self.num_channels = model.feature_extractor.ch
-        elif self.insertion_mode == 'after_c4':
+        elif self.insertion_mode == "after_c4":
             self.num_channels = model.feature_extractor.aspp_in_channels
-        elif self.insertion_mode == 'after_aspp':
+        elif self.insertion_mode == "after_aspp":
             self.num_channels = model.feature_extractor.ch + 32
         else:
             raise NotImplementedError
@@ -87,24 +87,27 @@ class FeatureBRSPredictor(BRSBasePredictor):
 
             scaled_backbone_features = self.input_data * scale
             scaled_backbone_features = scaled_backbone_features + bias
-            if self.insertion_mode == 'after_c4':
+            if self.insertion_mode == "after_c4":
                 x = self.net.feature_extractor.aspp(scaled_backbone_features)
-                x = F.interpolate(x, mode='bilinear', size=self._c1_features.size()[2:],
-                                  align_corners=True)
+                x = F.interpolate(
+                    x, mode="bilinear", size=self._c1_features.size()[2:], align_corners=True
+                )
                 x = torch.cat((x, self._c1_features), dim=1)
                 scaled_backbone_features = self.net.feature_extractor.head(x)
-            elif self.insertion_mode == 'after_aspp':
+            elif self.insertion_mode == "after_aspp":
                 scaled_backbone_features = self.net.feature_extractor.head(scaled_backbone_features)
 
             pred_logits = self.net.head(scaled_backbone_features)
-            pred_logits = F.interpolate(pred_logits, size=image_nd.size()[2:], mode='bilinear',
-                                        align_corners=True)
+            pred_logits = F.interpolate(
+                pred_logits, size=image_nd.size()[2:], mode="bilinear", align_corners=True
+            )
             return pred_logits
 
         self.opt_functor.init_click(get_prediction_logits, pos_mask, neg_mask, self.device)
         if num_clicks > self.optimize_after_n_clicks:
-            opt_result = fmin_l_bfgs_b(func=self.opt_functor, x0=self.opt_data,
-                                       **self.opt_functor.optimizer_params)
+            opt_result = fmin_l_bfgs_b(
+                func=self.opt_functor, x0=self.opt_data, **self.opt_functor.optimizer_params
+            )
             self.opt_data = opt_result[0]
 
         with torch.no_grad():
@@ -125,17 +128,17 @@ class FeatureBRSPredictor(BRSBasePredictor):
             if self.net.rgb_conv is not None:
                 x = self.net.rgb_conv(torch.cat((image_nd, coord_features), dim=1))
                 additional_features = None
-            elif hasattr(self.net, 'maps_transform'):
+            elif hasattr(self.net, "maps_transform"):
                 x = image_nd
                 additional_features = self.net.maps_transform(coord_features)
 
-            if self.insertion_mode == 'after_c4' or self.insertion_mode == 'after_aspp':
+            if self.insertion_mode == "after_c4" or self.insertion_mode == "after_aspp":
                 c1, _, c3, c4 = self.net.feature_extractor.backbone(x, additional_features)
                 c1 = self.net.feature_extractor.skip_project(c1)
 
-                if self.insertion_mode == 'after_aspp':
+                if self.insertion_mode == "after_aspp":
                     x = self.net.feature_extractor.aspp(c4)
-                    x = F.interpolate(x, size=c1.size()[2:], mode='bilinear', align_corners=True)
+                    x = F.interpolate(x, size=c1.size()[2:], mode="bilinear", align_corners=True)
                     x = torch.cat((x, c1), dim=1)
                     backbone_features = x
                 else:
@@ -148,14 +151,14 @@ class FeatureBRSPredictor(BRSBasePredictor):
 
 
 class HRNetFeatureBRSPredictor(BRSBasePredictor):
-    def __init__(self, model, device, opt_functor, insertion_mode='A', **kwargs):
+    def __init__(self, model, device, opt_functor, insertion_mode="A", **kwargs):
         super().__init__(model, device, opt_functor=opt_functor, **kwargs)
         self.insertion_mode = insertion_mode
         self._c1_features = None
 
-        if self.insertion_mode == 'A':
+        if self.insertion_mode == "A":
             self.num_channels = sum(k * model.feature_extractor.width for k in [1, 2, 4, 8])
-        elif self.insertion_mode == 'C':
+        elif self.insertion_mode == "C":
             self.num_channels = 2 * model.feature_extractor.ocr_width
         else:
             raise NotImplementedError
@@ -181,7 +184,7 @@ class HRNetFeatureBRSPredictor(BRSBasePredictor):
 
             scaled_backbone_features = self.input_data * scale
             scaled_backbone_features = scaled_backbone_features + bias
-            if self.insertion_mode == 'A':
+            if self.insertion_mode == "A":
                 if self.net.feature_extractor.ocr_width > 0:
                     out_aux = self.net.feature_extractor.aux_head(scaled_backbone_features)
                     feats = self.net.feature_extractor.conv3x3_ocr(scaled_backbone_features)
@@ -191,19 +194,22 @@ class HRNetFeatureBRSPredictor(BRSBasePredictor):
                 else:
                     feats = scaled_backbone_features
                 pred_logits = self.net.feature_extractor.cls_head(feats)
-            elif self.insertion_mode == 'C':
+            elif self.insertion_mode == "C":
+                # must be torch.float32
                 pred_logits = self.net.feature_extractor.cls_head(scaled_backbone_features)
             else:
                 raise NotImplementedError
 
-            pred_logits = F.interpolate(pred_logits, size=image_nd.size()[2:], mode='bilinear',
-                                        align_corners=True)
+            pred_logits = F.interpolate(
+                pred_logits, size=image_nd.size()[2:], mode="bilinear", align_corners=True
+            )
             return pred_logits
 
         self.opt_functor.init_click(get_prediction_logits, pos_mask, neg_mask, self.device)
         if num_clicks > self.optimize_after_n_clicks:
-            opt_result = fmin_l_bfgs_b(func=self.opt_functor, x0=self.opt_data,
-                                       **self.opt_functor.optimizer_params)
+            opt_result = fmin_l_bfgs_b(
+                func=self.opt_functor, x0=self.opt_data, **self.opt_functor.optimizer_params
+            )
             self.opt_data = opt_result[0]
 
         with torch.no_grad():
@@ -224,15 +230,15 @@ class HRNetFeatureBRSPredictor(BRSBasePredictor):
             if self.net.rgb_conv is not None:
                 x = self.net.rgb_conv(torch.cat((image_nd, coord_features), dim=1))
                 additional_features = None
-            elif hasattr(self.net, 'maps_transform'):
+            elif hasattr(self.net, "maps_transform"):
                 x = image_nd
                 additional_features = self.net.maps_transform(coord_features)
 
             feats = self.net.feature_extractor.compute_hrnet_feats(x, additional_features)
 
-            if self.insertion_mode == 'A':
+            if self.insertion_mode == "A":
                 backbone_features = feats
-            elif self.insertion_mode == 'C':
+            elif self.insertion_mode == "C":
                 out_aux = self.net.feature_extractor.aux_head(feats)
                 feats = self.net.feature_extractor.conv3x3_ocr(feats)
 
@@ -245,7 +251,7 @@ class HRNetFeatureBRSPredictor(BRSBasePredictor):
 
 
 class InputBRSPredictor(BRSBasePredictor):
-    def __init__(self, model, device, opt_functor, optimize_target='rgb', **kwargs):
+    def __init__(self, model, device, opt_functor, optimize_target="rgb", **kwargs):
         super().__init__(model, device, opt_functor=opt_functor, **kwargs)
         self.optimize_target = optimize_target
 
@@ -255,21 +261,28 @@ class InputBRSPredictor(BRSBasePredictor):
         num_clicks = len(clicks_lists[0])
 
         if self.opt_data is None or is_image_changed:
-            if self.optimize_target == 'dmaps':
-                opt_channels = self.net.coord_feature_ch - 1 if self.net.with_prev_mask else self.net.coord_feature_ch
+            if self.optimize_target == "dmaps":
+                opt_channels = (
+                    self.net.coord_feature_ch - 1
+                    if self.net.with_prev_mask
+                    else self.net.coord_feature_ch
+                )
             else:
                 opt_channels = 3
             bs = image_nd.shape[0] // 2 if self.with_flip else image_nd.shape[0]
-            self.opt_data = torch.zeros((bs, opt_channels, image_nd.shape[2], image_nd.shape[3]),
-                                        device=self.device, dtype=torch.float32)
+            self.opt_data = torch.zeros(
+                (bs, opt_channels, image_nd.shape[2], image_nd.shape[3]),
+                device=self.device,
+                dtype=torch.float32,
+            )
 
         def get_prediction_logits(opt_bias):
             input_image, prev_mask = self.net.prepare_input(image_nd)
             dmaps = self.net.get_coord_features(input_image, prev_mask, points_nd)
 
-            if self.optimize_target == 'rgb':
+            if self.optimize_target == "rgb":
                 input_image = input_image + opt_bias
-            elif self.optimize_target == 'dmaps':
+            elif self.optimize_target == "dmaps":
                 if self.net.with_prev_mask:
                     dmaps[:, 1:, :, :] = dmaps[:, 1:, :, :] + opt_bias
                 else:
@@ -277,25 +290,33 @@ class InputBRSPredictor(BRSBasePredictor):
 
             if self.net.rgb_conv is not None:
                 x = self.net.rgb_conv(torch.cat((input_image, dmaps), dim=1))
-                if self.optimize_target == 'all':
+                if self.optimize_target == "all":
                     x = x + opt_bias
                 coord_features = None
-            elif hasattr(self.net, 'maps_transform'):
+            elif hasattr(self.net, "maps_transform"):
                 x = input_image
                 coord_features = self.net.maps_transform(dmaps)
 
-            pred_logits = self.net.backbone_forward(x, coord_features=coord_features)['instances']
-            pred_logits = F.interpolate(pred_logits, size=image_nd.size()[2:], mode='bilinear', align_corners=True)
+            pred_logits = self.net.backbone_forward(x, coord_features=coord_features)["instances"]
+            pred_logits = F.interpolate(
+                pred_logits, size=image_nd.size()[2:], mode="bilinear", align_corners=True
+            )
 
             return pred_logits
 
-        self.opt_functor.init_click(get_prediction_logits, pos_mask, neg_mask, self.device,
-                                    shape=self.opt_data.shape)
+        self.opt_functor.init_click(
+            get_prediction_logits, pos_mask, neg_mask, self.device, shape=self.opt_data.shape
+        )
         if num_clicks > self.optimize_after_n_clicks:
-            opt_result = fmin_l_bfgs_b(func=self.opt_functor, x0=self.opt_data.cpu().numpy().ravel(),
-                                       **self.opt_functor.optimizer_params)
+            opt_result = fmin_l_bfgs_b(
+                func=self.opt_functor,
+                x0=self.opt_data.cpu().numpy().ravel(),
+                **self.opt_functor.optimizer_params
+            )
 
-            self.opt_data = torch.from_numpy(opt_result[0]).view(self.opt_data.shape).to(self.device)
+            self.opt_data = (
+                torch.from_numpy(opt_result[0]).view(self.opt_data.shape).to(self.device)
+            )
 
         with torch.no_grad():
             if self.opt_functor.best_prediction is not None:
