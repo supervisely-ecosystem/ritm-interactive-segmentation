@@ -71,9 +71,12 @@ def deploy():
             raise FileNotFoundError(f"Weights file not found: {g.CUSTOM_WEIGHTS_PATH}")
         download_weights_from_team_files(model_info, model_path, g.my_app.logger)
 
+    torch.backends.cudnn.enabled = False
     device_str = g.DEVICE
-    # device_int = int(g.DEVICE[-1])
+    # device_idx = 0
+    # device = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("cpu")
     model = torch.load(model_path, map_location=torch.device(0))
+    # model = torch.load(model_path, map_location=torch.device("cuda:0"))
     g.NET = load_is_model(model, device_str)
     g.PREDICTOR_PARAMS = {
         "brs_mode": g.BRS_MODE,

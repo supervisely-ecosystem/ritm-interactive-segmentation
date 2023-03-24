@@ -2,9 +2,9 @@ import os
 
 import supervisely as sly
 from diskcache import Cache
+from dotenv import load_dotenv
 from supervisely.app.v1.app_service import AppService
 from supervisely.io.fs import get_file_ext, get_file_name_with_ext, mkdir
-from dotenv import load_dotenv
 
 if sly.is_development():
     load_dotenv("supervisely/local.env")
@@ -51,9 +51,7 @@ else:
     MODEL_NAME = get_file_name_with_ext(CUSTOM_WEIGHTS_PATH)
 
 ### PARAMS
-from interactive_demo.controller import InteractiveController
-
-CONTROLLER: InteractiveController = None
+CONTROLLER = None
 NET = None
 PREDICTOR_PARAMS = None
 DEVICE = os.environ["modal.state.device"]
