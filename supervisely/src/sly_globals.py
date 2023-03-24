@@ -65,6 +65,8 @@ if UNLIMITED:
     NET_CLICKS_LIMIT = 2**10000
     LOG_NET_CLICKS = "INF"
 
+NET_CLICKS_LIMIT = 30
+
 available_brs_modes = [
     "NoBRS",
     "RGB-BRS",
