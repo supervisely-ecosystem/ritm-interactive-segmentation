@@ -1,8 +1,6 @@
 import functools
 import sys
-import time
 from pathlib import Path
-from time import sleep
 
 import supervisely as sly
 
@@ -18,31 +16,11 @@ sources_dir = str(Path(sys.argv[0]).parents[0])
 sly.logger.info(f"Source directory: {sources_dir}")
 sys.path.append(sources_dir)
 
-import cProfile
-import io
-import pstats
-
 from interactive_demo.controller import InteractiveController
 
 import load_model
 import sly_functions as f
 import sly_globals as g
-
-
-def profileit(func):
-    def wrapper(*args, **kwargs):
-        datafn = func.__name__ + ".profile"  # Name the data file sensibly
-        prof = cProfile.Profile()
-        retval = prof.runcall(func, *args, **kwargs)
-        s = io.StringIO()
-        sortby = "cumulative"
-        ps = pstats.Stats(prof, stream=s).sort_stats(sortby)
-        ps.print_stats()
-        with open(datafn, "w") as perf_file:
-            perf_file.write(s.getvalue())
-        return retval
-
-    return wrapper
 
 
 def send_error_data(func):
@@ -72,7 +50,6 @@ def is_online(api: sly.Api, task_id, context, state, app_logger):
 
 
 @g.my_app.callback("smart_segmentation")
-@profileit
 @sly.timeit
 @send_error_data
 def smart_segmentation(api: sly.Api, task_id, context, state, app_logger):
@@ -104,7 +81,13 @@ def smart_segmentation_batched(api: sly.Api, task_id, context, state, app_logger
     data_to_process = context["data_to_process"]
     for idx, data in data_to_process.items():
         try:
-            bitmap_origin, bitmap_data = f.process_bitmap_from_clicks(data)
+            controller = InteractiveController(
+                net=g.NET,
+                device=g.DEVICE,
+                predictor_params=g.PREDICTOR_PARAMS,
+                prob_thresh=g.PROB_THRESH,
+            )
+            bitmap_origin, bitmap_data = f.process_bitmap_from_clicks(data, controller)
             response_batch[idx] = {"bitmap": bitmap_data, "origin": bitmap_origin}
         except Exception as ex:
             g.my_app.logger.warn(f"Couldn't process image:\n{ex}")

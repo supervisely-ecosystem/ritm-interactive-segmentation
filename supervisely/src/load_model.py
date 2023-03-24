@@ -72,12 +72,8 @@ def deploy():
         download_weights_from_team_files(model_info, model_path, g.my_app.logger)
 
     torch.backends.cudnn.enabled = False
-    device_str = g.DEVICE
-    # device_idx = 0
-    # device = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("cpu")
-    model = torch.load(model_path, map_location=torch.device(0))
-    # model = torch.load(model_path, map_location=torch.device("cuda:0"))
-    g.NET = load_is_model(model, device_str)
+    model = torch.load(model_path, map_location=torch.device(g.DEVICE))
+    g.NET = load_is_model(model, g.DEVICE)
     g.PREDICTOR_PARAMS = {
         "brs_mode": g.BRS_MODE,
         "prob_thresh": g.PROB_THRESH,

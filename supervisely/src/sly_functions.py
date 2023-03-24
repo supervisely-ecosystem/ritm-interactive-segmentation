@@ -135,7 +135,6 @@ def unpack_bitmap(bitmap, bbox_origin_y, bbox_origin_x):
 
 @functools.lru_cache(maxsize=100)
 def get_image_by_hash(hash, save_path):
-    # if not os.path.exists(save_path):
     g.api.image.download_paths_by_hashes([hash], [save_path])
     base_image = sly.image.read(save_path)
     silent_remove(save_path)
