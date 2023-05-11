@@ -11,7 +11,7 @@
     "serve"
   ],
   "description": "State of the art object segmentation model in Labeleing Interface",
-  "need_gpu": true,
+  "need_gpu": false,
   "docker_image": "supervisely/ritm:1.2.0",
   "main_script": "supervisely/src/sly_main.py",
   "modal_template": "supervisely/src/modal.html",
