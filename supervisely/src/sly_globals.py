@@ -1,4 +1,5 @@
 import os
+import torch
 
 import supervisely as sly
 from diskcache import Cache
@@ -55,6 +56,14 @@ CONTROLLER = None
 NET = None
 PREDICTOR_PARAMS = None
 DEVICE = os.environ["modal.state.device"]
+
+if DEVICE == "cuda" and torch.cuda.is_available() is False:
+    # fallback to CPU
+    sly.logger.warn(
+        f"Chosen device is {DEVICE}, but torch.cuda.is_available() is False. The model will be loaded on CPU which may lead to slower inference."
+    )
+    DEVICE = "cpu"
+
 BRS_MODE = int(os.environ["modal.state.brs_mode"])
 PROB_THRESH = float(os.environ["modal.state.prob_thresh"])
 NET_CLICKS_LIMIT = int(os.environ["modal.state.net_clicks_limit"])
