@@ -34,5 +34,5 @@
   "session_tags": ["sly_smart_annotation"],
   "poster": "https://i.imgur.com/8RaxwK2.png",
   "community_agent": false,
-  "min_agent_version": "6.7.13"
+  "min_agent_version": "6.7.17"
 }
