@@ -33,7 +33,6 @@
   "session_tags": ["sly_smart_annotation"],
   "poster": "https://i.imgur.com/8RaxwK2.png",
   "community_agent": false,
-  "need_gpu": false,
   "gpu": "preferred",
   "min_agent_version": "6.7.19"
 }
