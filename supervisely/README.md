@@ -48,9 +48,14 @@ and negative (red) clicks, respectively.
 
 🔥🔥🔥 Check out our [youtube tutorial](https://youtu.be/7oEf_R74-z0) and the [complete guide in our blog](https://supervisely.com/blog/custom-smarttool-wheat/):   
 
-<a href="https://youtu.be/Rsr8xWJ6s9I" target="_blank"><img src="https://github.com/supervisely/blog-raw-media-content/assets/106374579/a4e11e8b-53cb-42ab-ac56-794191f1caae"/></a>
+<a data-key="sly-embeded-video-link" href="https://youtu.be/Rsr8xWJ6s9" data-video-code="Rsr8xWJ6s9">
+  <picture>
+    <img src="https://github.com/supervisely-ecosystem/ritm-interactive-segmentation/assets/106374579/fa6aa39e-9fcc-4f51-afc4-d7e1cef37e0d">
+  <picture>
 
+</a>
 
+    
 # How to run
 
 ### ⚠️ Notice  
