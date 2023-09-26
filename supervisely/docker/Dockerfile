@@ -1,6 +1,6 @@
 # cuda:11.1-cudnn8-runtime-ubuntu20.04 + py3.8 + opencv + other bacis CV packages
 # learn more here: https://github.com/supervisely/supervisely/blob/master/base_images/py/Dockerfile
-FROM supervisely/base-py-sdk:6.70.9
+FROM supervisely/base-py-sdk:6.72.134
 
 RUN mkdir /ritm_models
 # download checkpoints
@@ -39,7 +39,7 @@ RUN pip3 install requests-toolbelt==0.10.1 rich==13.3.2 rsa==4.9
 RUN pip3 install scikit-image==0.20.0 scikit-learn==1.2.2 scikit-video==1.1.11 scipy==1.9.1
 RUN pip3 install Shapely==1.8.5.post1 SimpleITK==2.2.1 six==1.16.0 sk-video==1.1.10 smmap==5.0.0
 RUN pip3 install sniffio==1.3.0 soupsieve==2.4 starlette==0.26.1 stringcase==1.2.0
-RUN pip3 install supervisely==6.70.9
+RUN pip3 install supervisely==6.72.134
 RUN pip3 install sympy==1.11.1 tenacity==8.2.2
 RUN pip3 install tensorboard==2.12.0 tensorboard-data-server==0.7.0 tensorboard-plugin-wit==1.8.1
 RUN pip3 install threadpoolctl==3.1.0 tifffile==2023.3.15
