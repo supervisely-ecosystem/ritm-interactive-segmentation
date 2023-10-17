@@ -30,12 +30,12 @@ def send_error_data(func):
         try:
             value = func(*args, **kwargs)
         except Exception as e:
-            sly.logger.error(f"Error while processing data: {e}")
             request_id = kwargs["context"]["request_id"]
             try:
                 g.my_app.send_response(request_id, data={"error": repr(e)})
+                sly.logger.error(f"Error while processing data: {e}")
             except Exception as ex:
-                sly.logger.exception(f"Cannot send error response: {ex}")
+                sly.logger.warn(f"Cannot send error response. Please, check the connection and restart the application. {ex}")
         return value
 
     return wrapper
