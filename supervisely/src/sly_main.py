@@ -53,15 +53,14 @@ def is_online(api: sly.Api, task_id, context, state, app_logger):
 @sly.timeit
 @send_error_data
 def smart_segmentation(api: sly.Api, task_id, context, state, app_logger):
-    # controller = InteractiveController(
-    #     net=g.NET,
-    #     device=g.DEVICE,
-    #     predictor_params=g.PREDICTOR_PARAMS,
-    #     prob_thresh=g.PROB_THRESH,
-    # )
+    controller = InteractiveController(
+        net=g.NET,
+        device=g.DEVICE,
+        predictor_params=g.PREDICTOR_PARAMS,
+        prob_thresh=g.PROB_THRESH,
+    )
 
-    # bitmap_origin, bitmap_data = f.process_bitmap_from_clicks(context, controller)
-    bitmap_origin, bitmap_data = None, None
+    bitmap_origin, bitmap_data = f.process_bitmap_from_clicks(context, controller)
     request_id = context["request_id"]
     g.my_app.send_response(
         request_id,
@@ -111,7 +110,7 @@ def main():
         },
     )
 
-    # load_model.deploy()
+    load_model.deploy()
     g.my_app.run()
 
 
