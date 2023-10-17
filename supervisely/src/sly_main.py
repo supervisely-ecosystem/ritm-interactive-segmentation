@@ -28,16 +28,14 @@ def send_error_data(func):
     def wrapper(*args, **kwargs):
         value = None
         try:
-            raise Exception("Test error")
             value = func(*args, **kwargs)
         except Exception as e:
             request_id = kwargs["context"]["request_id"]
             try:
-                raise
                 g.my_app.send_response(request_id, data={"error": repr(e)})
                 sly.logger.error(f"Error while processing data: {e}")
             except Exception as ex:
-                raise ConnectionError(f"Cannot send error response. Please, check the connection and restart the application. {ex}")
+                sly.logger.warn(f"Cannot send error response. Please, check the connection and restart the application. {ex}")
         return value
 
     return wrapper
