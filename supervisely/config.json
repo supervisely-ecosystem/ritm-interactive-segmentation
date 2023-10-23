@@ -23,7 +23,8 @@
     "net_clicks_limit": 8,
     "net_clicks_unlimited": true,
     "lbfgs_max_iters": 20,
-    "prob_thresh": 0.5
+    "prob_thresh": 0.5,
+    "zoomin_resize": false
   },
   "task_location": "application_sessions",
   "icon": "https://i.imgur.com/Mm2Auxx.png",
