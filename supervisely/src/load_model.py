@@ -77,7 +77,7 @@ def deploy():
     g.PREDICTOR_PARAMS = {
         "brs_mode": g.BRS_MODE,
         "prob_thresh": g.PROB_THRESH,
-        "zoom_in_params": None,
+        "zoom_in_params": g.ZOOM_IN_PARAMS,
         "predictor_params": {"net_clicks_limit": g.NET_CLICKS_LIMIT},
         "lbfgs_params": {"maxfun": g.LBFGS_MAX_ITERS},
     }

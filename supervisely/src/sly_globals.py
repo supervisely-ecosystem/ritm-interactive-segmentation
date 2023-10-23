@@ -70,10 +70,22 @@ NET_CLICKS_LIMIT = int(os.environ["modal.state.net_clicks_limit"])
 LOG_NET_CLICKS = NET_CLICKS_LIMIT
 LBFGS_MAX_ITERS = int(os.environ["modal.state.lbfgs_max_iters"])
 UNLIMITED = os.getenv("modal.state.net_clicks_unlimited").lower() in ("true", "1", "t")
+USE_ZOOM_IN = os.getenv("modal.state.zoomin_resize").lower() in ("true", "1", "t")
+
 if UNLIMITED:
     NET_CLICKS_LIMIT = 2**10000
     LOG_NET_CLICKS = "INF"
 
+if USE_ZOOM_IN:
+    ZOOM_IN_PARAMS = dict(
+        target_size=480,
+        skip_clicks=-1,
+        expansion_ratio=1.4,
+        min_crop_size=200,
+        recompute_thresh_iou=0.7
+    )
+else:
+    ZOOM_IN_PARAMS = None
 
 available_brs_modes = [
     "NoBRS",
