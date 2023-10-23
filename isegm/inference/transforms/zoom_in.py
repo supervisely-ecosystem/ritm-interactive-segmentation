@@ -152,9 +152,14 @@ def get_roi_image_nd(image_nd, object_roi, target_size):
     if isinstance(target_size, tuple):
         new_height, new_width = target_size
     else:
-        scale = target_size / max(height, width)
-        new_height = int(round(height * scale))
-        new_width = int(round(width * scale))
+        # only upscale input images
+        if max(height, width) < target_size:
+            scale = target_size / max(height, width)
+            new_height = int(round(height * scale))
+            new_width = int(round(width * scale))
+        else:
+            new_height = height
+            new_width = width
 
     with torch.no_grad():
         roi_image_nd = image_nd[:, :, rmin:rmax + 1, cmin:cmax + 1]
