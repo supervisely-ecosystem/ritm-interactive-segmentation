@@ -99,13 +99,12 @@
     <el-input-number v-model="state.lbfgs_max_iters" :min="1"></el-input-number>
   </sly-field>
 
-  <sly-field
-    title="ZoomIn Resize"
-    description="Whether to use ZoomIn transform for resizing, which is used in the original implementation. This option improves predicted mask accuracy when processing low-resolution images during inference."
-  >
-    <el-checkbox class="ml10" v-model="state.zoomin_resize"
-      >ZoomIn Resize</el-checkbox
-    >
-  </sly-field>
+  <div class="fflex align-start">
+      <el-checkbox v-model="state.zoomin_resize" class="mt10 mr10"></el-checkbox>
+      <sly-field class="mt20"
+                  title="ZoomIn Resize"
+                  description="Whether to use ZoomIn transform for resizing, which is used in the original implementation. This option improves predicted mask accuracy when processing low-resolution images during inference.">
+      </sly-field>
+  </div>
 
 </div>
