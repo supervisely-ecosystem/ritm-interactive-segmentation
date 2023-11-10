@@ -153,7 +153,8 @@ def get_roi_image_nd(image_nd, object_roi, target_size):
         new_height, new_width = target_size
     else:
         # only upscale input images
-        if max(height, width) < target_size:
+        # if max(height, width) < target_size:
+        if True:
             scale = target_size / max(height, width)
             new_height = int(round(height * scale))
             new_width = int(round(width * scale))
