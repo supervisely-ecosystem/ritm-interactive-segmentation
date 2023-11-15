@@ -78,11 +78,12 @@ if UNLIMITED:
 
 if USE_ZOOM_IN:
     ZOOM_IN_PARAMS = dict(
-        target_size=1024,
+        target_size=None,
         skip_clicks=-1,
         expansion_ratio=1.4,
         min_crop_size=200,
-        recompute_thresh_iou=0.7
+        recompute_thresh_iou=0.7,
+        target_size_range=(256, 1024)
     )
 else:
     ZOOM_IN_PARAMS = None

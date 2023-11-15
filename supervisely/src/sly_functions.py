@@ -157,9 +157,9 @@ def get_bitmap_from_mask(mask, cropped_shape):
     return bitmap
 
 
-def optimize_crop(crop_np):
-    max_crop_dim = 1000  # limits max crop dimension for app optimization
-    max_crop_dim = float("inf")  # limits max crop dimension for app optimization
+def optimize_crop(crop_np, max_crop_dim):
+    # max_crop_dim = 1000  # limits max crop dimension for app optimization
+    # max_crop_dim = float("inf")  # 'inf' will turn off this feature
     resized_shape = None
     height, width = crop_np.shape[:2]
     if height > max_crop_dim or width > max_crop_dim:
@@ -189,7 +189,8 @@ def process_bitmap_from_clicks(data, controller):
     base_image_np = download_image_from_context(data)
     crop_np = sly.image.crop(base_image_np, bbox)
 
-    crop_np, cropped_shape, resized_shape = optimize_crop(crop_np)
+    max_crop_dim = float("inf") if g.USE_ZOOM_IN else 1000
+    crop_np, cropped_shape, resized_shape = optimize_crop(crop_np, max_crop_dim)
     pos_points, neg_points = get_pos_neg_points_list_from_context_bbox_relative(
         x1, y1, pos_points, neg_points, cropped_shape, resized_shape
     )

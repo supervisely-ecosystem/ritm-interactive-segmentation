@@ -13,9 +13,11 @@ class ZoomIn(BaseTransform):
                  expansion_ratio=1.4,
                  min_crop_size=200,
                  recompute_thresh_iou=0.5,
-                 prob_thresh=0.50):
+                 prob_thresh=0.50,
+                 target_size_range=None):
         super().__init__()
         self.target_size = target_size
+        self.target_size_range = target_size_range
         self.min_crop_size = min_crop_size
         self.skip_clicks = skip_clicks
         self.expansion_ratio = expansion_ratio
@@ -61,7 +63,12 @@ class ZoomIn(BaseTransform):
         if update_object_roi:
             self._object_roi = current_object_roi
             self.image_changed = True
-        self._roi_image = get_roi_image_nd(image_nd, self._object_roi, self.target_size)
+
+        if self.target_size_range is None:
+            self._roi_image = get_roi_image_nd(image_nd, self._object_roi, self.target_size)
+        else:
+            # upscale small images, downscale large ones
+            self._roi_image = get_roi_image_nd_v2(image_nd, self._object_roi, self.target_size_range)
 
         tclicks_lists = [self._transform_clicks(clicks_list)]
         return self._roi_image.to(image_nd.device), tclicks_lists
@@ -152,15 +159,40 @@ def get_roi_image_nd(image_nd, object_roi, target_size):
     if isinstance(target_size, tuple):
         new_height, new_width = target_size
     else:
-        # only upscale input images
-        # if max(height, width) < target_size:
-        if True:
-            scale = target_size / max(height, width)
-            new_height = int(round(height * scale))
-            new_width = int(round(width * scale))
-        else:
-            new_height = height
-            new_width = width
+        scale = target_size / max(height, width)
+        new_height = int(round(height * scale))
+        new_width = int(round(width * scale))
+
+    with torch.no_grad():
+        roi_image_nd = image_nd[:, :, rmin:rmax + 1, cmin:cmax + 1]
+        roi_image_nd = torch.nn.functional.interpolate(roi_image_nd, size=(new_height, new_width),
+                                                       mode='bilinear', align_corners=True)
+
+    return roi_image_nd
+
+
+def get_roi_image_nd_v2(image_nd, object_roi, target_size_range: tuple):
+    rmin, rmax, cmin, cmax = object_roi
+
+    height = rmax - rmin + 1
+    width = cmax - cmin + 1
+
+    min_target_size = min(target_size_range)
+    max_target_size = max(target_size_range)
+
+    if max(height, width) < min_target_size:
+        # upscale small images
+        scale = min_target_size / max(height, width)
+        new_height = int(round(height * scale))
+        new_width = int(round(width * scale))
+    elif max(height, width) > max_target_size:
+        # downscale large images
+        scale = max_target_size / max(height, width)
+        new_height = int(round(height * scale))
+        new_width = int(round(width * scale))
+    else:
+        new_height = height
+        new_width = width
 
     with torch.no_grad():
         roi_image_nd = image_nd[:, :, rmin:rmax + 1, cmin:cmax + 1]
