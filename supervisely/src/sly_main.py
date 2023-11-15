@@ -107,6 +107,7 @@ def main():
             "prob_thresh": g.PROB_THRESH,
             "net_clicks_limit": g.LOG_NET_CLICKS,
             "lbfgs_max_iters": g.LBFGS_MAX_ITERS,
+            "use_zoomin_resize": g.USE_ZOOM_IN,
         },
     )
 
