@@ -1,1 +1,2 @@
-supervisely==6.72.154
+# supervisely==6.72.154
+git+https://github.com/supervisely/supervisely.git@improve-dev-logs
