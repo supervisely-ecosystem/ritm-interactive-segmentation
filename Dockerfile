@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /tmp
 
 RUN pip3 install --upgrade pip
+RUN pip3 install -r dev_requirements.txt
 RUN pip3 install setuptools
 RUN pip3 install matplotlib numpy pandas scipy tqdm pyyaml easydict scikit-image bridson Pillow ninja
 RUN pip3 install imgaug mxboard graphviz

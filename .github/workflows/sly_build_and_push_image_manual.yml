@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Supervisely Build and Push Image Manual
 
 on: 
   workflow_dispatch:
