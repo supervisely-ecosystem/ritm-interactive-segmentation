@@ -1,6 +1,6 @@
 # cuda:11.1-cudnn8-runtime-ubuntu20.04 + py3.8 + opencv + other bacis CV packages
 # learn more here: https://github.com/supervisely/supervisely/blob/master/base_images/py/Dockerfile
-FROM supervisely/base-py-sdk:6.72.134
+FROM supervisely/base-py-sdk:6.73.102
 
 RUN mkdir /ritm_models
 # download checkpoints
