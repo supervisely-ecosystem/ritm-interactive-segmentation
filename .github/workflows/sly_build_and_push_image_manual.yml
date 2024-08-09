@@ -1,44 +1,26 @@
-name: Supervisely Build and Push Image Manual
+name: Docker Image Build
 
 on: 
   workflow_dispatch:
     inputs:
       tag_version:
-        description: 'Docker Image Tag'     
+        description: 'Docker Image Tag (without "v")'     
         required: true
+        type: string
+      sdk_version:
+        description: 'Supervisely SDK version (optional) - only needed if SDK is installed from branch'
+        required: false
+        type: string
         default: ''
 
 jobs:
-  docker:
-    runs-on: ubuntu-latest
-    steps:
-      - 
-        name: Free Disk Space (Ubuntu)
-        uses: jlumbroso/free-disk-space@main
-        with:
-          tool-cache: false
-          android: true
-          dotnet: true
-          haskell: true
-          large-packages: true
-          docker-images: false
-          swap-storage: true
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      -
-        name: Login to DockerHub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      -
-        name: Build and push
-        uses: docker/build-push-action@v3
-        with:
-          push: true
-          file: supervisely/docker/Dockerfile
-          tags: supervisely/ritm:${{ github.event.inputs.tag_version }}
+  docker-build-and-push:
+    uses: supervisely-ecosystem/workflows/.github/workflows/build_image.yml@master
+    secrets:
+      DOCKERHUB_USERNAME: "${{  secrets.DOCKERHUB_USERNAME  }}"
+      DOCKERHUB_TOKEN:  "${{  secrets.DOCKERHUB_TOKEN  }}"
+    with:
+      tag_version: ${{ github.event.inputs.tag_version }}
+      dockerfile_path: supervisely/docker/Dockerfile
+      image_name: ritm # <- optional, if not set, will be equal to repository name
+      sdk_version: ${{ github.event.inputs.sdk_version }}
