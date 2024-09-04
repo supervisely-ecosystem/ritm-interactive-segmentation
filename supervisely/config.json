@@ -30,7 +30,7 @@
   "icon": "https://i.imgur.com/Mm2Auxx.png",
   "icon_background": "#FFFFFF",
   "headless": true,
-  "instance_version": "6.5.1",
+  "instance_version": "6.9.31",
   "session_tags": ["sly_smart_annotation"],
   "poster": "https://i.imgur.com/8RaxwK2.png",
   "community_agent": false,
