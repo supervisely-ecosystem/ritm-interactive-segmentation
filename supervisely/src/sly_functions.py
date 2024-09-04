@@ -187,7 +187,11 @@ def process_bitmap_from_clicks(data, controller):
     bbox = sly.Rectangle(y1, x1, y2, x2)
 
     base_image_np = download_image_from_context(data)
-    crop_np = sly.image.crop(base_image_np, bbox)
+    try:
+        crop_np = sly.image.crop(base_image_np, bbox)
+    except:
+        sly.logger.warn(f"Crop out of image size, processing full image. Image size: '{base_image_np.shape[:2]}'. Cropper (x, y): '{[[x1, y1], [x2, y2]]}'")
+        crop_np = base_image_np
 
     max_crop_dim = float("inf") if g.USE_ZOOM_IN else 1000
     crop_np, cropped_shape, resized_shape = optimize_crop(crop_np, max_crop_dim)
