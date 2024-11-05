@@ -14,11 +14,11 @@
   <a href="#Acknowledgment">Acknowledgment</a> 
 </p>
 
-[![](https://img.shields.io/badge/supervisely-ecosystem-brightgreen)](https://ecosystem.supervise.ly/apps/supervisely-ecosystem/ritm-interactive-segmentation/supervisely)
-[![](https://img.shields.io/badge/slack-chat-green.svg?logo=slack)](https://supervise.ly/slack)
+[![](https://img.shields.io/badge/supervisely-ecosystem-brightgreen)](https://ecosystem.supervisely.com/apps/supervisely-ecosystem/ritm-interactive-segmentation/supervisely)
+[![](https://img.shields.io/badge/slack-chat-green.svg?logo=slack)](https://supervisely.com/slack)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/supervisely-ecosystem/ritm-interactive-segmentation)
-[![views](https://app.supervise.ly/img/badges/views/supervisely-ecosystem/ritm-interactive-segmentation/supervisely.png)](https://supervise.ly)
-[![runs](https://app.supervise.ly/img/badges/runs/supervisely-ecosystem/ritm-interactive-segmentation/supervisely.png)](https://supervise.ly)
+[![views](https://app.supervisely.com/img/badges/views/supervisely-ecosystem/ritm-interactive-segmentation/supervisely.png)](https://supervisely.com)
+[![runs](https://app.supervisely.com/img/badges/runs/supervisely-ecosystem/ritm-interactive-segmentation/supervisely.png)](https://supervisely.com)
 
 
 <p float="left">
@@ -64,7 +64,7 @@ and negative (red) clicks, respectively.
 
 ---
 
-1. Add [RITM interactive segmentation smart tool](https://ecosystem.supervise.ly/apps/supervisely-ecosystem%252Fritm-interactive-segmentation%252Fsupervisely) to your team from Ecosystem.
+1. Add [RITM interactive segmentation smart tool](https://ecosystem.supervisely.com/apps/supervisely-ecosystem%252Fritm-interactive-segmentation%252Fsupervisely) to your team from Ecosystem.
 
 <img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/ritm-interactive-segmentation/supervisely" src="https://i.imgur.com/eWmFwQ9.png" width="600px" style='padding-bottom: 20px'/>  
 
