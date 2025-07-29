@@ -34,7 +34,13 @@ def load_is_model(checkpoint, device, **kwargs):
 
 
 def load_single_is_model(state_dict, device, **kwargs):
-    model = load_model(state_dict['config'], **kwargs)
+    try:
+        model = load_model(state_dict['config'], **kwargs)
+    except KeyError as e:
+        raise RuntimeError(
+            f"Failed to load model. Can not find 'config' key in the "
+            "checkpoint. Please ensure, that the checkpoint is valid."
+        ) from e
     model.load_state_dict(state_dict['state_dict'], strict=False)
 
     for param in model.parameters():
