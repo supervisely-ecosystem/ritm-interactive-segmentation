@@ -1,0 +1,18 @@
+name: Docker Image Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag_version:
+        description: 'Docker Image Tag (without "v")'
+        required: true
+        type: string
+
+jobs:
+  docker-build-and-push:
+    uses: supervisely-ecosystem/workflows/.github/workflows/build_image.yml@master
+    secrets:
+      DOCKERHUB_USERNAME: "${{  secrets.DOCKERHUB_USERNAME  }}"
+      DOCKERHUB_TOKEN: "${{  secrets.DOCKERHUB_TOKEN  }}"
+    with:
+      tag_version: ${{ github.event.inputs.tag_version }}
