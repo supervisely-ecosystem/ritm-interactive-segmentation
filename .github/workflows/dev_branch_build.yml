@@ -1,0 +1,43 @@
+name: Docker Build + Release Branch
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag_version:
+        description: 'Docker Image Tag (without "v")'
+        required: true
+        type: string
+      sdk_version:
+        description: "Supervisely SDK version (optional) - only needed if SDK is installed from branch"
+        required: false
+        type: string
+        default: ""
+
+jobs:
+  docker-build-and-push:
+    uses: supervisely-ecosystem/workflows/.github/workflows/build_image.yml@master
+    secrets:
+      DOCKERHUB_USERNAME: "${ secrets.DOCKERHUB_USERNAME }"
+      DOCKERHUB_TOKEN: "${ secrets.DOCKERHUB_TOKEN }"
+    with:
+      tag_version: ${ github.event.inputs.tag_version }
+      dockerfile_path: supervisely/docker/Dockerfile
+      image_name: "ritm"
+      sdk_version: ${ github.event.inputs.sdk_version }
+
+  release-branch:
+    needs: docker-build-and-push
+    uses: supervisely-ecosystem/workflows/.github/workflows/common.yml@master
+    secrets:
+      SUPERVISELY_DEV_API_TOKEN: "${ secrets.SUPERVISELY_DEV_API_TOKEN }"
+      SUPERVISELY_PRIVATE_DEV_API_TOKEN: "${ secrets.SUPERVISELY_PRIVATE_DEV_API_TOKEN }"
+      SUPERVISELY_PROD_API_TOKEN: "${ secrets.SUPERVISELY_PROD_API_TOKEN }"
+      GH_ACCESS_TOKEN: "${ secrets.GITHUB_TOKEN }"
+    with:
+      SUPERVISELY_SERVER_ADDRESS: "${ vars.SUPERVISELY_DEV_SERVER_ADDRESS }"
+      SUPERVISELY_PROD_SERVER_ADDRESS: "${ vars.SUPERVISELY_PROD_SERVER_ADDRESS }"
+      SLUG: "${ github.repository }"
+      RELEASE_VERSION: "${ github.ref_name }"
+      RELEASE_DESCRIPTION: "'${ github.ref_name }' branch release"
+      RELEASE_TYPE: "release-branch"
+      SUBAPP_PATHS: "__ROOT_APP__"
