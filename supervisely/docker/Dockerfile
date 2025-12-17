@@ -48,7 +48,7 @@ RUN pip3 install torchvision==0.15.1
 RUN pip3 install tqdm==4.65.0
 RUN pip3 install trimesh==3.20.2
 RUN pip3 install triton==2.0.0
-RUN pip3 install typing_extensions==4.5.0 urllib3==1.26.15 uvicorn==0.21.1 uvloop==0.17.0
+RUN pip3 install urllib3==1.26.15 uvicorn==0.21.1 uvloop==0.17.0
 RUN pip3 install varname==0.11.0 watchfiles==0.18.1 watchgod==0.6 websocket-client==1.5.1
 RUN pip3 install websockets==10.4 Werkzeug==2.2.3 zipp==3.15.0
 
