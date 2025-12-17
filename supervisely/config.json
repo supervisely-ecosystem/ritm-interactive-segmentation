@@ -31,6 +31,7 @@
     "icon_background": "#FFFFFF",
     "headless": true,
     "min_agent_version": "6.7.19",
+    "instance_version": "6.9.31",
     "session_tags": [
         "sly_smart_annotation"
     ],
@@ -38,7 +39,6 @@
     "community_agent": false,
     "need_gpu": false,
     "gpu": "preferred",
-    "min_agent_version": "6.7.19",
     "access_restriction": [
         {
             "instance": "community_free",
