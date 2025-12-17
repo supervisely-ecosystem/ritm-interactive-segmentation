@@ -1,44 +1,48 @@
 {
-  "name": "RITM interactive segmentation SmartTool",
-  "type": "app",
-  "restart_policy": "on_error",
-  "categories": [
-    "neural network",
-    "images",
-    "videos",
-    "dicom",
-    "interactive segmentation",
-    "serve"
-  ],
-  "description": "State-of-the art object segmentation model in Labeling Interface",
-  "docker_image": "supervisely/ritm:1.2.5",
-  "main_script": "supervisely/src/sly_main.py",
-  "modal_template": "supervisely/src/modal.html",
-  "modal_template_state": {
-    "modelMode": "pretrained",
-    "weightsPath": null,
-    "device": "cuda",
-    "model": "4",
-    "brs_mode": "0",
-    "net_clicks_limit": 8,
-    "net_clicks_unlimited": true,
-    "lbfgs_max_iters": 20,
-    "prob_thresh": 0.5,
-    "zoomin_resize": true
-  },
-  "task_location": "application_sessions",
-  "icon": "https://i.imgur.com/Mm2Auxx.png",
-  "icon_background": "#FFFFFF",
-  "headless": true,
-  "instance_version": "6.9.31",
-  "session_tags": ["sly_smart_annotation"],
-  "poster": "https://i.imgur.com/8RaxwK2.png",
-  "community_agent": false,
-  "need_gpu": false,
-  "gpu": "preferred",
-  "min_agent_version": "6.7.19",
-  "access_restriction": [{
-        "instance": "community_free",
-        "message": "The best interactive models for AI-assisted segmentation are already deployed in the Supervisely Cloud and are available for auto-labeling to all platform users. The number of API calls and the ability to run this app on your own agent (GPU) are limited for Free accounts. To increase usage limits or run the app on your GPU, switch to the <a href=\"/billing\">Pro</a> plan or request the <a href=\"https://supervisely.com/contact-us/\" target=\"_blank\">Enterprise</a> Edition."
-    }]
+    "name": "RITM interactive segmentation SmartTool",
+    "type": "app",
+    "restart_policy": "on_error",
+    "categories": [
+        "neural network",
+        "images",
+        "videos",
+        "dicom",
+        "interactive segmentation",
+        "serve"
+    ],
+    "description": "State-of-the art object segmentation model in Labeling Interface",
+    "docker_image": "supervisely/ritm:1.2.7",
+    "main_script": "supervisely/src/sly_main.py",
+    "modal_template": "supervisely/src/modal.html",
+    "modal_template_state": {
+        "modelMode": "pretrained",
+        "weightsPath": null,
+        "device": "cuda",
+        "model": "4",
+        "brs_mode": "0",
+        "net_clicks_limit": 8,
+        "net_clicks_unlimited": true,
+        "lbfgs_max_iters": 20,
+        "prob_thresh": 0.5,
+        "zoomin_resize": true
+    },
+    "task_location": "application_sessions",
+    "icon": "https://i.imgur.com/Mm2Auxx.png",
+    "icon_background": "#FFFFFF",
+    "headless": true,
+    "instance_version": "6.15.35",
+    "session_tags": [
+        "sly_smart_annotation"
+    ],
+    "poster": "https://i.imgur.com/8RaxwK2.png",
+    "community_agent": false,
+    "need_gpu": false,
+    "gpu": "preferred",
+    "min_agent_version": "6.7.19",
+    "access_restriction": [
+        {
+            "instance": "community_free",
+            "message": "The best interactive models for AI-assisted segmentation are already deployed in the Supervisely Cloud and are available for auto-labeling to all platform users. The number of API calls and the ability to run this app on your own agent (GPU) are limited for Free accounts. To increase usage limits or run the app on your GPU, switch to the <a href=\"/billing\">Pro</a> plan or request the <a href=\"https://supervisely.com/contact-us/\" target=\"_blank\">Enterprise</a> Edition."
+        }
+    ]
 }
