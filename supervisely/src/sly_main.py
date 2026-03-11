@@ -1,4 +1,5 @@
 import functools
+import asyncio
 import sys
 from pathlib import Path
 
@@ -35,7 +36,9 @@ def send_error_data(func):
                 g.my_app.send_response(request_id, data={"error": repr(e)})
                 sly.logger.error(f"Error while processing data: {e}")
             except Exception as ex:
-                sly.logger.warn(f"Cannot send error response. Please, check the connection and restart the application. {ex}")
+                sly.logger.warn(
+                    f"Cannot send error response. Please, check the connection and restart the application. {ex}"
+                )
         return value
 
     return wrapper
@@ -112,6 +115,7 @@ def main():
     )
 
     load_model.deploy()
+    asyncio.set_event_loop(asyncio.new_event_loop())
     g.my_app.run()
 
 
