@@ -1,3 +1,4 @@
+git+https://github.com/supervisely/supervisely.git@upgrade-protobuf
 albumentations==1.3.1
 PyYAML==6.0.3
 tensorboard==2.20.0
