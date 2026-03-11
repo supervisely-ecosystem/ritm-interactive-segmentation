@@ -14,7 +14,7 @@ jobs:
       image_name: "${{ github.event.repository.name }}"
       config_file: "supervisely/config.json"
       runtime_base_image: "base-py-cuda-hardened"
-      extra_builder_libs: "gcc libc6-dev build-essential"
+      extra_builder_libs: "gcc libc6-dev linux-libc-dev build-essential"
       cve_checks: true
   Supervisely-Release:
     if: "!github.event.release.prerelease"

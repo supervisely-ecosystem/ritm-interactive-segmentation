@@ -15,5 +15,5 @@ jobs:
       tag_version: "${{ github.event.inputs.tag_version }}"
       config_file: "supervisely/config.json"
       runtime_base_image: "base-py-cuda-hardened"
-      extra_builder_libs: "gcc libc6-dev build-essential"
+      extra_builder_libs: "gcc libc6-dev linux-libc-dev build-essential"
       cve_checks: true
