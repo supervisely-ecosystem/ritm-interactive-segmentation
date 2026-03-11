@@ -17,3 +17,4 @@ jobs:
       runtime_base_image: "base-py-cuda-hardened"
       extra_builder_libs: "gcc libc6-dev linux-libc-dev build-essential"
       cve_checks: true
+      skip_tag_check: true
