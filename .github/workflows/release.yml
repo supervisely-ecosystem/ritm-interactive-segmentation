@@ -7,8 +7,17 @@ on:
       - main
       - master
 jobs:
+  build-image:
+    if: "!github.event.release.prerelease"
+    uses: supervisely-ecosystem/workflows/.github/workflows/build_image_from_template.yml@master
+    with:
+      image_name: "${{ github.event.repository.name }}"
+      config_file: "supervisely/config.json"
+      runtime_base_image: "base-py-cuda-hardened"
+      cve_checks: true
   Supervisely-Release:
     if: "!github.event.release.prerelease"
+    needs: build-image
     uses: supervisely-ecosystem/workflows/.github/workflows/common.yml@master
     secrets:
       SUPERVISELY_DEV_API_TOKEN: "${{ secrets.SUPERVISELY_DEV_API_TOKEN }}"
