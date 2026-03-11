@@ -2,7 +2,6 @@ import os
 import torch
 
 import supervisely as sly
-from diskcache import Cache
 from dotenv import load_dotenv
 from supervisely.app.v1.app_service import AppService
 from supervisely.io.fs import get_file_ext, get_file_name_with_ext, mkdir
