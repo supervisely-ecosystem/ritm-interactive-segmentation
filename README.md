@@ -210,7 +210,7 @@ You can find model weights and evaluation results in the tables below:
     <tbody align="center">
         <tr>
             <td rowspan="1">SBD</td>
-            <td align="left"><a href="https://github.com/saic-vul/ritm_interactive_segmentation/releases/download/v1.0/sbd_h18_itermask.pth">HRNet18 IT-M<br>(38.8 MB)</a></td>
+            <td align="left"><a href="https://github.com/supervisely-ecosystem/ritm-interactive-segmentation/releases/download/v0.1/sbd_h18_itermask.pth">HRNet18 IT-M<br>(38.8 MB)</a></td>
             <td>1.76</td>
             <td>2.04</td>
             <td>3.22</td>
@@ -223,7 +223,7 @@ You can find model weights and evaluation results in the tables below:
         </tr>
         <tr>
             <td rowspan="4">COCO+<br>LVIS</td>
-            <td align="left"><a href="https://github.com/saic-vul/ritm_interactive_segmentation/releases/download/v1.0/coco_lvis_h18_baseline.pth">HRNet18<br>(38.8 MB)</a></td>
+            <td align="left"><a href="https://github.com/supervisely-ecosystem/ritm-interactive-segmentation/releases/download/v0.1/coco_lvis_h18_baseline.pth">HRNet18<br>(38.8 MB)</a></td>
             <td>1.54</td>
             <td>1.70</td>
             <td>2.48</td>
@@ -235,7 +235,7 @@ You can find model weights and evaluation results in the tables below:
             <td>3.58</td>
         </tr>
         <tr>
-            <td align="left"><a href="https://github.com/saic-vul/ritm_interactive_segmentation/releases/download/v1.0/coco_lvis_h18s_itermask.pth">HRNet18s IT-M<br>(16.5 MB)</a></td>
+            <td align="left"><a href="https://github.com/supervisely-ecosystem/ritm-interactive-segmentation/releases/download/v0.1/coco_lvis_h18s_itermask.pth">HRNet18s IT-M<br>(16.5 MB)</a></td>
             <td>1.54</td>
             <td>1.68</td>
             <td>2.60</td>
@@ -247,7 +247,7 @@ You can find model weights and evaluation results in the tables below:
             <td>3.33</td>
         </tr>
         <tr>
-            <td align="left"><a href="https://github.com/saic-vul/ritm_interactive_segmentation/releases/download/v1.0/coco_lvis_h18_itermask.pth">HRNet18 IT-M<br>(38.8 MB)</a></td>
+            <td align="left"><a href="https://github.com/supervisely-ecosystem/ritm-interactive-segmentation/releases/download/v0.1/coco_lvis_h18_itermask.pth">HRNet18 IT-M<br>(38.8 MB)</a></td>
             <td><b>1.42</b></td>
             <td><b>1.54</b></td>
             <td><ins>2.26</ins></td>
@@ -259,7 +259,7 @@ You can find model weights and evaluation results in the tables below:
             <td><ins>2.98</ins></td>
         </tr>
         <tr>
-            <td align="left"><a href="https://github.com/saic-vul/ritm_interactive_segmentation/releases/download/v1.0/coco_lvis_h32_itermask.pth">HRNet32 IT-M<br>(119 MB)</a></td>
+            <td align="left"><a href="https://github.com/supervisely-ecosystem/ritm-interactive-segmentation/releases/download/v0.1/coco_lvis_h32_itermask.pth">HRNet32 IT-M<br>(119 MB)</a></td>
             <td><ins>1.46</ins></td>
             <td><ins>1.56</ins></td>
             <td><b>2.10</b></td>
