@@ -3,7 +3,7 @@
 # ============================================================================
 
 # todo: remove when hardened docker images are released
-ARG tag_ref_name=0.0.1
+ARG tag_ref_name=6.73.567
 # ARG tag_ref_name=6.73.xxx
 
 FROM python:3.10-slim-bookworm AS builder

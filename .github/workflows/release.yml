@@ -13,8 +13,10 @@ jobs:
     with:
       image_name: "${{ github.event.repository.name }}"
       config_file: "supervisely/config.json"
+      tag_ref_name: "6.73.567"
       runtime_base_image: "base-py-cuda-hardened"
       cve_checks: true
+      no_cache_requirements: true
   Supervisely-Release:
     if: "!github.event.release.prerelease"
     needs: build-image

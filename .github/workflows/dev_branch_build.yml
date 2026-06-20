@@ -7,26 +7,20 @@ on:
         description: 'Docker Image Tag (without "v")'
         required: true
         type: string
-      sdk_version:
-        description: "Supervisely SDK version (optional) - only needed if SDK is installed from branch"
-        required: false
-        type: string
-        default: ""
-
 jobs:
-  docker-build-and-push:
-    uses: supervisely-ecosystem/workflows/.github/workflows/build_image.yml@master
-    secrets:
-      DOCKERHUB_USERNAME: "${{ secrets.DOCKERHUB_USERNAME }}"
-      DOCKERHUB_TOKEN: "${{ secrets.DOCKERHUB_TOKEN }}"
+  build-image:
+    uses: supervisely-ecosystem/workflows/.github/workflows/build_image_from_template.yml@master
     with:
-      tag_version: ${{ github.event.inputs.tag_version }}
-      dockerfile_path: supervisely/docker/Dockerfile
+      tag_version: ${{ inputs.tag_version }}
+      config_file: "supervisely/config.json"
       image_name: "ritm"
-      sdk_version: ${{ github.event.inputs.sdk_version }}
+      tag_ref_name: "6.73.567"
+      runtime_base_image: "base-py-cuda-hardened"
+      cve_checks: true
+      no_cache_requirements: true
 
   release-branch:
-    needs: docker-build-and-push
+    needs: build-image
     uses: supervisely-ecosystem/workflows/.github/workflows/common.yml@master
     secrets:
       SUPERVISELY_DEV_API_TOKEN: "${{ secrets.SUPERVISELY_DEV_API_TOKEN }}"

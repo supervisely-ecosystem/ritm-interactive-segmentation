@@ -11,8 +11,8 @@
     "serve"
   ],
   "description": "State-of-the art object segmentation model in Labeling Interface",
-  "docker_image": "supervisely/ritm-interactive-segmentation:6.73.544",
-  "instance_version": "6.15.40",
+  "docker_image": "supervisely/ritm-interactive-segmentation:6.73.572",
+  "instance_version": "6.15.60",
   "main_script": "supervisely/src/sly_main.py",
   "modal_template": "supervisely/src/modal.html",
   "modal_template_state": {
