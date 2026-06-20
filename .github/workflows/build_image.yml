@@ -1,20 +1,40 @@
-name: Docker Image Build
+name: Manual Build App Image From Template
+run-name: Manual Build App Image for "${{ github.event.repository.name }}"
 
 on:
   workflow_dispatch:
     inputs:
       tag_version:
-        description: 'Docker Image Tag (without "v")'
-        required: true
-        type: string
+        description: "Tag version to build image for"
+        required: false
+      tag_ref_name:
+        description: "Runtime base image tag/ref to use; defaults to tag_version"
+        required: false
+      enable_cve_checks:
+        description: "Enable CVE checks during image build"
+        required: false
+        type: boolean
+        default: true
+      skip_tag_check:
+        description: "Skip tag existence check before building image"
+        required: false
+        type: boolean
+        default: false
+      build_cache:
+        description: "Use Docker registry build cache"
+        required: false
+        type: boolean
+        default: true
 jobs:
   build-image:
     uses: supervisely-ecosystem/workflows/.github/workflows/build_image_from_template.yml@master
     with:
-      tag_version: ${{ inputs.tag_version }}
+      image_name: "${{ github.event.repository.name }}"
+      tag_version: "${{ inputs.tag_version }}"
+      tag_ref_name: "${{ inputs.tag_ref_name || '6.73.567' }}"
       config_file: "supervisely/config.json"
-      image_name: "ritm"
-      tag_ref_name: "6.73.567"
       runtime_base_image: "base-py-cuda-hardened"
-      cve_checks: true
+      cve_checks: ${{ inputs.enable_cve_checks }}
+      skip_tag_check: ${{ inputs.skip_tag_check }}
       no_cache_requirements: true
+      build_cache: ${{ inputs.build_cache }}
